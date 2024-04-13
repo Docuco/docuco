@@ -1,0 +1,10 @@
+.text {
+    display: inline;
+    font-size: 2rem;
+    min-height: 50px;
+}
+
+.space {
+    min-height: 50px;
+    width: 100%;
+}

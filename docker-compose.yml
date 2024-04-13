@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  docuco:
+    image: node:20
+    container_name: docuco
+    working_dir: "/app"
+    network_mode: host
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - docuco_static_server
+
+  docuco_static_server:
+    image: halverneus/static-file-server:v1.8.10
+    container_name: docuco_static_server
+    environment:
+      CORS: true
+      FOLDER: /docuco
+      PORT: "8081"
+      DEBUG: true
+      SHOW_LISTING: true
+    ports:
+      - "8081:8081"
+    network_mode: host
+    volumes:
+      - ./docs:/docuco/docs

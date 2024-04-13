@@ -1,0 +1,20 @@
+.optionsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 50px
+}
+
+.card {
+    padding: 20px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.optionSelected {
+    background-color: var(--mantine-primary-color-0);
+    border: 1px solid var(--mantine-primary-color-5);
+}

@@ -1,0 +1,66 @@
+{
+  "name": "docuco",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:migration:create": "npx mikro-orm migration:create",
+    "db:migration:up": "npx mikro-orm migration:up",
+    "db:migration:down": "npx mikro-orm migration:down",
+    "db:migration:fresh": "npx mikro-orm migration:fresh",
+    "db:seed:create": "npx mikro-orm seeder:create",
+    "db:seed:run": "npx mikro-orm seeder:run"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "src/app/_core/Shared/Infrastructure/Persistence/MikroORM/mikro-orm.config.ts"
+    ]
+  },
+  "dependencies": {
+    "@mantine/carousel": "7.7.1",
+    "@mantine/charts": "7.7.1",
+    "@mantine/core": "7.7.1",
+    "@mantine/dates": "7.7.1",
+    "@mantine/dropzone": "7.7.1",
+    "@mantine/form": "7.7.1",
+    "@mantine/hooks": "7.7.1",
+    "@mantine/modals": "7.7.1",
+    "@mantine/notifications": "7.7.1",
+    "@mantine/nprogress": "7.7.1",
+    "@mantine/spotlight": "7.7.1",
+    "@mikro-orm/better-sqlite": "6.1.12",
+    "@mikro-orm/cli": "6.1.12",
+    "@mikro-orm/core": "6.1.12",
+    "@mikro-orm/migrations": "6.1.12",
+    "@mikro-orm/reflection": "6.1.12",
+    "@mikro-orm/seeder": "6.1.12",
+    "@tabler/icons-react": "3.1.0",
+    "bcryptjs": "2.4.3",
+    "dayjs": "1.11.10",
+    "express": "4.19.2",
+    "next": "14.2.1",
+    "react": "18.2.0",
+    "react-countup": "6.5.3",
+    "react-dom": "18.2.0",
+    "recharts": "2.12.3",
+    "swr": "2.2.5",
+    "uuidv7": "0.6.3",
+    "zod": "3.22.4"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "2.4.6",
+    "@types/express": "4.17.21",
+    "@types/node": "20",
+    "@types/react": "18",
+    "@types/react-dom": "18",
+    "eslint": "8",
+    "eslint-config-next": "14.2.1",
+    "ts-node": "10.9.2",
+    "typescript": "5",
+    "vitest": "1.4.0"
+  }
+}
