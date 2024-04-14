@@ -35,5 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/public/docs/*
+/docs/*
 docuco-db
