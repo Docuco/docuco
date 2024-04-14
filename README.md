@@ -1,5 +1,11 @@
 # Docuco
 
+<img width=100% src="./public/assets/docuco_readme_header.svg">
+
+<br/>
+
+> This project is Work In Progress (WIP) and is not yet ready for production use.
+
 Docuco is a self-hosted document management system that gives you full control over your documents and where they are stored. Whether you prefer to keep your information on your own servers or in the cloud, Docuco provides a seamless solution for organizing and accessing your documents.
 
 ## Features
