@@ -5,5 +5,4 @@ export const API_ROUTES = {
     DOCUMENT_DELETED: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/documents/deleted/${id}`,
     DOCUMENT_RESTORE: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/documents/${id}/restore`,
     ACCOUNT: (email: string) => `${process.env.NEXT_PUBLIC_API_URL}/accounts/${email}`,
-    ACCOUNT_SETTINGS: (email: string) => `${process.env.NEXT_PUBLIC_API_URL}/accounts/${email}/settings`,
 };

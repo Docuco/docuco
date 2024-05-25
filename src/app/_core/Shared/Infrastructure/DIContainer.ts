@@ -1,12 +1,15 @@
-import { DocuFileRepository } from "../../Documents/Domain/Contracts/DocuFileRepository";
-import { ContentFileStore } from "../../Documents/Domain/Contracts/ContentFileStore";
+import { DocuFileRepository } from "../../Documents/Domain/Repositories/DocuFileRepository";
+import { ContentFileStore } from "../../Documents/Domain/Repositories/ContentFileStore";
 import { InMemoryContentFileStore } from "../../Documents/Infrastructure/Stores/InMemoryContentFileStore";
-import { SQLiteDocuFileRepository } from "../../Documents/Infrastructure/Repositories/SQLiteDocuFileRepository";
+import { PostgreSQLDocuFileRepository } from "../../Documents/Infrastructure/Repositories/PostgreSQLDocuFileRepository";
 import { EventBus } from "../Domain/Events/EventBus";
-import { GetInMemoryEventBus } from "../Events/GetInMemoryEventBus";
 import { initMikroORM } from "./Persistence/MikroORM/init";
-import { AccountRepository } from "../../Accounts/Domain/Contracts/AccountRepository";
-import { SQLiteAccountRepository } from "../../Accounts/Infrastructure/Repositories/SQLiteAccountRepository";
+import { AccountRepository } from "../../Accounts/Domain/Repositories/AccountRepository";
+import { PostgreSQLAccountRepository } from "../../Accounts/Infrastructure/Repositories/PostgreSQLAccountRepository";
+import { AuthRepository } from "../../Auth/Domain/Repositories/AuthRepository";
+import { S3ContentFileStore } from "../../Documents/Infrastructure/Stores/S3ContentFileStore";
+import { PostgreSQLAuthRepository } from "../../Auth/Infrastructure/Repositories/PostgreSQLAuthRepository";
+import { GetInMemoryEventBus } from "./Events/GetInMemoryEventBus";
 
 type DependenciesImplementations = {
     [K in keyof Dependencies]: Dependencies[K];
@@ -17,6 +20,7 @@ export interface Dependencies {
     ContentFileStore: ContentFileStore;
     DocuFileRepository: DocuFileRepository;
     AccountRepository: AccountRepository;
+    AuthRepository: AuthRepository;
 }
 
 export class DIContainer {
@@ -47,9 +51,11 @@ export class DIContainer {
         const orm = await initMikroORM();
 
         const dependenciesImplementations: Omit<DependenciesImplementations, 'EventBus'> = {
-            ContentFileStore: new InMemoryContentFileStore(),
-            DocuFileRepository: new SQLiteDocuFileRepository(orm),
-            AccountRepository: new SQLiteAccountRepository(orm),
+            // ContentFileStore: new InMemoryContentFileStore(),
+            ContentFileStore: new S3ContentFileStore(),
+            DocuFileRepository: new PostgreSQLDocuFileRepository(orm),
+            AccountRepository: new PostgreSQLAccountRepository(orm),
+            AuthRepository: new PostgreSQLAuthRepository(orm),
         };
 
         Object.entries(dependenciesImplementations).forEach(([key, value]) => {

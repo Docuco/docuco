@@ -1,5 +1,4 @@
-import { BaseException } from '../../../Shared/Exceptions/BaseException';
-import { Id } from '../../../Shared/VOs/Id';
+import { BaseException } from '../../../Shared/Domain/Exceptions/BaseException';
 import { Email } from '../VOs/Email';
 
 export class AccountNotFound extends BaseException {

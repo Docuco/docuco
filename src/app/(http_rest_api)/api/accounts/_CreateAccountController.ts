@@ -17,6 +17,7 @@ export class CreateAccountController extends BaseController {
 
         this.createAccount = new CreateAccount(
             DIContainer.get('AccountRepository'),
+            DIContainer.get('AuthRepository'),
             DIContainer.get('EventBus')
         )
     }

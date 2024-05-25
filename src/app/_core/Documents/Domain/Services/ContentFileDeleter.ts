@@ -1,4 +1,4 @@
-import { ContentFileStore } from "../Contracts/ContentFileStore"
+import { ContentFileStore } from "../Repositories/ContentFileStore"
 import { EventBus } from "../../../Shared/Domain/Events/EventBus"
 import { DocuFilePrimitive } from "../Primitives/DocuFilePrimitive"
 import { DocuFile } from "../Entities/DocuFile"

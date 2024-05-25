@@ -2,7 +2,6 @@
 
 import { useGetAccount } from "./_hooks/useGetAccount";
 
-import { SaveDataSection } from "./_components/SaveDataSection/SaveDataSection";
 
 export default function Page() {
 
@@ -14,7 +13,7 @@ export default function Page() {
 
   return (
     <>
-      <SaveDataSection account={account}/>
+      Account Page
     </>
   );
 }

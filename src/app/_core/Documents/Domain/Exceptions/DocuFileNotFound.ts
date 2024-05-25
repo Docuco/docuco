@@ -1,5 +1,5 @@
-import { BaseException } from '../../../Shared/Exceptions/BaseException';
-import { Id } from '../../../Shared/VOs/Id';
+import { BaseException } from '../../../Shared/Domain/Exceptions/BaseException';
+import { Id } from '../../../Shared/Domain/VOs/Id';
 
 export class DocuFileNotFound extends BaseException {
 

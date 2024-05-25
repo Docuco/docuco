@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { BaseException } from "../../../_core/Shared/Exceptions/BaseException";
-import { InvalidId } from "../../../_core/Shared/Exceptions/InvalidId";
+import { BaseException } from "../../../_core/Shared/Domain/Exceptions/BaseException";
+import { InvalidId } from "../../../_core/Shared/Domain/Exceptions/InvalidId";
 import { DocuFileNotFound } from "../../../_core/Documents/Domain/Exceptions/DocuFileNotFound";
-import { InvalidDatabase } from "../../../_core/Accounts/Domain/Exceptions/InvalidDatabase";
 
 export function exceptionHandler(
     handler: (
@@ -40,7 +39,6 @@ export function exceptionHandler(
 function mapErrors(error: BaseException): number {
     switch (error.constructor.name) {
         case InvalidId.name:
-        case InvalidDatabase.name:
             return 400;
         case DocuFileNotFound.name:
             return 404;

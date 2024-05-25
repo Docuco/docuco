@@ -2,7 +2,7 @@ import { BigIntType, EntitySchema, types } from "@mikro-orm/core";
 import { DocuFilePrimitive } from "../../../../Domain/Primitives/DocuFilePrimitive";
 
 export const DocuFileSchema = new EntitySchema<DocuFilePrimitive>({
-    name: 'DocuFile',
+    name: 'DocuFiles',
     properties: {
         id: { type: types.string, primary: true },
         name: { type: types.string },

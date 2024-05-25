@@ -1,19 +1,23 @@
-version: "3.7"
+version: '3.7'
 
 services:
   docuco:
     image: node:20
     container_name: docuco
-    working_dir: "/app"
-    network_mode: host
+    working_dir: '/app'
     environment:
       - NODE_ENV=development
+    ports:
+      - 3000:3000
     volumes:
       - .:/app
-    ports:
-      - "3000:3000"
+    networks:
+      - docuco_network
     depends_on:
       - docuco_static_server
+      - docuco_s3_storage
+      - docuco_db
+      - docuco_pgadmin
 
   docuco_static_server:
     image: halverneus/static-file-server:v1.8.10
@@ -21,11 +25,68 @@ services:
     environment:
       CORS: true
       FOLDER: /docuco
-      PORT: "8081"
+      PORT: '8081'
       DEBUG: true
       SHOW_LISTING: true
     ports:
-      - "8081:8081"
-    network_mode: host
+      - 8081:8081
     volumes:
       - ./docs:/docuco/docs
+    networks:
+      - docuco_network
+
+  docuco_s3_storage:
+    image: localstack/localstack:3.4.0
+    container_name: docuco_s3_storage
+    environment:
+      SERVICES: s3
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      MAIN_DOCKER_NETWORK: docuco_network
+    ports:
+      - 4566:4566
+    volumes:
+      - ./docker/localstack/scripts/.init:/etc/localstack/init/ready.d
+      - ./docker/localstack/scripts/.shutdown:/etc/localstack/init/shutdown.d
+      - ./docker/localstack/.localstack:/var/lib/localstack
+    networks:
+      - docuco_network
+
+  docuco_db:
+    image: postgres:16
+    container_name: docuco_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database
+    ports:
+      - 5432:5432
+    volumes:
+      - docuco_db_data:/var/lib/postgresql/data
+    networks:
+      - docuco_network
+
+  docuco_pgadmin:
+    container_name: docuco_pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - 5050:80
+    volumes:
+      - docuco_pgadmin_data:/var/lib/pgadmin
+    networks:
+      - docuco_network
+    depends_on:
+      - docuco_db
+
+volumes:
+  docuco_db_data:
+  docuco_pgadmin_data:
+
+
+networks:
+  docuco_network:
+    name: docuco_network

@@ -1,15 +1,12 @@
+import dotenv from 'dotenv';
 import { Options } from "@mikro-orm/core"
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection"
-import { BetterSqliteDriver } from "@mikro-orm/better-sqlite"
+import { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { SeedManager } from '@mikro-orm/seeder';
 import { Migrator } from '@mikro-orm/migrations';
 import { DocuFileSchema } from "../../../../Documents/Infrastructure/Repositories/MikroORM/schemas/DocuFileSchema";
-import { Migration20240408133636_CreateDocuFileTable } from "../../../../../../database/migrations/Migration20240408133636_CreateDocuFileTable";
 import { AccountSchema } from "../../../../Accounts/Infrastructure/Repositories/MikroORM/schemas/AccountSchema";
-import { SettingsSchema } from "../../../../Accounts/Infrastructure/Repositories/MikroORM/schemas/SettingsSchema";
-import { Migration20240408185924_CreateAccountTable } from "../../../../../../database/migrations/Migration20240408185924_CreateAccountTable";
-
-import dotenv from 'dotenv';
+import { Migration20240524205610_InitSchema } from '../../../../../../database/migrations/Migration20240524205610_InitSchema';
 
 dotenv.config({
     path: process.env.NODE_ENV === 'development' ? '.env.local' : '',
@@ -17,25 +14,24 @@ dotenv.config({
 
 const globalMikroORMConfig: Options = {
     metadataProvider: TsMorphMetadataProvider,
-    dbName: 'docuco-db',
-    driver: BetterSqliteDriver,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    port: +process.env.DB_PORT!,
+    dbName: process.env.DB_NAME,
+    driver: PostgreSqlDriver,
     forceUtcTimezone: true,
     extensions: [SeedManager, Migrator],
     entities: [
         DocuFileSchema,
-        SettingsSchema,
         AccountSchema,
     ],
     migrations: {
         pathTs: './src/database/migrations',
         migrationsList: [
             {
-                name: 'CreateDocuFileTable',
-                class: Migration20240408133636_CreateDocuFileTable
-            },
-            {
-                name: 'CreateAccountTable',
-                class: Migration20240408185924_CreateAccountTable
+                name: 'InitSchema',
+                class: Migration20240524205610_InitSchema
             },
         ],
     },

@@ -4,42 +4,92 @@ import { useGetDocuFiles } from "../../_hooks/useGetDocuFiles";
 import { DocuFile } from "../DocuFile/DocuFile";
 import classes from './ListDocuFiles.module.css';
 import { DocuFileSkeleton } from "../DocuFile/DocuFileSkeleton";
-import { Center, Space, Text } from "@mantine/core";
+import { Center, Drawer, Space, Text } from "@mantine/core";
 import { IconFiles } from "@tabler/icons-react";
+import { DocuFilePrimitive } from "../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
+import { useDisclosure } from "@mantine/hooks";
+import { useState } from "react";
+import { PDFViewer } from "../PDFViewer/PDFViewer";
+import { useScreenSize } from "../../../../_utils/_hooks/useScreenSize";
+import { DocuFileFilters } from "../DocuFileFilters/DocuFileFilters";
+import { useFiltersFromURL } from "../../_hooks/useFiltersFromURL";
 
 export function ListDocuFiles() {
-    const { docuFiles, isLoading } = useGetDocuFiles();
+    const { isDesktop, isTablet, isMobile } = useScreenSize()
+    const [ filters, setFilters ] = useFiltersFromURL();
+    const { docuFiles, isLoading } = useGetDocuFiles(filters);
+    const [ docuFileToPreview, setDocuFileToPreview ] = useState<null | DocuFilePrimitive>(null);
+    const [isPDFViewerOpen, { open: openPDFViewer, close: closePDFViewer }] = useDisclosure(false);
+
+    function previewFile(docuFile: DocuFilePrimitive) {
+        setDocuFileToPreview(docuFile)
+        openPDFViewer()
+    }
+
+    function endPreviewFile() {
+        setDocuFileToPreview(null)
+        closePDFViewer()
+    }
 
     if (isLoading) {
         return (
-            <section className={classes.listContainer}>
-                {[...new Array(10).keys()].map((index) => (
-                    <DocuFileSkeleton key={index} />
-                ))}
-            </section>
+            <div className={classes.viewContainer}>
+                <DocuFileFilters filters={filters} onChange={setFilters} />
+
+                <section className={classes.listContainer}>
+                    {[...new Array(10).keys()].map((index) => (
+                        <DocuFileSkeleton key={index} />
+                    ))}
+                </section>
+            </div>
         )
     }
 
     if (docuFiles.length === 0) {
         return (
-            <section>
-                <Space h="120px" />
-                <Center>
-                    <IconFiles size={50} color="#9A9A9A" stroke={1.5}/>
-                </Center>
-                <Space h="20px" />
-                <Center>
-                    <Text color="#9A9A9A" fw={600} size="1.5rem">No documents found</Text>
-                </Center>
-            </section>
+            <div className={classes.viewContainer}>
+                <DocuFileFilters filters={filters} onChange={setFilters} />
+            
+                <section>
+                    <Space h="120px" />
+                    <Center>
+                        <IconFiles size={50} color="#9A9A9A" stroke={1.5}/>
+                    </Center>
+                    <Space h="20px" />
+                    <Center>
+                        <Text c="#9A9A9A" fw={600} size="1.5rem">No documents found</Text>
+                    </Center>
+                </section>
+            </div>
         )
     }
     
     return (
-        <section className={classes.listContainer}>
-            {docuFiles.map((docuFile) => (
-                <DocuFile key={docuFile.id} docuFile={docuFile} />
-            ))}
-        </section>
+        <div className={classes.viewContainer}>
+            <DocuFileFilters filters={filters} onChange={setFilters} />
+
+            <section className={classes.listContainer}>
+                {docuFiles.map((docuFile) => (
+                    <DocuFile
+                        key={docuFile.id}
+                        docuFile={docuFile}
+                        onPreview={previewFile}
+                    />
+                ))}
+            </section>
+
+            <Drawer
+                offset={8}
+                radius="md"
+                size={isMobile ? 'xs' : isTablet ? 'lg' : 'xl'}
+                padding={0}
+                opened={isPDFViewerOpen}
+                onClose={endPreviewFile}
+                position="right"
+                overlayProps={{ backgroundOpacity: 0.1, blur: 2 }}
+            >
+                {docuFileToPreview  && <PDFViewer id="pdf-viewer-docuFile-list" docuFile={docuFileToPreview}/>}
+            </Drawer>
+        </div>
     );
 }

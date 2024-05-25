@@ -1,4 +1,4 @@
-import { DocuFileRepository } from "../../Domain/Contracts/DocuFileRepository"
+import { DocuFileRepository } from "../../Domain/Repositories/DocuFileRepository"
 import { DocuFile } from "../../Domain/Entities/DocuFile"
 
 export class GetDeletedDocuFiles {

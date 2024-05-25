@@ -1,5 +1,4 @@
 import { Center, Space, Text } from "@mantine/core";
-import { DocuFilesCounter } from "./_components/DocuFilesCounter/DocuFilesCounter";
 
 export default function Page() {
 
@@ -27,10 +26,6 @@ export default function Page() {
           we are glad to have you here, let&apos;s get started!
         </Text>
       </Center>
-
-      <Space h="xl" />
-
-      <DocuFilesCounter />
     </>
   );
 }

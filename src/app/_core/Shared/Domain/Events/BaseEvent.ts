@@ -1,4 +1,4 @@
-import { Id } from "../../VOs/Id";
+import { Id } from "../VOs/Id";
 
 export interface EventPrimitives<AttributesType> {
   eventId: string;

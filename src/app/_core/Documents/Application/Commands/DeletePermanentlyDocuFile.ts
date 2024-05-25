@@ -1,5 +1,5 @@
 import { EventBus } from "../../../Shared/Domain/Events/EventBus";
-import { DocuFileRepository } from "../../Domain/Contracts/DocuFileRepository"
+import { DocuFileRepository } from "../../Domain/Repositories/DocuFileRepository"
 import { DocuFileDeletedPermanently } from "../../Domain/Events/DocuFileDeletedPermanently";
 import { DocuFileFinder } from "../../Domain/Services/DocuFileFinder"
 

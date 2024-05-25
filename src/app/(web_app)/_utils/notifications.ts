@@ -1,5 +1,5 @@
 import { showNotification, updateNotification } from '@mantine/notifications';
-import { Id } from '../../_core/Shared/VOs/Id';
+import { Id } from '../../_core/Shared/Domain/VOs/Id';
 
 export async function generalLoadingNotification({
     titleOnStart,

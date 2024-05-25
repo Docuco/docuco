@@ -1,7 +1,9 @@
+import { DocuMimeTypeType } from "../VOs/DocuMimeType";
+
 export interface DocuFilePrimitive {
     id: string;
     name: string,
-    mimeType: string,
+    mimeType: DocuMimeTypeType,
     sizeInBytes: number,
     extension: string | null,
     url: string;

@@ -1,17 +1,18 @@
-import { Id } from "../../../Shared/VOs/Id";
 import { DocuFilePrimitive } from "../Primitives/DocuFilePrimitive";
 import { ContentFile } from "./ContentFile";
 import { DocuFileCreated } from "../Events/DocuFileCreated";
 import { AggregateRoot } from "../../../Shared/Domain/AggregateRoot";
 import { DocuFileDeleted } from "../Events/DocuFileDeleted";
 import { DocuFileRestored } from "../Events/DocuFileRestored";
+import { DocuMimeType, DocuMimeTypeType } from "../VOs/DocuMimeType";
+import { Id } from "../../../Shared/Domain/VOs/Id";
 
 export class DocuFile extends AggregateRoot {
     
     constructor(
         private _id: Id,
         private _name: string,
-        private _mimeType: string,
+        private _mimeType: DocuMimeType,
         private _sizeInBytes: number,
         private _extension: string | null,
         private _url: string,
@@ -30,7 +31,7 @@ export class DocuFile extends AggregateRoot {
         return this._name;
     }
 
-    get mimeType(): string {
+    get mimeType(): DocuMimeType {
         return this._mimeType;
     }
 
@@ -59,14 +60,14 @@ export class DocuFile extends AggregateRoot {
     }
 
     get fullname(): string {
-        return `${this._name}-${this._id.value}.${this._extension}`;
+        return `${this._name}.${this._extension}`;
     }
-
+    
     static create({ file, url }: { file: ContentFile, url: string}) {
         const primitive: DocuFilePrimitive = {
             id: file.id.value,
             name: file.name,
-            mimeType: file.mimeType,
+            mimeType: file.mimeType as DocuMimeTypeType,
             sizeInBytes: file.sizeInBytes,
             extension: file.extension,
             url,
@@ -115,7 +116,7 @@ export class DocuFile extends AggregateRoot {
         return new DocuFile(
             new Id(primitives.id),
             primitives.name,
-            primitives.mimeType,
+            new DocuMimeType(primitives.mimeType),
             primitives.sizeInBytes,
             primitives.extension,
             primitives.url,
@@ -129,7 +130,7 @@ export class DocuFile extends AggregateRoot {
         return {
             id: this._id.value,
             name: this._name,
-            mimeType: this._mimeType,
+            mimeType: this._mimeType.value,
             sizeInBytes: this._sizeInBytes,
             extension: this._extension,
             url: this._url,

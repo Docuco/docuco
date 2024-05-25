@@ -1,6 +1,6 @@
 import { ContentFile } from "../Entities/ContentFile"
 import { DocuFile } from "../Entities/DocuFile"
-import { DocuFileRepository } from "../Contracts/DocuFileRepository"
+import { DocuFileRepository } from "../Repositories/DocuFileRepository"
 import { ContentFilePrimitive } from "../Primitives/ContentFilePrimitive"
 import { EventBus } from "../../../Shared/Domain/Events/EventBus"
 

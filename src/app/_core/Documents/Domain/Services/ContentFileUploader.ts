@@ -1,6 +1,6 @@
 import { ContentFile } from "../Entities/ContentFile"
 import { ContentFileUploaded } from "../Events/ContentFileUploaded"
-import { ContentFileStore } from "../Contracts/ContentFileStore"
+import { ContentFileStore } from "../Repositories/ContentFileStore"
 import { EventBus } from "../../../Shared/Domain/Events/EventBus"
 
 export class ContentFileUploader {

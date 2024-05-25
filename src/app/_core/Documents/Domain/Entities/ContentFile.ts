@@ -1,5 +1,5 @@
 import { AggregateRoot } from "../../../Shared/Domain/AggregateRoot";
-import { Id } from "../../../Shared/VOs/Id";
+import { Id } from "../../../Shared/Domain/VOs/Id";
 import { ContentFilePrimitive } from "../Primitives/ContentFilePrimitive";
 
 export class ContentFile extends AggregateRoot {
@@ -13,10 +13,6 @@ export class ContentFile extends AggregateRoot {
         private _content: Blob,
     ) {
         super();
-    }
-
-    get fullname(): string {
-        return `${this._name}-${this._id.value}.${this._extension}`;
     }
 
     get id(): Id {
@@ -43,6 +39,10 @@ export class ContentFile extends AggregateRoot {
         return this._content;
     }
 
+    get fullname(): string {
+        return `${this._name}.${this._extension}`;
+    }
+    
     static create(file: File) {
         const id = Id.generate();
         const fileParts = file.name.split('.');

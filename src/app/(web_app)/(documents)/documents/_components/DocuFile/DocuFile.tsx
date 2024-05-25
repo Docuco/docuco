@@ -1,25 +1,21 @@
-'use client'
-
 import { ActionIcon, Card, CardSection, Center, Group, Menu, MenuDropdown, MenuItem, MenuTarget, Text, rem } from "@mantine/core";
 import { DocuFilePrimitive } from "../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import classes from './DocuFile.module.css'
 import { MIME_TYPES } from "@mantine/dropzone";
-import { IconDots, IconDownload, IconEye, IconFileTypeCsv, IconFileTypeDoc, IconFileTypeDocx, IconFileTypePdf, IconFileTypeXls, IconTrash } from "@tabler/icons-react";
+import { IconDots, IconEye, IconFileTypeCsv, IconFileTypeDoc, IconFileTypeDocx, IconFileTypePdf, IconFileTypeXls, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { DeleteDocuFileModal } from "./DeleteDocuFileModal";
 
 export function DocuFile({
-    docuFile
+    docuFile,
+    onPreview,
 }: {
     docuFile: DocuFilePrimitive
+    onPreview: (docuFile: DocuFilePrimitive) => void
 }) {
     const [isOpenedDeleteModal, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
 
     const fileTypeIcon = getFileTypeIcon(docuFile.mimeType);
-
-    function seeDocument() {
-        window.open(docuFile.url, '_blank');
-    }
 
     return (
         <>
@@ -29,7 +25,7 @@ export function DocuFile({
                 radius="md"
                 withBorder
                 className={classes.card}
-                onDoubleClick={seeDocument}
+                onDoubleClick={() => onPreview(docuFile)}
             >
                 <CardSection inheritPadding py="xs">
                     <Group justify="flex-end">
@@ -43,9 +39,10 @@ export function DocuFile({
                             <MenuDropdown>
                                 <MenuItem
                                     leftSection={<IconEye style={{ width: rem(14), height: rem(14) }} />}
-                                    component="a"
-                                    target="_blank"
-                                    href={docuFile.url}
+                                    // component="a"
+                                    // target="_blank"
+                                    // href={docuFile.url}
+                                    onClick={() => onPreview(docuFile)}
                                 >
                                     Preview
                                 </MenuItem>

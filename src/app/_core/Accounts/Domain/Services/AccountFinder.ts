@@ -1,4 +1,4 @@
-import { AccountRepository } from "../Contracts/AccountRepository";
+import { AccountRepository } from "../Repositories/AccountRepository";
 import { Account } from "../Entities/Account";
 import { AccountNotFound } from "../Exceptions/AccountNotFound";
 import { Email } from "../VOs/Email";

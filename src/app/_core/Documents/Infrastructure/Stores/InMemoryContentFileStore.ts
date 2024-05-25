@@ -1,5 +1,5 @@
 import { ContentFile } from "../../Domain/Entities/ContentFile";
-import { ContentFileStore } from "../../Domain/Contracts/ContentFileStore";
+import { ContentFileStore } from "../../Domain/Repositories/ContentFileStore";
 import { join } from "path";
 import { unlink, writeFile } from "fs/promises";
 import { DocuFile } from "../../Domain/Entities/DocuFile";

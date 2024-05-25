@@ -1,5 +1,5 @@
-import { DocuFileRepository } from "../Contracts/DocuFileRepository"
-import { Id } from "../../../Shared/VOs/Id"
+import { DocuFileRepository } from "../Repositories/DocuFileRepository"
+import { Id } from "../../../Shared/Domain/VOs/Id"
 import { DocuFile } from "../Entities/DocuFile";
 import { DocuFileNotFound } from "../Exceptions/DocuFileNotFound";
 

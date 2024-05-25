@@ -1,9 +1,6 @@
-import { SettingsPrimitive } from "./SettingsPrimitive";
-
 export interface AccountPrimitive {
+    id: string;
     email: string;
-    password: string,
-    settings: SettingsPrimitive,
     createdAt: number;
     updatedAt: number;
 }

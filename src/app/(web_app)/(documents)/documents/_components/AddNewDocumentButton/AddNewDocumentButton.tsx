@@ -35,7 +35,7 @@ export function AddNewDocumentButton() {
 
     async function uploadFiles(documents: FileWithPath[]) {
         setIsUploadingFiles(true);
-        
+
         const data = new FormData();
         for (const document of documents) {
             data.append(`documents[]`, document, document.name);
