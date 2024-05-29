@@ -14,7 +14,7 @@ export class UserFinder {
         const user = await this.userRepository.find(email)
 
         if (!user) {
-            throw new UserNotFound(email);
+            throw new UserNotFound(emailPrimitive);
         }
 
         return user

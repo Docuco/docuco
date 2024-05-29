@@ -10,8 +10,8 @@ export class StartSharingDocuFile {
         private eventBus: EventBus,
     ) {}
 
-    public async run(idPrimitive: string): Promise<void> {
-        const docuFile = await this.docuFileFinder.run(idPrimitive)
+    public async run({ id }: { id: string }): Promise<void> {
+        const docuFile = await this.docuFileFinder.run(id)
         
         docuFile.startSharing()
         await this.docuFileRepository.save(docuFile)

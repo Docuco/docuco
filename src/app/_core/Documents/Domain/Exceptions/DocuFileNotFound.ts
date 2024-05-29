@@ -3,9 +3,9 @@ import { Id } from '../../../Shared/Domain/VOs/Id';
 
 export class DocuFileNotFound extends BaseException {
 
-    constructor(id: Id) {
+    constructor(id: string) {
         super(
-            `Docufile with id "${id.value}" not found.`,
+            `Docufile with id "${id}" not found.`,
             {
                 id,
             },

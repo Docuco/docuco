@@ -30,7 +30,7 @@ export class StartSharingDocuFileController extends BaseController {
     ): Promise<NextResponse> {
         const { id } = await this.getParams(req, pathParams);
 
-        await this.startSharingDocuFile.run(id)
+        await this.startSharingDocuFile.run({ id })
 
         return NextResponse.json({}, { status: 200 });
     }

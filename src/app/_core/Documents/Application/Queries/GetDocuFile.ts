@@ -7,7 +7,7 @@ export class GetDocuFile {
         private docuFileFinder: DocuFileFinder,
     ) {}
 
-    public async run({id}: {id: string}): Promise<DocuFile> {
+    public async run({ id }: { id: string }): Promise<DocuFile> {
         return this.docuFileFinder.run(id)
     }
 }

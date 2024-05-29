@@ -13,7 +13,7 @@ export class CreateUser {
         private eventBus: EventBus,
     ) {}
 
-    public async run({email, password}: {email: string, password: string}): Promise<void> {
+    public async run({ email, password }: { email: string, password: string }): Promise<void> {
         const existingUser = await this.userRepository.find(new Email(email))
 
         if (existingUser) {

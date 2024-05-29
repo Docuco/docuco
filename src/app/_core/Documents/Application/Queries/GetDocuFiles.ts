@@ -10,7 +10,7 @@ export class GetDocuFiles {
         private docuFileRepository: DocuFileRepository,
     ) {}
 
-    public async run({filters}: {filters?: DocuFileFiltersPrimitives}): Promise<DocuFile[]> {
+    public async run({ filters }: { filters?: DocuFileFiltersPrimitives }): Promise<DocuFile[]> {
         return this.docuFileRepository.getAll({
             filters: filters ? Option.some(DocuFileFilters.fromPrimitives(filters)) : Option.none()
         })

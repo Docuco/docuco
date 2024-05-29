@@ -3,9 +3,9 @@ import { Email } from '../VOs/Email';
 
 export class UserNotFound extends BaseException {
 
-    constructor(email: Email) {
+    constructor(email: string) {
         super(
-            `User with email "${email.value}" not found.`,
+            `User with email "${email}" not found.`,
             {
                 email,
             },

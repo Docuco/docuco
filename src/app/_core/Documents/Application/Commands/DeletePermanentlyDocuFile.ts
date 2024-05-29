@@ -11,8 +11,8 @@ export class DeletePermanentlyDocuFile {
         private eventBus: EventBus,
     ) {}
 
-    public async run(idPrimitive: string): Promise<void> {
-        const docuFile = await this.docuFileFinder.run(idPrimitive)
+    public async run({ id }: { id: string }): Promise<void> {
+        const docuFile = await this.docuFileFinder.run(id)
         await this.docuFileRepository.delete(docuFile)
 
         this.eventBus.publish([

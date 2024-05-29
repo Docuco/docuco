@@ -30,7 +30,7 @@ export class StopSharingDocuFileController extends BaseController {
     ): Promise<NextResponse> {
         const { id } = await this.getParams(req, pathParams);
 
-        await this.stopSharingDocuFile.run(id)
+        await this.stopSharingDocuFile.run({ id })
 
         return NextResponse.json({}, { status: 200 });
     }
