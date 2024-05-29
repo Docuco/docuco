@@ -1,9 +1,9 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { DIContainer } from '../../app/_core/Shared/Infrastructure/DIContainer';
-import { CreateAccount } from '../../app/_core/Accounts/Application/Commands/CreateAccount';
+import { CreateUser } from '../../app/_core/Users/Application/Commands/CreateUser';
 
-export class CreateMasterAccountSeeder extends Seeder {
+export class CreateMasterUserSeeder extends Seeder {
 
   async run(em: EntityManager): Promise<void> {
     const email = process.env.MASTER_USER_EMAIL!;
@@ -11,13 +11,13 @@ export class CreateMasterAccountSeeder extends Seeder {
 
     await DIContainer.setup()
     
-    const createAccount = new CreateAccount(
-      DIContainer.get('AccountRepository'),
+    const createUser = new CreateUser(
+      DIContainer.get('UserRepository'),
       DIContainer.get('AuthRepository'),
       DIContainer.get('EventBus')
     )
     
-    await createAccount.run({ email, password })
+    await createUser.run({ email, password })
   }
 
 }

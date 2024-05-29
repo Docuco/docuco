@@ -19,8 +19,8 @@ export class PostgreSQLAuthRepository implements AuthRepository {
         this.repository.upsert(auth.toPrimitives());
     }
 
-    async findByAccountId(accountId: Id): Promise<Auth | null> {
-        const result = await this.repository.findOne({ accountId: accountId.value });
+    async findByUserId(userId: Id): Promise<Auth | null> {
+        const result = await this.repository.findOne({ userId: userId.value });
         if (!result) {
             return null;
         }

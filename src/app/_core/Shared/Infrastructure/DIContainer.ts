@@ -4,8 +4,8 @@ import { InMemoryContentFileStore } from "../../Documents/Infrastructure/Stores/
 import { PostgreSQLDocuFileRepository } from "../../Documents/Infrastructure/Repositories/PostgreSQLDocuFileRepository";
 import { EventBus } from "../Domain/Events/EventBus";
 import { initMikroORM } from "./Persistence/MikroORM/init";
-import { AccountRepository } from "../../Accounts/Domain/Repositories/AccountRepository";
-import { PostgreSQLAccountRepository } from "../../Accounts/Infrastructure/Repositories/PostgreSQLAccountRepository";
+import { UserRepository } from "../../Users/Domain/Repositories/UserRepository";
+import { PostgreSQLUserRepository } from "../../Users/Infrastructure/Repositories/PostgreSQLUserRepository";
 import { AuthRepository } from "../../Auth/Domain/Repositories/AuthRepository";
 import { S3ContentFileStore } from "../../Documents/Infrastructure/Stores/S3ContentFileStore";
 import { PostgreSQLAuthRepository } from "../../Auth/Infrastructure/Repositories/PostgreSQLAuthRepository";
@@ -19,7 +19,7 @@ export interface Dependencies {
     EventBus: EventBus;
     ContentFileStore: ContentFileStore;
     DocuFileRepository: DocuFileRepository;
-    AccountRepository: AccountRepository;
+    UserRepository: UserRepository;
     AuthRepository: AuthRepository;
 }
 
@@ -54,7 +54,7 @@ export class DIContainer {
             // ContentFileStore: new InMemoryContentFileStore(),
             ContentFileStore: new S3ContentFileStore(),
             DocuFileRepository: new PostgreSQLDocuFileRepository(orm),
-            AccountRepository: new PostgreSQLAccountRepository(orm),
+            UserRepository: new PostgreSQLUserRepository(orm),
             AuthRepository: new PostgreSQLAuthRepository(orm),
         };
 

@@ -1,10 +1,10 @@
 import { AggregateRoot } from "../../../Shared/Domain/AggregateRoot";
 import { Id } from "../../../Shared/Domain/VOs/Id";
-import { AccountCreated } from "../Events/AccountCreated";
-import { AccountPrimitive } from "../Primitives/AccountPrimitive";
+import { UserCreated } from "../Events/UserCreated";
+import { UserPrimitive } from "../Primitives/UserPrimitive";
 import { Email } from "../VOs/Email";
 
-export class Account extends AggregateRoot {
+export class User extends AggregateRoot {
 
     constructor(
         private _id: Id,
@@ -20,25 +20,25 @@ export class Account extends AggregateRoot {
     }
 
     static create({ email }: { email: string }) {
-        const primitive: AccountPrimitive = {
+        const primitive: UserPrimitive = {
             id: Id.generate().value,
             email: email,
             createdAt: Date.now(),
             updatedAt: Date.now(),
         };
 
-        const account = Account.fromPrimitives(primitive);
+        const user = User.fromPrimitives(primitive);
 
-        account.record(new AccountCreated({
-            entityId: account._email.value,
-            attributes: account.toPrimitives(),
+        user.record(new UserCreated({
+            entityId: user._email.value,
+            attributes: user.toPrimitives(),
         }));
 
-        return account;
+        return user;
     }
 
-    static fromPrimitives(primitives: AccountPrimitive) {
-        return new Account(
+    static fromPrimitives(primitives: UserPrimitive) {
+        return new User(
             new Id(primitives.id),
             new Email(primitives.email),
             new Date(primitives.createdAt),
@@ -46,7 +46,7 @@ export class Account extends AggregateRoot {
         );
     }
 
-    toPrimitives(): AccountPrimitive {
+    toPrimitives(): UserPrimitive {
         return {
             id: this._id.value,
             email: this._email.value,

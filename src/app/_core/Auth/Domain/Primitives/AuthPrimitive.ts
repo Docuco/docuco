@@ -1,6 +1,6 @@
 export interface AuthPrimitive {
     id: string;
-    accountId: string;
+    userId: string;
     password: string,
     createdAt: number;
     updatedAt: number;

@@ -1,8 +1,8 @@
 import { BigIntType, EntitySchema, types } from "@mikro-orm/core";
-import { AccountPrimitive } from "../../../../Domain/Primitives/AccountPrimitive";
+import { UserPrimitive } from "../../../../Domain/Primitives/UserPrimitive";
 
-export const AccountSchema = new EntitySchema<AccountPrimitive>({
-    name: 'Accounts',
+export const UserSchema = new EntitySchema<UserPrimitive>({
+    name: 'Users',
     properties: {
         id: { type: types.string, primary: true },
         email: { type: types.string },

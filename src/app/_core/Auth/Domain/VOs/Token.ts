@@ -5,14 +5,14 @@ import { InvalidToken } from '../Exceptions/InvalidToken';
 
 export class TokenPayload {
 
-    private accountId: Id;
+    private userId: Id;
 
-    constructor(accountId: Id) {
-        this.accountId = accountId;
+    constructor(userId: Id) {
+        this.userId = userId;
     }
 
-    public getAccountId(): Id {
-        return this.accountId;
+    public getUserId(): Id {
+        return this.userId;
     }
 }
 
@@ -32,7 +32,7 @@ export class Token {
         const token = jwt.sign(
             {
                 authId: auth.id.value,
-                accountId: auth.accountId.value,
+                userId: auth.userId.value,
             },
             secretKey,
             {
@@ -83,8 +83,8 @@ export class Token {
         }
     }
 
-    public getAccountId(): Id {
-        return this.tokenPayload.getAccountId();
+    public getUserId(): Id {
+        return this.tokenPayload.getUserId();
     }
 
 }

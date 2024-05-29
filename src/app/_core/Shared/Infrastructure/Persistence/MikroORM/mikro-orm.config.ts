@@ -5,9 +5,8 @@ import { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { SeedManager } from '@mikro-orm/seeder';
 import { Migrator } from '@mikro-orm/migrations';
 import { DocuFileSchema } from "../../../../Documents/Infrastructure/Repositories/MikroORM/schemas/DocuFileSchema";
-import { AccountSchema } from "../../../../Accounts/Infrastructure/Repositories/MikroORM/schemas/AccountSchema";
-import { Migration20240524205610_InitSchema } from '../../../../../../database/migrations/Migration20240524205610_InitSchema';
-import { Migration20240527181929_AddSharedToken } from '../../../../../../database/migrations/Migration20240527181929_AddSharedToken';
+import { UserSchema } from "../../../../Users/Infrastructure/Repositories/MikroORM/schemas/UserSchema";
+import { Migration20240529140100_InitialSchema } from '../../../../../../database/migrations/Migration20240529140100_InitialSchema';
 
 dotenv.config({
     path: process.env.NODE_ENV === 'development' ? '.env.local' : '',
@@ -25,24 +24,20 @@ const globalMikroORMConfig: Options = {
     extensions: [SeedManager, Migrator],
     entities: [
         DocuFileSchema,
-        AccountSchema,
+        UserSchema,
     ],
     migrations: {
         pathTs: './src/database/migrations',
         migrationsList: [
             {
-                name: 'InitSchema',
-                class: Migration20240524205610_InitSchema
+                name: 'InitialSchema',
+                class: Migration20240529140100_InitialSchema
             },
-            {
-                name: 'AddSharedToken',
-                class: Migration20240527181929_AddSharedToken
-            }
         ],
     },
     seeder: {
         pathTs: './src/database/seeds',
-        defaultSeeder: 'CreateMasterAccountSeeder',
+        defaultSeeder: 'CreateMasterUserSeeder',
     }
 }
 

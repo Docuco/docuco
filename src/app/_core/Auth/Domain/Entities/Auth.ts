@@ -9,7 +9,7 @@ export class Auth extends AggregateRoot {
 
     constructor(
         private _id: Id,
-        private _accountId: Id,
+        private _userId: Id,
         private _password: Password,
         private _createdAt: Date,
         private _updatedAt: Date
@@ -21,8 +21,8 @@ export class Auth extends AggregateRoot {
         return this._id
     }
 
-    get accountId(): Id {
-        return this._accountId
+    get userId(): Id {
+        return this._userId
     }
 
     get accessToken(): string {
@@ -37,10 +37,10 @@ export class Auth extends AggregateRoot {
         return this._password.match(password);
     }
 
-    public static create({ accountId, password }: { accountId: Id, password: string }) {
+    public static create({ userId, password }: { userId: Id, password: string }) {
         const primitive: AuthPrimitive = {
             id: Id.generate().value,
-            accountId: accountId.value,
+            userId: userId.value,
             password: Password.fromRaw(password).hash,
             createdAt: Date.now(),
             updatedAt: Date.now(),
@@ -59,7 +59,7 @@ export class Auth extends AggregateRoot {
     public static fromPrimitives(primitives: AuthPrimitive) {
         return new Auth(
             new Id(primitives.id),
-            new Id(primitives.accountId),
+            new Id(primitives.userId),
             Password.fromHash(primitives.password),
             new Date(primitives.createdAt),
             new Date(primitives.updatedAt),
@@ -69,7 +69,7 @@ export class Auth extends AggregateRoot {
     public toPrimitives(): AuthPrimitive {
         return {
             id: this._id.value,
-            accountId: this._accountId.value,
+            userId: this._userId.value,
             password: this._password.hash,
             createdAt: this._createdAt.getTime(),
             updatedAt: this._updatedAt.getTime(),

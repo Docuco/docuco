@@ -1,4 +1,4 @@
-export interface AccountPrimitive {
+export interface UserPrimitive {
     id: string;
     email: string;
     createdAt: number;

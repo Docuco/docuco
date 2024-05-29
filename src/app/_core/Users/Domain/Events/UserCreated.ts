@@ -1,22 +1,22 @@
 import { CreateDomainEventParams, DomainEvent } from '../../../Shared/Domain/Events/DomainEvent';
-import { AccountPrimitive } from '../Primitives/AccountPrimitive';
+import { UserPrimitive } from '../Primitives/UserPrimitive';
 
-type Attributes = AccountPrimitive
+type Attributes = UserPrimitive
 
 type Params = CreateDomainEventParams & {
     attributes: Attributes;
 };
 
-export class AccountCreated extends DomainEvent {
+export class UserCreated extends DomainEvent {
 
-    static readonly EVENT_NAME = 'docuco.accounts.account.created';
+    static readonly EVENT_NAME = 'docuco.users.user.created';
 
     readonly attributes: Attributes;
 
     constructor(params: Params) {
         const { entityId, eventId, occurredOn, attributes } = params;
 
-        super({ eventName: AccountCreated.EVENT_NAME, entityId, eventId, occurredOn });
+        super({ eventName: UserCreated.EVENT_NAME, entityId, eventId, occurredOn });
         this.attributes = attributes;
     }
 

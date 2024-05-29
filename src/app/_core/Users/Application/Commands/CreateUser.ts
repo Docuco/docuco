@@ -1,34 +1,34 @@
 import { Auth } from "../../../Auth/Domain/Entities/Auth"
 import { EventBus } from "../../../Shared/Domain/Events/EventBus"
-import { AccountRepository } from "../../Domain/Repositories/AccountRepository"
-import { Account } from "../../Domain/Entities/Account"
+import { UserRepository } from "../../Domain/Repositories/UserRepository"
+import { User } from "../../Domain/Entities/User"
 import { Email } from "../../Domain/VOs/Email"
 import { AuthRepository } from "../../../Auth/Domain/Repositories/AuthRepository"
 
-export class CreateAccount {
+export class CreateUser {
 
     constructor(
-        private accountRepository: AccountRepository,
+        private userRepository: UserRepository,
         private authRepository: AuthRepository,
         private eventBus: EventBus,
     ) {}
 
     public async run({email, password}: {email: string, password: string}): Promise<void> {
-        const existingAccount = await this.accountRepository.find(new Email(email))
+        const existingUser = await this.userRepository.find(new Email(email))
 
-        if (existingAccount) {
+        if (existingUser) {
             return
         }
 
-        const account = Account.create({ email })
-        const auth = Auth.create({ accountId: account.id, password })
+        const user = User.create({ email })
+        const auth = Auth.create({ userId: user.id, password })
 
         await Promise.all([
-            this.accountRepository.save(account),
+            this.userRepository.save(user),
             this.authRepository.save(auth)
         ])
 
-        this.eventBus.publish(account.pullDomainEvents());
+        this.eventBus.publish(user.pullDomainEvents());
         this.eventBus.publish(auth.pullDomainEvents());
     }
 }
