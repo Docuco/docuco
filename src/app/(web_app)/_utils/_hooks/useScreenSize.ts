@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
 export function useScreenSize() {
-    let [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-    let [isTablet, setIsTablet] = useState(window.innerWidth >= 768 && window.innerWidth < 1024);
-    let [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+    let [isMobile, setIsMobile] = useState(false);
+    let [isTablet, setIsTablet] = useState(false);
+    let [isDesktop, setIsDesktop] = useState(true);
 
     useEffect(() => {
         function handleResize() {

@@ -5,6 +5,7 @@ import { DocuFilePrimitive } from "../../Domain/Primitives/DocuFilePrimitive";
 import { Id } from "../../../Shared/Domain/VOs/Id";
 import { DocuFileFilters } from "../../Domain/VOs/DocuFileFilters";
 import { Option } from "../../../Shared/Domain/VOs/Option";
+import { SharedToken } from "../../Domain/VOs/ShareToken";
 
 export class PostgreSQLDocuFileRepository implements DocuFileRepository {
 
@@ -51,6 +52,18 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
 
     async delete(docuFile: DocuFile): Promise<void> {
         await this.repository.nativeDelete({id: docuFile.id.value});
+    }
+
+    async findBySharedToken(sharedToken: SharedToken): Promise<DocuFile | null> {
+        const result = await this.repository.findOne({
+            sharedToken: sharedToken.value,
+        });
+
+        if (!result) {
+            return null;
+        }
+
+        return DocuFile.fromPrimitives(result);
     }
 
     private mapFilterToMikroORM(filters: Option<DocuFileFilters>): FilterQuery<DocuFilePrimitive> {

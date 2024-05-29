@@ -7,6 +7,7 @@ import { Migrator } from '@mikro-orm/migrations';
 import { DocuFileSchema } from "../../../../Documents/Infrastructure/Repositories/MikroORM/schemas/DocuFileSchema";
 import { AccountSchema } from "../../../../Accounts/Infrastructure/Repositories/MikroORM/schemas/AccountSchema";
 import { Migration20240524205610_InitSchema } from '../../../../../../database/migrations/Migration20240524205610_InitSchema';
+import { Migration20240527181929_AddSharedToken } from '../../../../../../database/migrations/Migration20240527181929_AddSharedToken';
 
 dotenv.config({
     path: process.env.NODE_ENV === 'development' ? '.env.local' : '',
@@ -33,6 +34,10 @@ const globalMikroORMConfig: Options = {
                 name: 'InitSchema',
                 class: Migration20240524205610_InitSchema
             },
+            {
+                name: 'AddSharedToken',
+                class: Migration20240527181929_AddSharedToken
+            }
         ],
     },
     seeder: {

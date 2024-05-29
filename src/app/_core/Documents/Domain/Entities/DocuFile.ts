@@ -6,6 +6,10 @@ import { DocuFileDeleted } from "../Events/DocuFileDeleted";
 import { DocuFileRestored } from "../Events/DocuFileRestored";
 import { DocuMimeType, DocuMimeTypeType } from "../VOs/DocuMimeType";
 import { Id } from "../../../Shared/Domain/VOs/Id";
+import { Option } from "../../../Shared/Domain/VOs/Option";
+import { SharedToken } from "../VOs/ShareToken";
+import { DocuFileHasStoppedBeingShared } from "../Events/DocuFileHasStoppedBeingShared";
+import { DocuFileHasStartedToBeShared } from "../Events/DocuFileHasStartedToBeShared";
 
 export class DocuFile extends AggregateRoot {
     
@@ -17,6 +21,7 @@ export class DocuFile extends AggregateRoot {
         private _extension: string | null,
         private _url: string,
         private _isDeleted: boolean,
+        private _sharedToken: Option<SharedToken>,
         private _createdAt: Date,
         private _updatedAt: Date
     ) {
@@ -58,10 +63,6 @@ export class DocuFile extends AggregateRoot {
     get updatedAt(): Date {
         return this._updatedAt;
     }
-
-    get fullname(): string {
-        return `${this._name}.${this._extension}`;
-    }
     
     static create({ file, url }: { file: ContentFile, url: string}) {
         const primitive: DocuFilePrimitive = {
@@ -72,6 +73,7 @@ export class DocuFile extends AggregateRoot {
             extension: file.extension,
             url,
             isDeleted: false,
+            sharedToken: null,
             createdAt: Date.now(),
             updatedAt: Date.now(),
         };
@@ -97,6 +99,8 @@ export class DocuFile extends AggregateRoot {
             entityId: this.id.value,
             attributes: this.toPrimitives(),
         }));
+
+        this.stopSharing();
     }
 
     restore(): void {
@@ -112,6 +116,32 @@ export class DocuFile extends AggregateRoot {
         }));
     }
 
+    startSharing(): void {
+        if (this._sharedToken.isSome()) {
+            return;
+        }
+
+        this._sharedToken = Option.some(SharedToken.generate());
+
+        this.record(new DocuFileHasStartedToBeShared({
+            entityId: this.id.value,
+            attributes: this.toPrimitives(),
+        }));
+    }
+
+    stopSharing(): void {
+        if (this._sharedToken.isNone()) {
+            return;
+        }
+
+        this._sharedToken = Option.none();
+
+        this.record(new DocuFileHasStoppedBeingShared({
+            entityId: this.id.value,
+            attributes: this.toPrimitives(),
+        }));
+    }
+
     static fromPrimitives(primitives: DocuFilePrimitive) {
         return new DocuFile(
             new Id(primitives.id),
@@ -121,6 +151,7 @@ export class DocuFile extends AggregateRoot {
             primitives.extension,
             primitives.url,
             primitives.isDeleted,
+            primitives.sharedToken ? Option.some(new SharedToken(primitives.sharedToken)) : Option.none(),
             new Date(primitives.createdAt),
             new Date(primitives.updatedAt),
         );
@@ -135,6 +166,7 @@ export class DocuFile extends AggregateRoot {
             extension: this._extension,
             url: this._url,
             isDeleted: this._isDeleted,
+            sharedToken: this._sharedToken.map((token) => token.value).getOrNull(),
             createdAt: this._createdAt.getTime(),
             updatedAt: this._updatedAt.getTime(),
         };

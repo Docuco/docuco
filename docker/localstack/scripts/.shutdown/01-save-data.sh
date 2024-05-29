@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 echo "Saving to pod"
-FILE=docker/s3/data
+FILE=docker/localstack/data
 localstack pod save file://${FILE}

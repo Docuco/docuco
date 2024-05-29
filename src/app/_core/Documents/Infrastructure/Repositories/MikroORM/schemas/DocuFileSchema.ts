@@ -11,6 +11,7 @@ export const DocuFileSchema = new EntitySchema<DocuFilePrimitive>({
         extension: { type: types.string, nullable: true },
         url: { type: types.string },
         isDeleted: { type: types.boolean, default: false },
+        sharedToken: { type: types.string, nullable: true },
         createdAt: { type: new BigIntType('number') },
         updatedAt: { type: new BigIntType('number') },
     },

@@ -24,7 +24,6 @@ export function DeletedDocuFile({
         await customFetch(`${API_ROUTES.DOCUMENT_RESTORE(docuFile.id)}`, {
             method: 'POST',
         })
-        await mutate(API_ROUTES.DOCUMENTS_DELETED);
         await mutate(API_ROUTES.DOCUMENTS);
     }
 

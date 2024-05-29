@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // reactStrictMode: false, // This is done to avoid useEffect running twice
     experimental: {
         optimizePackageImports: [
             '@mantine/carousel',

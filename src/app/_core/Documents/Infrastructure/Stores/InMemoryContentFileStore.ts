@@ -7,7 +7,7 @@ import { DocuFile } from "../../Domain/Entities/DocuFile";
 export class InMemoryContentFileStore implements ContentFileStore {
    
     async upload(contentFile: ContentFile): Promise<{ file: ContentFile, url: string }> {
-        const path = join('docs', `${contentFile.fullname}`);
+        const path = join('docs', `${contentFile.id.value}.${contentFile.extension}`);
 
         const pathToUpload = join(process.cwd(), path);
         const bytes = await contentFile.content.arrayBuffer();
@@ -21,7 +21,7 @@ export class InMemoryContentFileStore implements ContentFileStore {
     }
 
     async delete(docuFile: DocuFile): Promise<void> {
-        const path = join('docs', `${docuFile.fullname}`);
+        const path = join('docs', `${docuFile.id.value}.${docuFile.extension}`);
 
         const pathToDelete = join(process.cwd(), path);
         await unlink(pathToDelete);

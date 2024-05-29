@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Restoring from pod"
-FILE=docker/s3/data
+FILE=docker/localstack/data
 if test -f "$FILE"; then
   localstack pod load file://${FILE}
 else

@@ -23,14 +23,13 @@ export function DeleteDocuFileModal({
             method: 'DELETE',
         })
         await mutate(API_ROUTES.DOCUMENTS);
-        await mutate(API_ROUTES.DOCUMENTS_DELETED);
         
         setIsDeletingDocuFile(false);
         onClose();
     }
 
     return (
-        <Modal opened={opened} onClose={close} title="Delete document" centered overlayProps={{
+        <Modal opened={opened} onClose={onClose} title="Delete document" centered overlayProps={{
             backgroundOpacity: 0.55,
             blur: 3,
         }}>

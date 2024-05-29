@@ -1,26 +1,27 @@
 import { NextRequest, NextResponse } from "next/server"
 import { BaseController } from "../../_shared/BaseController";
 import { DIContainer } from "../../../../_core/Shared/Infrastructure/DIContainer";
-import { DeleteDocuFile } from "../../../../_core/Documents/Application/Commands/DeleteDocuFile";
 import { DocuFileFinder } from "../../../../_core/Documents/Domain/Services/DocuFileFinder";
 import { z } from "zod";
+import { GetDocuFile } from "../../../../_core/Documents/Application/Queries/GetDocuFile";
+import { DocuFile } from "../../../../_core/Documents/Domain/Entities/DocuFile";
+import { DocuFilePrimitive } from "../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 
 const schema = z.object({
     id: z.string()
 })
 
-export class DeleteDocuFileController extends BaseController {
-    private deleteDocuFile: DeleteDocuFile
+export class GetDocuFileController extends BaseController {
+    private getDocuFile: GetDocuFile
 
     constructor() {
         super();
         const docuFileRepository = DIContainer.get('DocuFileRepository')
-        const eventBus = DIContainer.get('EventBus')
 
-        this.deleteDocuFile = new DeleteDocuFile(
-            new DocuFileFinder(docuFileRepository),
-            docuFileRepository,
-            eventBus
+        const docuFileFinder = new DocuFileFinder(docuFileRepository)
+
+        this.getDocuFile = new GetDocuFile(
+            docuFileFinder
         )
     }
 
@@ -30,9 +31,14 @@ export class DeleteDocuFileController extends BaseController {
     ): Promise<NextResponse> {
         const { id } = await this.getParams(req, pathParams);
 
-        await this.deleteDocuFile.run({id})
+        const docuFile = await this.getDocuFile.run({id})
 
-        return NextResponse.json({}, { status: 200 });
+        const fileResponse = this.mapResponse(docuFile)
+        return NextResponse.json(fileResponse, { status: 200 });
+    }
+
+    private mapResponse(docuFile: DocuFile): DocuFilePrimitive {
+        return docuFile.toPrimitives()
     }
 
     private async getParams(req: NextRequest, pathParams: Record<string, string>) {

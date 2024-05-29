@@ -27,6 +27,7 @@ export function ListDocuFiles() {
     }
 
     function endPreviewFile() {
+        console.log('endPreviewFile')
         setDocuFileToPreview(null)
         closePDFViewer()
     }
@@ -78,18 +79,27 @@ export function ListDocuFiles() {
                 ))}
             </section>
 
-            <Drawer
+            <Drawer.Root
                 offset={8}
                 radius="md"
                 size={isMobile ? 'xs' : isTablet ? 'lg' : 'xl'}
-                padding={0}
                 opened={isPDFViewerOpen}
                 onClose={endPreviewFile}
                 position="right"
-                overlayProps={{ backgroundOpacity: 0.1, blur: 2 }}
             >
-                {docuFileToPreview  && <PDFViewer id="pdf-viewer-docuFile-list" docuFile={docuFileToPreview}/>}
-            </Drawer>
+                <Drawer.Overlay
+                    backgroundOpacity={0.1}
+                    blur={2}
+                />
+                <Drawer.Content>
+                    <Drawer.Header>
+                        <Drawer.CloseButton />
+                    </Drawer.Header>
+                    <Drawer.Body style={{ height: 'calc(100% - 60px)' }}>
+                        {docuFileToPreview && <PDFViewer id="pdf-viewer-docuFile-list" docuFile={docuFileToPreview} fit='width' />}
+                    </Drawer.Body>
+                </Drawer.Content>
+            </Drawer.Root>
         </div>
     );
 }

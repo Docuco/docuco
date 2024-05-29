@@ -8,6 +8,7 @@ export interface DocuFilePrimitive {
     extension: string | null,
     url: string;
     isDeleted: boolean;
+    sharedToken: string | null;
     createdAt: number;
     updatedAt: number;
 }

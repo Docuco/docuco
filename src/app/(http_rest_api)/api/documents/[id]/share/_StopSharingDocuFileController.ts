@@ -1,23 +1,23 @@
 import { NextRequest, NextResponse } from "next/server"
-import { BaseController } from "../../_shared/BaseController";
-import { DIContainer } from "../../../../_core/Shared/Infrastructure/DIContainer";
-import { DeleteDocuFile } from "../../../../_core/Documents/Application/Commands/DeleteDocuFile";
-import { DocuFileFinder } from "../../../../_core/Documents/Domain/Services/DocuFileFinder";
+import { BaseController } from "../../../_shared/BaseController";
+import { DIContainer } from "../../../../../_core/Shared/Infrastructure/DIContainer";
+import { DocuFileFinder } from "../../../../../_core/Documents/Domain/Services/DocuFileFinder";
 import { z } from "zod";
+import { StopSharingDocuFile } from "../../../../../_core/Documents/Application/Commands/StopSharingDocuFile";
 
 const schema = z.object({
     id: z.string()
 })
 
-export class DeleteDocuFileController extends BaseController {
-    private deleteDocuFile: DeleteDocuFile
+export class StopSharingDocuFileController extends BaseController {
+    private stopSharingDocuFile: StopSharingDocuFile
 
     constructor() {
         super();
         const docuFileRepository = DIContainer.get('DocuFileRepository')
         const eventBus = DIContainer.get('EventBus')
 
-        this.deleteDocuFile = new DeleteDocuFile(
+        this.stopSharingDocuFile = new StopSharingDocuFile(
             new DocuFileFinder(docuFileRepository),
             docuFileRepository,
             eventBus
@@ -30,7 +30,7 @@ export class DeleteDocuFileController extends BaseController {
     ): Promise<NextResponse> {
         const { id } = await this.getParams(req, pathParams);
 
-        await this.deleteDocuFile.run({id})
+        await this.stopSharingDocuFile.run(id)
 
         return NextResponse.json({}, { status: 200 });
     }
