@@ -2,6 +2,7 @@ import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import { Id } from '../../../Shared/Domain/VOs/Id';
 import { Auth } from '../Entities/Auth';
 import { InvalidToken } from '../Exceptions/InvalidToken';
+import { User } from '../../../Users/Domain/Entities/User';
 
 export class TokenPayload {
 
@@ -28,11 +29,12 @@ export class Token {
         this.tokenPayload = this.getTokenPayload();
     }
 
-    public static generate(secretKey: string, auth: Auth): Token {
+    public static generate(secretKey: string, user: User, auth: Auth): Token {
         const token = jwt.sign(
             {
                 authId: auth.id.value,
-                userId: auth.userId.value,
+                userId: user.id.value,
+                permissions: user.permissions.values.map((permission) => permission.value),
             },
             secretKey,
             {

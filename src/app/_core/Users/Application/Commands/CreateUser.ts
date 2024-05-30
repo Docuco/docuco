@@ -4,6 +4,8 @@ import { UserRepository } from "../../Domain/Repositories/UserRepository"
 import { User } from "../../Domain/Entities/User"
 import { Email } from "../../Domain/VOs/Email"
 import { AuthRepository } from "../../../Auth/Domain/Repositories/AuthRepository"
+import { UserPrimitive } from "../../Domain/Primitives/UserPrimitive"
+import { UserAlreadyExists } from "../../Domain/Exceptions/UserAlreadyExists"
 
 export class CreateUser {
 
@@ -13,11 +15,11 @@ export class CreateUser {
         private eventBus: EventBus,
     ) {}
 
-    public async run({ email, password }: { email: string, password: string }): Promise<void> {
-        const existingUser = await this.userRepository.find(new Email(email))
+    public async run({ email, password }: { email: string, password: string }): Promise<UserPrimitive> {
+        const existingUser = await this.userRepository.findByEmail(new Email(email))
 
         if (existingUser) {
-            return
+            throw new UserAlreadyExists(email)
         }
 
         const user = User.create({ email })
@@ -30,5 +32,7 @@ export class CreateUser {
 
         this.eventBus.publish(user.pullDomainEvents());
         this.eventBus.publish(auth.pullDomainEvents());
+
+        return user.toPrimitives();
     }
 }

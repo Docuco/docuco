@@ -1,4 +1,4 @@
-import { customAlphabet } from "nanoid";
+import { uuidv7 } from "uuidv7";
 import { InvalidSharedToken } from "../Exceptions/InvalidSharedToken";
 
 export class SharedToken {
@@ -14,13 +14,10 @@ export class SharedToken {
     }
 
     public static generate(): SharedToken {
-        const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 27)
-        return new SharedToken(nanoid())
+        return new SharedToken(uuidv7())
     }
 
     private ensureIsValid(value: string): void {
-        if (value.length !== 27) {
-            throw new InvalidSharedToken(value)
-        }
+        // throw new InvalidSharedToken(value);
     }
 }

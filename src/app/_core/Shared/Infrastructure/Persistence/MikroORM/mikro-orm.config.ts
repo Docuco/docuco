@@ -6,7 +6,9 @@ import { SeedManager } from '@mikro-orm/seeder';
 import { Migrator } from '@mikro-orm/migrations';
 import { DocuFileSchema } from "../../../../Documents/Infrastructure/Repositories/MikroORM/schemas/DocuFileSchema";
 import { UserSchema } from "../../../../Users/Infrastructure/Repositories/MikroORM/schemas/UserSchema";
-import { Migration20240529140100_InitialSchema } from '../../../../../../database/migrations/Migration20240529140100_InitialSchema';
+import { AuthSchema } from '../../../../Auth/Infrastructure/Repositories/MikroORM/schemas/AuthSchema';
+import { Migration20240529144115_InitialSchema } from '../../../../../../database/migrations/Migration20240529144115_InitialSchema';
+import { Migration20240530181153_AddPermissionsToUsers } from '../../../../../../database/migrations/Migration20240530181153_AddPermissionsToUsers';
 
 dotenv.config({
     path: process.env.NODE_ENV === 'development' ? '.env.local' : '',
@@ -25,14 +27,19 @@ const globalMikroORMConfig: Options = {
     entities: [
         DocuFileSchema,
         UserSchema,
+        AuthSchema,
     ],
     migrations: {
         pathTs: './src/database/migrations',
         migrationsList: [
             {
                 name: 'InitialSchema',
-                class: Migration20240529140100_InitialSchema
+                class: Migration20240529144115_InitialSchema
             },
+            {
+                name: 'AddPermissionsToUsers',
+                class: Migration20240530181153_AddPermissionsToUsers
+            }
         ],
     },
     seeder: {

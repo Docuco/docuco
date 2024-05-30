@@ -2,6 +2,7 @@ import { UserRepository } from "../Repositories/UserRepository";
 import { User } from "../Entities/User";
 import { UserNotFound } from "../Exceptions/UserNotFound";
 import { Email } from "../VOs/Email";
+import { Id } from "../../../Shared/Domain/VOs/Id";
 
 export class UserFinder {
 
@@ -9,12 +10,11 @@ export class UserFinder {
         private userRepository: UserRepository,
     ) {}
 
-    public async run(emailPrimitive: string): Promise<User> {
-        const email = new Email(emailPrimitive)
-        const user = await this.userRepository.find(email)
+    public async run(id: string): Promise<User> {
+        const user = await this.userRepository.findById(new Id(id))
 
         if (!user) {
-            throw new UserNotFound(emailPrimitive);
+            throw new UserNotFound(id);
         }
 
         return user

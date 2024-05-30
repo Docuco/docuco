@@ -1,4 +1,6 @@
-import { UserFinder } from "../../../Users/Domain/Services/UserFinder";
+import { UserNotFoundByEmail } from "../../../Users/Domain/Exceptions/UserNotFoundByEmail";
+import { UserRepository } from "../../../Users/Domain/Repositories/UserRepository";
+import { Email } from "../../../Users/Domain/VOs/Email";
 import { AuthNotFound } from "../../Domain/Exceptions/AuthNotFound";
 import { AuthRepository } from "../../Domain/Repositories/AuthRepository";
 import { AuthDTO } from "../DTOs/AuthResponse";
@@ -6,24 +8,29 @@ import { AuthDTO } from "../DTOs/AuthResponse";
 export class GetAuthFromLogin {
 
     constructor(
-        private userFinder: UserFinder,
+        private userRepository: UserRepository,
         private authRepository: AuthRepository,
     ) {}
 
     public async run({ email, password }: { email: string, password: string }): Promise<AuthDTO> {
-        const user = await this.userFinder.run(email);
-        const auth = await this.authRepository.findByUserId(user.id);
+        const user = await this.userRepository.findByEmail(new Email(email));
+        if (!user) {
+            throw new UserNotFoundByEmail(email);
+        }
 
-        if (!auth) {
+        const auths = await this.authRepository.findByUserId(user.id);
+
+        const passwordAuth = auths.find(auth => auth.isPasswordAuth());
+        if (auths.length === 0 || !passwordAuth) {
             throw new AuthNotFound(user.id.value);
         }
 
-        auth.validatePassword(password);
+        passwordAuth.validatePassword(password);
 
         return {
-            accessToken: auth.accessToken,
+            accessToken: passwordAuth.getAccessToken(user),
             // refreshToken: auth.refreshToken,
-            expiresIn: auth.expiresIn,
+            expiresIn: passwordAuth.expiresIn,
             tokenType: 'Bearer',
         }
     }

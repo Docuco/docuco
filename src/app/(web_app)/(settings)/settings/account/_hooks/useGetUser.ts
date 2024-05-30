@@ -5,7 +5,7 @@ import { UserPrimitive } from "../../../../../_core/Users/Domain/Primitives/User
 
 export const useGetUser = () => {
     const { data, error, isValidating } = useSWR(
-        API_ROUTES.USER("admin@admin.com"),
+        API_ROUTES.USER("123"), // TODO:
         (url: string) => fetcher<UserPrimitive>(url)
     );
     const user = data;
