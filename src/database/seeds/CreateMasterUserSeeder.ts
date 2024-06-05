@@ -17,8 +17,8 @@ export class CreateMasterUserSeeder extends Seeder {
     const userRepository = DIContainer.get('UserRepository')
     const authRepository = DIContainer.get('AuthRepository')
     const eventBus = DIContainer.get('EventBus')
-    
     const userFinder = new UserFinder(userRepository)
+    
 
     const createUser = new CreateUser(
       userRepository,
