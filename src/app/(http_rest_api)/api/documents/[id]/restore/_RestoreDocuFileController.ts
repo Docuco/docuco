@@ -4,16 +4,20 @@ import { DIContainer } from "../../../../../_core/Shared/Infrastructure/DIContai
 import { DocuFileFinder } from "../../../../../_core/Documents/Domain/Services/DocuFileFinder";
 import { z } from "zod";
 import { RestoreDocuFile } from "../../../../../_core/Documents/Application/Commands/RestoreDocuFile";
+import { ProtectedController } from "../../../_shared/ProtectedController";
+import { PermissionType } from "../../../../../_core/Shared/Domain/VOs/Permission";
 
 const schema = z.object({
     id: z.string()
 })
 
-export class RestoreDocuFileController extends BaseController {
+export class RestoreDocuFileController implements BaseController, ProtectedController {
+    static permissions: PermissionType[] = ['documents:restore'];
+    REQUIRED_PERMISSIONS: PermissionType[] = RestoreDocuFileController.permissions;
+
     private restoreDocuFile: RestoreDocuFile
 
     constructor() {
-        super();
         const docuFileRepository = DIContainer.get('DocuFileRepository')
         const eventBus = DIContainer.get('EventBus')
 

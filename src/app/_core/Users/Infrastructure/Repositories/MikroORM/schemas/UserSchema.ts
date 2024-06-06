@@ -1,6 +1,6 @@
 import { BigIntType, EntitySchema, types } from "@mikro-orm/core";
 import { UserPrimitive } from "../../../../Domain/Primitives/UserPrimitive";
-import { Permission } from "../../../../Domain/VOs/Permission";
+import { Permission } from "../../../../../Shared/Domain/VOs/Permission";
 
 export const UserSchema = new EntitySchema<UserPrimitive>({
     name: 'Users',

@@ -5,17 +5,20 @@ import { DIContainer } from "../../../../_core/Shared/Infrastructure/DIContainer
 import { GetUser } from "../../../../_core/Users/Application/Queries/GetUser";
 import { UserFinder } from "../../../../_core/Users/Domain/Services/UserFinder";
 import { User } from "../../../../_core/Users/Domain/Entities/User";
+import { PermissionType } from "../../../../_core/Shared/Domain/VOs/Permission";
+import { ProtectedController } from "../../_shared/ProtectedController";
 
 const schema = z.object({
-    email: z.string(),
+    id: z.string(),
 })
 
-export class GetUserController extends BaseController {
+export class GetUserController implements BaseController, ProtectedController {
+    static permissions: PermissionType[] = ['users:read'];
+    REQUIRED_PERMISSIONS: PermissionType[] = GetUserController.permissions;
+
     private getUser: GetUser
 
     constructor() {
-        super();
-
         const userFinder = new UserFinder(
             DIContainer.get('UserRepository'),
         )
@@ -29,9 +32,9 @@ export class GetUserController extends BaseController {
         req: NextRequest,
         pathParams: Record<string, string>
     ): Promise<NextResponse> {
-        const { email } = await this.getParams(req, pathParams);
+        const { id } = await this.getParams(req, pathParams);
 
-        const user = await this.getUser.run({email})
+        const user = await this.getUser.run({ id })
 
         const userPrimitive = this.mapResponse(user)
 
@@ -40,7 +43,7 @@ export class GetUserController extends BaseController {
 
     private async getParams(req: NextRequest, pathParams: Record<string, string>) {
         return schema.parse({
-            email: pathParams.email,
+            id: pathParams.id,
         })
     }
 

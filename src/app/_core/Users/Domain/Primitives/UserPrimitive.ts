@@ -1,4 +1,4 @@
-import { PermissionType } from "../VOs/Permission";
+import { PermissionType } from "../../../Shared/Domain/VOs/Permission";
 
 export interface UserPrimitive {
     id: string;

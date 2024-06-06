@@ -15,7 +15,7 @@ import { Dropzone, DropzoneAccept, DropzoneIdle, DropzoneReject, FileRejection, 
 import classes from './AddNewDocumentButton.module.css';
 import { mutate } from 'swr';
 import { API_ROUTES } from '../../../../_utils/constants';
-import { customFetch } from '../../../../_utils/fetch';
+import { clientCustomFetch } from '../../../../_utils/fetch';
 
 export function AddNewDocumentButton() {
     const [isOpened, { open, close }] = useDisclosure(false);
@@ -41,7 +41,7 @@ export function AddNewDocumentButton() {
             data.append(`documents[]`, document, document.name);
         }
 
-        await customFetch(`${API_ROUTES.DOCUMENTS}`, {
+        await clientCustomFetch(`${API_ROUTES.DOCUMENTS}`, {
             method: 'POST',
             body: data,
         })

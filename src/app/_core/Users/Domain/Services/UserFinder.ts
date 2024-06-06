@@ -1,7 +1,6 @@
 import { UserRepository } from "../Repositories/UserRepository";
 import { User } from "../Entities/User";
 import { UserNotFound } from "../Exceptions/UserNotFound";
-import { Email } from "../VOs/Email";
 import { Id } from "../../../Shared/Domain/VOs/Id";
 
 export class UserFinder {

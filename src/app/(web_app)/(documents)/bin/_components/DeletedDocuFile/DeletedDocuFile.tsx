@@ -8,7 +8,7 @@ import { IconDots, IconDownload, IconEye, IconFileShredder, IconFileTypeCsv, Ico
 import { useDisclosure } from "@mantine/hooks";
 import { DeletePermanentlyDocuFileModal } from "./DeletePermanentlyDocuFileModal";
 import { mutate } from "swr";
-import { customFetch } from "../../../../_utils/fetch";
+import { clientCustomFetch } from "../../../../_utils/fetch";
 import { API_ROUTES } from "../../../../_utils/constants";
 
 export function DeletedDocuFile({
@@ -21,7 +21,7 @@ export function DeletedDocuFile({
     const fileTypeIcon = getFileTypeIcon(docuFile.mimeType);
 
     async function restore() {
-        await customFetch(`${API_ROUTES.DOCUMENT_RESTORE(docuFile.id)}`, {
+        await clientCustomFetch(`${API_ROUTES.DOCUMENT_RESTORE(docuFile.id)}`, {
             method: 'POST',
         })
         await mutate(API_ROUTES.DOCUMENTS);

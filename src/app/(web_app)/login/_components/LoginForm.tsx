@@ -2,6 +2,8 @@
 
 import { Button, Card, Group, PasswordInput, Space, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { clientCustomFetch } from '../../_utils/fetch';
+import { useRouter } from 'next/navigation';
 
 interface LoginType {
   email: string;
@@ -9,6 +11,7 @@ interface LoginType {
 }
 
 export function LoginForm() {
+  const router = useRouter();
 
   const form = useForm<LoginType>({
     mode: 'uncontrolled',
@@ -21,8 +24,13 @@ export function LoginForm() {
     },
   });
   
-  function doLogin(values: LoginType) {
-    console.log('doLogin', values);
+  async function doLogin(values: LoginType) {
+    await clientCustomFetch('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(values),
+    })
+
+    router.push('/home');
   }
 
   return (

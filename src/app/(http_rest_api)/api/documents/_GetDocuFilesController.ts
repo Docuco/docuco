@@ -6,6 +6,8 @@ import { DocuFile } from "../../../_core/Documents/Domain/Entities/DocuFile";
 import { DocuFilePrimitive } from "../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import { DocuFileFiltersPrimitives } from "../../../_core/Documents/Domain/Primitives/DocuFileFiltersPrimitives";
 import { z } from "zod";
+import { ProtectedController } from "../_shared/ProtectedController";
+import { PermissionType } from "../../../_core/Shared/Domain/VOs/Permission";
 
 const schema = z.object({
     filters: z.object({
@@ -13,11 +15,13 @@ const schema = z.object({
     })
 })
 
-export class GetDocuFilesController extends BaseController {
+export class GetDocuFilesController implements BaseController, ProtectedController {
+    static permissions: PermissionType[] = ['documents:read'];
+    REQUIRED_PERMISSIONS: PermissionType[] = GetDocuFilesController.permissions;
+
     private getDocuFiles: GetDocuFiles
 
     constructor() {
-        super();
         this.getDocuFiles = new GetDocuFiles(
             DIContainer.get('DocuFileRepository')
         )

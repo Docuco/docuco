@@ -1,5 +1,5 @@
-import { EnumValueObject } from '../../../Shared/Domain/VOs/EnumValueObject';
-import { Mutable } from '../../../Shared/utils';
+import { EnumValueObject } from './EnumValueObject';
+import { Mutable } from './Mutable';
 import { InvalidPermission } from '../Exceptions/InvalidPermission';
 
 export type PermissionType = (typeof Permission.ValidValues)[number];
@@ -10,6 +10,7 @@ export class Permission extends EnumValueObject<PermissionType> {
         'documents:read',
         'documents:upload',
         'documents:delete',
+        'documents:restore',
         'documents:share',
         
         'users:read',

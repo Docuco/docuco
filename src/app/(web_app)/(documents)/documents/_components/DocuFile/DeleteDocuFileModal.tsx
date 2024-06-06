@@ -2,7 +2,7 @@ import { Button, Group, Modal, Text } from "@mantine/core";
 import { DocuFilePrimitive } from "../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import { useState } from "react";
 import { API_ROUTES } from "../../../../_utils/constants";
-import { customFetch } from "../../../../_utils/fetch";
+import { clientCustomFetch } from "../../../../_utils/fetch";
 import { mutate } from "swr";
 
 export function DeleteDocuFileModal({
@@ -19,7 +19,7 @@ export function DeleteDocuFileModal({
     async function deleteDocuFile() {
         setIsDeletingDocuFile(true);
         
-        await customFetch(`${API_ROUTES.DOCUMENT(docuFile.id)}`, {
+        await clientCustomFetch(`${API_ROUTES.DOCUMENT(docuFile.id)}`, {
             method: 'DELETE',
         })
         await mutate(API_ROUTES.DOCUMENTS);

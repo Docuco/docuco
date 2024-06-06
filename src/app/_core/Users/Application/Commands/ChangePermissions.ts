@@ -1,7 +1,7 @@
 import { EventBus } from "../../../Shared/Domain/Events/EventBus"
 import { UserRepository } from "../../Domain/Repositories/UserRepository"
 import { UserFinder } from "../../Domain/Services/UserFinder"
-import { PermissionType } from "../../Domain/VOs/Permission"
+import { PermissionType } from "../../../Shared/Domain/VOs/Permission"
 
 export class ChangePermissions {
 

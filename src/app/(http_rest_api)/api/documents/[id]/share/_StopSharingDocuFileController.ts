@@ -4,16 +4,20 @@ import { DIContainer } from "../../../../../_core/Shared/Infrastructure/DIContai
 import { DocuFileFinder } from "../../../../../_core/Documents/Domain/Services/DocuFileFinder";
 import { z } from "zod";
 import { StopSharingDocuFile } from "../../../../../_core/Documents/Application/Commands/StopSharingDocuFile";
+import { PermissionType } from "../../../../../_core/Shared/Domain/VOs/Permission";
+import { ProtectedController } from "../../../_shared/ProtectedController";
 
 const schema = z.object({
     id: z.string()
 })
 
-export class StopSharingDocuFileController extends BaseController {
+export class StopSharingDocuFileController implements BaseController, ProtectedController {
+    static permissions: PermissionType[] = ['documents:share'];
+    REQUIRED_PERMISSIONS: PermissionType[] = StopSharingDocuFileController.permissions;
+
     private stopSharingDocuFile: StopSharingDocuFile
 
     constructor() {
-        super();
         const docuFileRepository = DIContainer.get('DocuFileRepository')
         const eventBus = DIContainer.get('EventBus')
 

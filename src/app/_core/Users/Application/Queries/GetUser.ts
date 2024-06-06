@@ -7,7 +7,7 @@ export class GetUser {
         private userFinder: UserFinder,
     ) {}
 
-    public async run({ email }: { email: string }): Promise<User> {
-        return this.userFinder.run(email)
+    public async run({ id }: { id: string }): Promise<User> {
+        return this.userFinder.run(id)
     }
 }

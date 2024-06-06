@@ -6,16 +6,20 @@ import { z } from "zod";
 import { GetDocuFile } from "../../../../_core/Documents/Application/Queries/GetDocuFile";
 import { DocuFile } from "../../../../_core/Documents/Domain/Entities/DocuFile";
 import { DocuFilePrimitive } from "../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
+import { PermissionType } from "../../../../_core/Shared/Domain/VOs/Permission";
+import { ProtectedController } from "../../_shared/ProtectedController";
 
 const schema = z.object({
     id: z.string()
 })
 
-export class GetDocuFileController extends BaseController {
+export class GetDocuFileController implements BaseController, ProtectedController {
+    static permissions: PermissionType[] = ['documents:read'];
+    REQUIRED_PERMISSIONS: PermissionType[] = GetDocuFileController.permissions;
+
     private getDocuFile: GetDocuFile
 
     constructor() {
-        super();
         const docuFileRepository = DIContainer.get('DocuFileRepository')
 
         const docuFileFinder = new DocuFileFinder(docuFileRepository)

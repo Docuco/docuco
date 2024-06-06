@@ -2,7 +2,7 @@ import { Button, Center, CopyButton, Group, Input, Loader, Modal, Space, Text } 
 import { DocuFilePrimitive } from "../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import { useEffect, useState } from "react";
 import { API_ROUTES } from "../../../../_utils/constants";
-import { customFetch } from "../../../../_utils/fetch";
+import { clientCustomFetch } from "../../../../_utils/fetch";
 import { mutate } from "swr";
 import { useClipboard, useDisclosure } from "@mantine/hooks";
 import { StopSharingDocuFileModal } from "./StopSharingDocuFileModal";
@@ -36,10 +36,10 @@ export function ShareDocuFileModal({
             setHasGeneratedLink(true);
             setIsGeneratingShareLink(true);
             
-            await customFetch(API_ROUTES.DOCUMENT_SHARE(docuFileId), {
+            await clientCustomFetch(API_ROUTES.DOCUMENT_SHARE(docuFileId), {
                 method: 'POST',
             });
-            const res = await customFetch(API_ROUTES.DOCUMENT(docuFileId));
+            const res = await clientCustomFetch(API_ROUTES.DOCUMENT(docuFileId));
             const docuFileUpdated: DocuFilePrimitive = await res.json();
             
             setShareURL(buildShareURL(docuFileUpdated.sharedToken));

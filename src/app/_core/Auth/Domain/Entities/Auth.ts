@@ -33,7 +33,7 @@ export class Auth extends AggregateRoot {
         return Token.generate(process.env.JWT_SECRET!, user, this).value;
     }
     
-    get expiresIn(): number {
+    static get expiresIn(): number {
         return 3600; // 1 hour in seconds
     }
 

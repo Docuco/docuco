@@ -3,7 +3,7 @@ import { Seeder } from '@mikro-orm/seeder';
 import { DIContainer } from '../../app/_core/Shared/Infrastructure/DIContainer';
 import { CreateUser } from '../../app/_core/Users/Application/Commands/CreateUser';
 import { ChangePermissions } from '../../app/_core/Users/Application/Commands/ChangePermissions';
-import { Permission } from '../../app/_core/Users/Domain/VOs/Permission';
+import { Permission } from '../../app/_core/Shared/Domain/VOs/Permission';
 import { UserFinder } from '../../app/_core/Users/Domain/Services/UserFinder';
 
 export class CreateMasterUserSeeder extends Seeder {

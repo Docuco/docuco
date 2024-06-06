@@ -1,5 +1,5 @@
 import { EnumValueObject } from '../../../Shared/Domain/VOs/EnumValueObject';
-import { Mutable } from '../../../Shared/utils';
+import { Mutable } from '../../../Shared/Domain/VOs/Mutable';
 import { InvalidMimeType } from '../Exceptions/InvalidMimeType';
 
 export type DocuMimeTypeType = (typeof DocuMimeType.ValidValues)[number];

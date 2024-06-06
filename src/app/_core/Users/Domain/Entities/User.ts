@@ -5,7 +5,7 @@ import { UserCreated } from "../Events/UserCreated";
 import { UserPermissionsChanged } from "../Events/UserPermissionsChanged";
 import { UserPrimitive } from "../Primitives/UserPrimitive";
 import { Email } from "../VOs/Email";
-import { Permission, PermissionType } from "../VOs/Permission";
+import { Permission, PermissionType } from "../../../Shared/Domain/VOs/Permission";
 
 export class User extends AggregateRoot {
 
