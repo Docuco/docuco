@@ -22,7 +22,7 @@ export function AddNewDocumentButton() {
     const [fileErrors, setFileErrors] = useState<FileRejection[]>([]);
     const [isUploadingFiles, setIsUploadingFiles] = useState(false);
 
-    const fileSizeInMB = 20 * 1024 ** 2; // 20MiB TODO: could be configurable by env var
+    const MAXIMUM_FILE_SIZE_IN_BYTES = parseInt(process.env.NEXT_PUBLIC_MAXIMUM_FILE_SIZE_IN_BYTES || '20000000'); // Default 20MB
 
     useEffect(() => {
         resetStates();
@@ -64,7 +64,7 @@ export function AddNewDocumentButton() {
                 <Dropzone
                     onDrop={uploadFiles}
                     onReject={setFileErrors}
-                    maxSize={fileSizeInMB}
+                    maxSize={MAXIMUM_FILE_SIZE_IN_BYTES}
                     loading={isUploadingFiles}
                     accept={[
                         MIME_TYPES.csv,
@@ -100,7 +100,7 @@ export function AddNewDocumentButton() {
                                 Drag documents here or click to select files
                             </Text>
                             <Text size="sm" c="dimmed" inline mt={7}>
-                                Attach as many files as you like, each file should not exceed {fileSizeInMB / 1024 ** 2}MiB and should be in one of the following formats: .csv, .pdf, .doc, .docx, .xls, .xlsx
+                                Attach as many files as you like, each file should not exceed {MAXIMUM_FILE_SIZE_IN_BYTES / 1000 ** 2}MB and should be in one of the following formats: .csv, .pdf, .doc, .docx, .xls, .xlsx
                             </Text>
                         </div>
                     </Group>

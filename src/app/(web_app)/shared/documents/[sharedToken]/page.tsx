@@ -1,5 +1,5 @@
 import { Center, Space, Text } from "@mantine/core";
-import { PDFViewer } from "../../../(documents)/documents/_components/PDFViewer/PDFViewer";
+import { PDFViewer } from "../../../(home)/documents/_components/PDFViewer/PDFViewer";
 import { DocuFilePrimitive } from "../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import { API_ROUTES } from "../../../_utils/constants";
 import { IconFileOff } from "@tabler/icons-react";

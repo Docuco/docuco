@@ -1,5 +1,5 @@
 import { redirectIfNotAuthenticated } from "../_utils/redirectIfNotAuthenticated";
-import { SettingsLayout } from "./settingsLayout";
+import { HomeLayout } from "./homeLayout";
 
 export default function Layout({
   children,
@@ -9,8 +9,8 @@ export default function Layout({
   redirectIfNotAuthenticated();
 
   return (
-    <SettingsLayout>
+    <HomeLayout>
         {children}
-    </SettingsLayout>
+    </HomeLayout>
   );
 }

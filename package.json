@@ -41,6 +41,7 @@
     "@mikro-orm/seeder": "6.2.8",
     "@tabler/icons-react": "3.1.0",
     "bcryptjs": "2.4.3",
+    "cookies-next": "4.2.1",
     "dayjs": "1.11.10",
     "express": "4.19.2",
     "jsonwebtoken": "9.0.2",

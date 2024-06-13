@@ -14,6 +14,11 @@ export async function clientCustomFetch(input: RequestInfo, init?: RequestInit):
             ...init?.headers,
         }
     }
+    const res = await fetch(input, options)
+    
+    if (!res.ok) {
+        throw new Error(res.statusText)
+    }
 
-    return fetch(input, options)
+    return res
 }

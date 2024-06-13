@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Header } from "./_components/Header/Header";
 import { Navbar } from "./_components/Navbar/Navbar";
 
-export default function Layout({
+export function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

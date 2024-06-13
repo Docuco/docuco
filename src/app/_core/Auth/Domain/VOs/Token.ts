@@ -61,7 +61,11 @@ export class Token {
     }
 
     public get payload(): TokenPayload {
-        const tokenDecoded = jwt.decode(this.value, {
+        return Token.extractPayload(this.value);
+    }
+
+    static extractPayload(token: string): TokenPayload {
+        const tokenDecoded = jwt.decode(token, {
             complete: true,
             json: true,
         }) as { [key: string]: any; } | null;

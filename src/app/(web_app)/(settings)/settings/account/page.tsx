@@ -13,7 +13,7 @@ export default function Page() {
 
   return (
     <>
-      Account Page
+      {user.email}
     </>
   );
 }

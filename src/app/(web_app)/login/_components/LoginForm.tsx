@@ -4,6 +4,8 @@ import { Button, Card, Group, PasswordInput, Space, TextInput } from '@mantine/c
 import { useForm } from '@mantine/form';
 import { clientCustomFetch } from '../../_utils/fetch';
 import { useRouter } from 'next/navigation';
+import { errorNotification } from '../../_utils/notifications';
+import { useState } from 'react';
 
 interface LoginType {
   email: string;
@@ -12,6 +14,7 @@ interface LoginType {
 
 export function LoginForm() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<LoginType>({
     mode: 'uncontrolled',
@@ -25,12 +28,20 @@ export function LoginForm() {
   });
   
   async function doLogin(values: LoginType) {
-    await clientCustomFetch('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(values),
-    })
-
-    router.push('/home');
+    try {
+      setIsLoading(true);
+      await clientCustomFetch('/api/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(values),
+      })
+  
+      router.push('/home');
+    } catch (error) {
+      errorNotification({
+        title: 'Invalid credentials',
+      })
+    }
+    setIsLoading(false);
   }
 
   return (
@@ -52,7 +63,7 @@ export function LoginForm() {
         />
         <Space h="xl" />
         <Group justify="flex-end" mt="md">
-          <Button type="submit">Login</Button>
+          <Button type="submit" loading={isLoading}>Login</Button>
         </Group>
       </form>
     </Card>

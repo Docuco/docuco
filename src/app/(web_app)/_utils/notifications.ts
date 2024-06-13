@@ -1,4 +1,4 @@
-import { showNotification, updateNotification } from '@mantine/notifications';
+import { notifications } from '@mantine/notifications';
 import { Id } from '../../_core/Shared/Domain/VOs/Id';
 
 export async function generalLoadingNotification({
@@ -28,7 +28,7 @@ export async function generalLoadingNotification({
 
     try {
         await actionToNotify();
-        updateNotification({
+        notifications.update({
             id: randomIdOperation,
             loading: false,
             title: titleOnEnd,
@@ -38,7 +38,7 @@ export async function generalLoadingNotification({
         });
 
     } catch (error) {
-        updateNotification({
+        notifications.update({
             id: randomIdOperation,
             loading: false,
             color: 'red',
@@ -60,7 +60,7 @@ async function generalNotification({
     title: string;
     message?: string;
 }): Promise<void> {
-    showNotification({
+    notifications.show({
         id,
         loading: true,
         title,
@@ -68,4 +68,21 @@ async function generalNotification({
         autoClose: false,
         disallowClose: true,
     });
+}
+
+export async function errorNotification({
+    id = Id.generate().value,
+    title,
+    message = '',
+}: {
+    id?: string;
+    title: string;
+    message?: string;
+}): Promise<void> {
+    notifications.show({
+        id,
+        color: 'red',
+        title,
+        message,
+    })
 }
