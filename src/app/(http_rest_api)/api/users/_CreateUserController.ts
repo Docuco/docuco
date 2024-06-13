@@ -3,18 +3,21 @@ import { BaseController } from "../_shared/BaseController";
 import { z } from "zod";
 import { DIContainer } from "../../../_core/Shared/Infrastructure/DIContainer";
 import { CreateUser } from "../../../_core/Users/Application/Commands/CreateUser";
+import { ProtectedController } from "../_shared/ProtectedController";
+import { PermissionType } from "../../../_core/Shared/Domain/VOs/Permission";
 
 const schema = z.object({
     email: z.string(),
     password: z.string(),
 })
 
-export class CreateUserController extends BaseController {
+export class CreateUserController implements BaseController, ProtectedController{
+    static permissions: PermissionType[] = ['users:create'];
+    REQUIRED_PERMISSIONS: PermissionType[] = CreateUserController.permissions;
+
     private createUser: CreateUser
 
     constructor() {
-        super();
-
         this.createUser = new CreateUser(
             DIContainer.get('UserRepository'),
             DIContainer.get('AuthRepository'),

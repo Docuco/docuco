@@ -4,16 +4,20 @@ import { DIContainer } from "../../../../_core/Shared/Infrastructure/DIContainer
 import { DeleteDocuFile } from "../../../../_core/Documents/Application/Commands/DeleteDocuFile";
 import { DocuFileFinder } from "../../../../_core/Documents/Domain/Services/DocuFileFinder";
 import { z } from "zod";
+import { PermissionType } from "../../../../_core/Shared/Domain/VOs/Permission";
+import { ProtectedController } from "../../_shared/ProtectedController";
 
 const schema = z.object({
     id: z.string()
 })
 
-export class DeleteDocuFileController extends BaseController {
+export class DeleteDocuFileController implements BaseController, ProtectedController {
+    static permissions: PermissionType[] = ['documents:delete'];
+    REQUIRED_PERMISSIONS: PermissionType[] = DeleteDocuFileController.permissions;
+
     private deleteDocuFile: DeleteDocuFile
 
     constructor() {
-        super();
         const docuFileRepository = DIContainer.get('DocuFileRepository')
         const eventBus = DIContainer.get('EventBus')
 

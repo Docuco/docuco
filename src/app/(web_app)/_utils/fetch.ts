@@ -2,11 +2,11 @@ export async function fetcher<JSON = any>(
     input: RequestInfo,
     init?: RequestInit
 ): Promise<JSON> {
-    const res = await customFetch(input, init)
+    const res = await clientCustomFetch(input, init)
     return res.json()
 }
 
-export async function customFetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
+export async function clientCustomFetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
     
     const options: RequestInit = {
         ...init,
@@ -14,6 +14,11 @@ export async function customFetch(input: RequestInfo, init?: RequestInit): Promi
             ...init?.headers,
         }
     }
+    const res = await fetch(input, options)
+    
+    if (!res.ok) {
+        throw new Error(res.statusText)
+    }
 
-    return fetch(input, options)
+    return res
 }

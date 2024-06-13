@@ -1,43 +1,16 @@
-'use client'
-
-import { AppShell, AppShellHeader, AppShellMain, AppShellNavbar } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { usePathname } from 'next/navigation';
-import { Header } from "./_components/Header/Header";
-import { Navbar } from "./_components/Navbar/Navbar";
+import { redirectIfNotAuthenticated } from "../_utils/redirectIfNotAuthenticated";
+import { SettingsLayout } from "./settingsLayout";
 
 export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [opened, { toggle }] = useDisclosure();
-  const pathname = usePathname();
+  redirectIfNotAuthenticated();
 
   return (
-    <AppShell
-      header={{ height: 70 }}
-      navbar={{
-        width: 300,
-        breakpoint: 'sm',
-        collapsed: { mobile: !opened },
-      }}
-      padding="md"
-    >
-      <AppShellHeader p="md">
-        <Header
-          opened={opened}
-          onClickBurger={toggle}
-        />
-      </AppShellHeader>
-
-      <AppShellNavbar p="md">
-        <Navbar path={pathname} onNavigate={toggle}/>
-      </AppShellNavbar>
-
-      <AppShellMain>
+    <SettingsLayout>
         {children}
-      </AppShellMain>
-    </AppShell>
+    </SettingsLayout>
   );
 }

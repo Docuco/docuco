@@ -10,7 +10,7 @@ export class PostgreSQLAuthRepository implements AuthRepository {
     }
 
     private get repository() {
-        const fork = this.orm.em.fork().getRepository<AuthPrimitive>('Auth');
+        const fork = this.orm.em.fork().getRepository<AuthPrimitive>('Auths');
 
         return fork;
     }
@@ -19,13 +19,10 @@ export class PostgreSQLAuthRepository implements AuthRepository {
         this.repository.upsert(auth.toPrimitives());
     }
 
-    async findByUserId(userId: Id): Promise<Auth | null> {
-        const result = await this.repository.findOne({ userId: userId.value });
-        if (!result) {
-            return null;
-        }
-
-        return Auth.fromPrimitives(result);    
+    async findByUserId(userId: Id): Promise<Auth[]> {
+        const results = await this.repository.find({ userId: userId.value });
+        
+        return results.map((result) => Auth.fromPrimitives(result));
     }
 
 }

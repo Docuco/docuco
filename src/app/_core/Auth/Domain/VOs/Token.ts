@@ -1,42 +1,50 @@
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
-import { Id } from '../../../Shared/Domain/VOs/Id';
 import { Auth } from '../Entities/Auth';
 import { InvalidToken } from '../Exceptions/InvalidToken';
+import { User } from '../../../Users/Domain/Entities/User';
 
-export class TokenPayload {
-
-    private userId: Id;
-
-    constructor(userId: Id) {
-        this.userId = userId;
-    }
-
-    public getUserId(): Id {
-        return this.userId;
-    }
+export interface TokenPayload {
+    authId: string;
+    userId: string;
+    permissions: string[];
 }
 
 export class Token {
 
     private _value: string;
     private secretKey: string;
-    private tokenPayload: TokenPayload;
 
     private constructor(secretKey: string, value: string) {
         this.secretKey = secretKey;
         this._value = value;
-        this.tokenPayload = this.getTokenPayload();
     }
 
-    public static generate(secretKey: string, auth: Auth): Token {
+    public static generate(secretKey: string, user: User, auth: Auth): Token {
+        const payload: TokenPayload = {
+            authId: auth.id.value,
+            userId: user.id.value,
+            permissions: user.permissions.values.map((permission) => permission.value),
+        }
+
+        return Token.signToken(secretKey, payload);
+    }
+
+    public regenerate(secretKey: string): Token {
+        const payload: TokenPayload = {
+            authId: this.payload.authId,
+            userId: this.payload.userId,
+            permissions: this.payload.permissions,
+        }
+
+        return Token.signToken(secretKey, payload);
+    }
+
+    private static signToken(secretKey: string, payload: TokenPayload): Token {
         const token = jwt.sign(
-            {
-                authId: auth.id.value,
-                userId: auth.userId.value,
-            },
+            payload,
             secretKey,
             {
-                expiresIn: auth.expiresIn,
+                expiresIn: Auth.expiresIn,
             },
         );
 
@@ -52,8 +60,12 @@ export class Token {
         return token;
     }
 
-    private getTokenPayload(): TokenPayload {
-        const tokenDecoded = jwt.decode(this.value, {
+    public get payload(): TokenPayload {
+        return Token.extractPayload(this.value);
+    }
+
+    static extractPayload(token: string): TokenPayload {
+        const tokenDecoded = jwt.decode(token, {
             complete: true,
             json: true,
         }) as { [key: string]: any; } | null;
@@ -62,7 +74,11 @@ export class Token {
             throw new InvalidToken();
         }
 
-        return new TokenPayload(new Id(tokenDecoded.payload.userId));
+        return {
+            authId: tokenDecoded.payload.authId,
+            userId: tokenDecoded.payload.userId,
+            permissions: tokenDecoded.payload.permissions,
+        };
     }
 
     public get value(): string {
@@ -82,9 +98,4 @@ export class Token {
             return false;
         }
     }
-
-    public getUserId(): Id {
-        return this.tokenPayload.getUserId();
-    }
-
 }

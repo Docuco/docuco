@@ -6,26 +6,35 @@ import { Id } from "../../../Shared/Domain/VOs/Id";
 import { DocuFileFilters } from "../../Domain/VOs/DocuFileFilters";
 import { Option } from "../../../Shared/Domain/VOs/Option";
 import { SharedToken } from "../../Domain/VOs/ShareToken";
+import { EntityManager } from "@mikro-orm/core";
 
 export class PostgreSQLDocuFileRepository implements DocuFileRepository {
 
     constructor(private orm: MikroORM) {
     }
 
-    private get repository() {
-        const fork = this.orm.em.fork().getRepository<DocuFilePrimitive>('DocuFiles');
+    private get em() {
+        return this.orm.em.fork()
+    }
+
+    private getRepository(em: EntityManager) {
+        const fork = em.getRepository<DocuFilePrimitive>('DocuFiles');
 
         return fork;
     }
 
+
     async save(docuFile: DocuFile): Promise<void> {
-        this.repository.upsert(docuFile.toPrimitives());
+        const em = this.orm.em.fork()
+        this.getRepository(em).upsert(docuFile.toPrimitives());
+        this.orm.em.flush();
     }
 
     async getAll({filters}: {filters: Option<DocuFileFilters>}): Promise<DocuFile[]> {
+        const em = this.orm.em.fork()
         const filterQuery = this.mapFilterToMikroORM(filters);
 
-        const results = await this.repository.find(
+        const results = await this.getRepository(em).find(
             Object.assign({
                 isDeleted: false,
             }, filterQuery)
@@ -34,14 +43,16 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
     }
 
     async getDeleted(): Promise<DocuFile[]> {
-        const results = await this.repository.find({
+        const em = this.orm.em.fork()
+        const results = await this.getRepository(em).find({
             isDeleted: true,
         });
         return results.map((result) => DocuFile.fromPrimitives(result));
     }
 
     async find(id: Id): Promise<DocuFile | null> {
-        const result = await this.repository.findOne({ id: id.value });
+        const em = this.orm.em.fork()
+        const result = await this.getRepository(em).findOne({ id: id.value });
 
         if (!result) {
             return null;
@@ -51,11 +62,13 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
     }
 
     async delete(docuFile: DocuFile): Promise<void> {
-        await this.repository.nativeDelete({id: docuFile.id.value});
+        const em = this.orm.em.fork()
+        await this.getRepository(em).nativeDelete({id: docuFile.id.value});
     }
 
     async findBySharedToken(sharedToken: SharedToken): Promise<DocuFile | null> {
-        const result = await this.repository.findOne({
+        const em = this.orm.em.fork()
+        const result = await this.getRepository(em).findOne({
             sharedToken: sharedToken.value,
         });
 

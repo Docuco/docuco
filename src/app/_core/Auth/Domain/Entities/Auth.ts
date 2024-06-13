@@ -4,13 +4,17 @@ import { Id } from "../../../Shared/Domain/VOs/Id";
 import { AuthPrimitive } from "../Primitives/AuthPrimitive";
 import { AuthCreated } from "../Events/AuthCreated";
 import { Token } from "../VOs/Token";
+import { Option } from "../../../Shared/Domain/VOs/Option";
+import { User } from "../../../Users/Domain/Entities/User";
+import { AuthDoesNotHavePasswordToValidate } from "../Exceptions/AuthDoesNotHavePasswordToValidate";
 
 export class Auth extends AggregateRoot {
 
     constructor(
         private _id: Id,
         private _userId: Id,
-        private _password: Password,
+        // TODO: the option password is because the auth could be from oauth in the future  
+        private _password: Option<Password>,
         private _createdAt: Date,
         private _updatedAt: Date
     ) {
@@ -25,16 +29,24 @@ export class Auth extends AggregateRoot {
         return this._userId
     }
 
-    get accessToken(): string {
-        return Token.generate(process.env.JWT_SECRET!, this).value;
+    getAccessToken(user: User): string {
+        return Token.generate(process.env.JWT_SECRET!, user, this).value;
     }
     
-    get expiresIn(): number {
+    static get expiresIn(): number {
         return 3600; // 1 hour in seconds
     }
 
     public validatePassword(password: string) {
-        return this._password.match(password);
+        if (this._password.isNone()) {
+            throw new AuthDoesNotHavePasswordToValidate();
+        }
+
+        return this._password.get().match(password);
+    }
+
+    public isPasswordAuth() {
+        return this._password ? true : false;
     }
 
     public static create({ userId, password }: { userId: Id, password: string }) {
@@ -60,7 +72,7 @@ export class Auth extends AggregateRoot {
         return new Auth(
             new Id(primitives.id),
             new Id(primitives.userId),
-            Password.fromHash(primitives.password),
+            Option.fromValue(primitives.password).map((password) => Password.fromHash(password)),
             new Date(primitives.createdAt),
             new Date(primitives.updatedAt),
         );
@@ -70,7 +82,7 @@ export class Auth extends AggregateRoot {
         return {
             id: this._id.value,
             userId: this._userId.value,
-            password: this._password.hash,
+            password: this._password.map((password) => password.hash).getOrNull(),
             createdAt: this._createdAt.getTime(),
             updatedAt: this._updatedAt.getTime(),
         };

@@ -1,4 +1,3 @@
-// import { EventEmitter } from 'events';
 import { EventEmitter } from 'eventemitter3';
 import { EventSubscriber } from '../../Domain/Events/EventSubscriber';
 import { BaseEvent, BaseEventClass } from '../../Domain/Events/BaseEvent';

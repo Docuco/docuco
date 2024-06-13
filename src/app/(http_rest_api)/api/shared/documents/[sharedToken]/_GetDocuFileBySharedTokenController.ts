@@ -10,11 +10,10 @@ const schema = z.object({
     sharedToken: z.string()
 })
 
-export class GetDocuFileBySharedTokenController extends BaseController {
+export class GetDocuFileBySharedTokenController implements BaseController {
     private getDocuFileBySharedToken: GetDocuFileBySharedToken
 
     constructor() {
-        super();
         const docuFileRepository = DIContainer.get('DocuFileRepository')
 
         this.getDocuFileBySharedToken = new GetDocuFileBySharedToken(

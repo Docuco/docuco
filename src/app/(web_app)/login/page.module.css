@@ -1,0 +1,7 @@
+.main {
+    height: 100vh;
+    background: #3222c3;
+    /* background: radial-gradient(circle, #3222c3 0%, #2dbdfd 100%); */
+    /* background: linear-gradient(30deg, #3222c3 40%, #2dbdfd 60%); */
+    background: linear-gradient(135deg, #3222c3, #2dbdfd);
+}
