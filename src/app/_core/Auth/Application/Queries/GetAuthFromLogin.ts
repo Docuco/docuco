@@ -1,9 +1,9 @@
 import { UserNotFoundByEmail } from "../../../Users/Domain/Exceptions/UserNotFoundByEmail";
 import { UserRepository } from "../../../Users/Domain/Repositories/UserRepository";
 import { Email } from "../../../Users/Domain/VOs/Email";
-import { Auth } from "../../Domain/Entities/Auth";
 import { AuthNotFound } from "../../Domain/Exceptions/AuthNotFound";
 import { AuthRepository } from "../../Domain/Repositories/AuthRepository";
+import { Token } from "../../Domain/VOs/Token";
 import { AuthDTO } from "../DTOs/AuthResponse";
 
 export class GetAuthFromLogin {
@@ -29,9 +29,9 @@ export class GetAuthFromLogin {
         passwordAuth.validatePassword(password);
 
         return {
-            accessToken: passwordAuth.getAccessToken(user),
+            accessToken: passwordAuth.getAccessToken(user).value,
             // refreshToken: auth.refreshToken,
-            expiresIn: Auth.expiresIn,
+            expiresIn: Token.expiresIn,
             tokenType: 'Bearer',
         }
     }

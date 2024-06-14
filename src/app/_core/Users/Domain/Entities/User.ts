@@ -28,8 +28,14 @@ export class User extends AggregateRoot {
     }
 
     changePermissions(permissions: PermissionType[]) {
-        this._permissions = new UniqueVOCollection(permissions.map((permission) => new Permission(permission)));
+        const newPermissions = new UniqueVOCollection(permissions.map((permission) => new Permission(permission)));
 
+        if (this._permissions.equals(newPermissions)) {
+            return
+        }
+
+        this._permissions = newPermissions;
+        this._updatedAt = new Date();
         this.record(new UserPermissionsChanged({
             entityId: this._id.value,
             attributes: this.toPrimitives(),

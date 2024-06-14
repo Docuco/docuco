@@ -8,7 +8,7 @@ export interface DocuFileRepository {
     save(document: DocuFile): Promise<void>;
     getAll({ filters }: { filters: Option<DocuFileFilters> }): Promise<DocuFile[]>;
     getDeleted(): Promise<DocuFile[]>;
-    find(id: Id): Promise<DocuFile | null>;
+    findById(id: Id): Promise<Option<DocuFile>>;
     delete(document: DocuFile): Promise<void>;
-    findBySharedToken(sharedToken: SharedToken): Promise<DocuFile | null>;
+    findBySharedToken(sharedToken: SharedToken): Promise<Option<DocuFile>>;
 }

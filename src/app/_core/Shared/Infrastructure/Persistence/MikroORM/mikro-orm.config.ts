@@ -9,6 +9,8 @@ import { UserSchema } from "../../../../Users/Infrastructure/Repositories/MikroO
 import { AuthSchema } from '../../../../Auth/Infrastructure/Repositories/MikroORM/schemas/AuthSchema';
 import { Migration20240529144115_InitialSchema } from '../../../../../../database/migrations/Migration20240529144115_InitialSchema';
 import { Migration20240530181153_AddPermissionsToUsers } from '../../../../../../database/migrations/Migration20240530181153_AddPermissionsToUsers';
+import { ApiKeySchema } from '../../../../Auth/Infrastructure/Repositories/MikroORM/schemas/ApiKeySchema';
+import { Migration20240614104535_AddApiKeysTable } from '../../../../../../database/migrations/Migration20240614104535_AddApiKeysTable';
 
 dotenv.config({
     path: process.env.NODE_ENV === 'development' ? '.env.local' : '',
@@ -28,6 +30,7 @@ const globalMikroORMConfig: Options = {
         DocuFileSchema,
         UserSchema,
         AuthSchema,
+        ApiKeySchema,
     ],
     migrations: {
         pathTs: './src/database/migrations',
@@ -39,6 +42,10 @@ const globalMikroORMConfig: Options = {
             {
                 name: 'AddPermissionsToUsers',
                 class: Migration20240530181153_AddPermissionsToUsers
+            },
+            {
+                name: 'AddApiKeysTable',
+                class: Migration20240614104535_AddApiKeysTable
             }
         ],
     },
