@@ -25,8 +25,8 @@ export class GetAllApiKeysController implements BaseController, ProtectedControl
     ): Promise<NextResponse> {
         const apiKeys = await this.getApiKeys.run()
 
-        const response = this.mapToResponse(apiKeys);
-        return NextResponse.json(response, { status: 200 });
+        const apiKeysResponse = this.mapToResponse(apiKeys);
+        return NextResponse.json({ apiKeys: apiKeysResponse }, { status: 200 });
     }
 
     private mapToResponse(apiKeys: ApiKey[]) {

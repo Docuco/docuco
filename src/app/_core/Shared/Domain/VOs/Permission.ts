@@ -21,6 +21,7 @@ export class Permission extends EnumValueObject<PermissionType> {
         'apikey:read',
         'apikey:create',
         'apikey:delete',
+        'apikey:update',
         'apikey:change:permission',
     ] as const;
 

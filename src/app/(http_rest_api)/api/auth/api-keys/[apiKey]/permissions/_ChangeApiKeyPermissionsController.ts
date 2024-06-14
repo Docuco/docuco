@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { BaseController } from "../../../_shared/BaseController";
-import { DIContainer } from "../../../../../_core/Shared/Infrastructure/DIContainer";
-import { ProtectedController } from "../../../_shared/ProtectedController";
-import { Permission, PermissionType } from "../../../../../_core/Shared/Domain/VOs/Permission";
-import { ApiKeyFinder } from "../../../../../_core/Auth/Domain/Services/ApiKeyFinder";
 import { z } from "zod";
-import { ChangeApiKeyPermissions } from "../../../../../_core/Auth/Application/Commands/ChangeApiKeyPermissions";
+import { Permission, PermissionType } from "../../../../../../_core/Shared/Domain/VOs/Permission";
+import { BaseController } from "../../../../_shared/BaseController";
+import { ProtectedController } from "../../../../_shared/ProtectedController";
+import { ChangeApiKeyPermissions } from "../../../../../../_core/Auth/Application/Commands/ChangeApiKeyPermissions";
+import { DIContainer } from "../../../../../../_core/Shared/Infrastructure/DIContainer";
+import { ApiKeyFinder } from "../../../../../../_core/Auth/Domain/Services/ApiKeyFinder";
 
 const schema = z.object({
     apiKey: z.string(),

@@ -3,10 +3,12 @@ import { Id } from "../../../Shared/Domain/VOs/Id";
 import { Option } from "../../../Shared/Domain/VOs/Option";
 import { Permission, PermissionType } from "../../../Shared/Domain/VOs/Permission";
 import { UniqueVOCollection } from "../../../Shared/Domain/VOs/UniqueVoCollection";
-import { CreateApiKeyDTO } from "../../Application/DTOs/CreteApiKeyDTO";
+import { CreateApiKeyDTO } from "../../Application/DTOs/CreateApiKeyDTO";
+import { UpdateApiKeyDTO } from "../../Application/DTOs/UpdateApiKeyDTO";
 import { ApiKeyCreated } from "../Events/ApiKeyCreated";
 import { ApiKeyDeleted } from "../Events/ApiKeyDeleted";
 import { ApiKeyPermissionsChanged } from "../Events/ApiKeyPermissionsChanged";
+import { ApiKeyUpdated } from "../Events/ApiKeyUpdated";
 import { ApiKeyPrimitive } from "../Primitives/ApiKeyPrimitive";
 import { ApiKeyToken } from "../VOs/ApiKeyToken";
 import { ApiKeyValue } from "../VOs/ApiKeyValue";
@@ -76,6 +78,27 @@ export class ApiKey extends AggregateRoot {
         }));
 
         return apiKey;
+    }
+
+    update(dto: UpdateApiKeyDTO) {
+        let hasChanged = false;
+        if (this._name !== dto.name) {
+            this._name = dto.name;
+            hasChanged = true;
+        }
+
+        if (this._description.check(desc => desc !== dto.description)) {
+            this._description = Option.fromValue(dto.description);
+            hasChanged = true;
+        }
+
+        if (hasChanged) {
+            this._updatedAt = new Date();
+            this.record(new ApiKeyUpdated({
+                entityId: this._apiKeyValue.value,
+                attributes: this.toPrimitives(),
+            }));
+        }
     }
 
     delete(): void {

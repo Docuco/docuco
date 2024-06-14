@@ -1,7 +1,7 @@
 import { DIContainer } from "../../../../../_core/Shared/Infrastructure/DIContainer";
 import { exceptionHandler } from "../../../_shared/exceptionHandler";
 import { DeleteApiKeyController } from "./_DeleteApiKeyController";
-import { ChangeApiKeyPermissionsController } from "./_ChangeApiKeyPermissionsController";
+import { UpdateApiKeyController } from "./_UpdateApiKeyController";
 
 export const DELETE = exceptionHandler(async (request, route) => {
     await DIContainer.setup();
@@ -10,5 +10,5 @@ export const DELETE = exceptionHandler(async (request, route) => {
 
 export const PUT = exceptionHandler(async (request, route) => {
     await DIContainer.setup();
-    return new ChangeApiKeyPermissionsController().run(request, route.params);
+    return new UpdateApiKeyController().run(request, route.params);
 });

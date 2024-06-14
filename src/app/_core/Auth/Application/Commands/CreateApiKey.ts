@@ -1,7 +1,7 @@
 import { EventBus } from "../../../Shared/Domain/Events/EventBus";
 import { ApiKey } from "../../Domain/Entities/ApiKey";
 import { ApiKeyRepository } from "../../Domain/Repositories/ApiKeyRepository";
-import { CreateApiKeyDTO } from "../DTOs/CreteApiKeyDTO";
+import { CreateApiKeyDTO } from "../DTOs/CreateApiKeyDTO";
 
 export class CreateApiKey {
 
