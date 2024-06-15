@@ -11,10 +11,11 @@ export class GetDocuFileBySharedToken {
 
     public async run({ sharedToken }: { sharedToken: string }): Promise<DocuFile> {
         const docuFile = await this.docuFileRepository.findBySharedToken(new SharedToken(sharedToken))
+        
         if (!docuFile) {
             throw new SharedDocuFileNotFound(sharedToken)
         }
 
-        return docuFile
+        return docuFile.get()
     }
 }

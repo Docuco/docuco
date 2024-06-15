@@ -3,7 +3,7 @@ import { AggregateRoot } from "../../../Shared/Domain/AggregateRoot";
 import { Id } from "../../../Shared/Domain/VOs/Id";
 import { AuthPrimitive } from "../Primitives/AuthPrimitive";
 import { AuthCreated } from "../Events/AuthCreated";
-import { Token } from "../VOs/Token";
+import { UserToken } from "../VOs/UserToken";
 import { Option } from "../../../Shared/Domain/VOs/Option";
 import { User } from "../../../Users/Domain/Entities/User";
 import { AuthDoesNotHavePasswordToValidate } from "../Exceptions/AuthDoesNotHavePasswordToValidate";
@@ -29,12 +29,8 @@ export class Auth extends AggregateRoot {
         return this._userId
     }
 
-    getAccessToken(user: User): string {
-        return Token.generate(process.env.JWT_SECRET!, user, this).value;
-    }
-    
-    static get expiresIn(): number {
-        return 3600; // 1 hour in seconds
+    getAccessToken(user: User): UserToken {
+        return UserToken.generate(process.env.JWT_SECRET!, user, this);
     }
 
     public validatePassword(password: string) {

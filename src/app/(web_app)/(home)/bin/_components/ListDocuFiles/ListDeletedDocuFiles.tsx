@@ -2,7 +2,7 @@
 
 import classes from './ListDeletedDocuFiles.module.css';
 import { Center, Space, Text } from "@mantine/core";
-import { IconFiles } from "@tabler/icons-react";
+import { IconTrash } from "@tabler/icons-react";
 import { useGetDeletedDocuFiles } from "../../_hooks/useGetDeletedDocuFiles";
 import { DeletedDocuFileSkeleton } from '../DeletedDocuFile/DeletedDocuFileSkeleton';
 import { DeletedDocuFile } from '../DeletedDocuFile/DeletedDocuFile';
@@ -25,7 +25,7 @@ export function ListDeletedDocuFiles() {
             <section>
                 <Space h="120px" />
                 <Center>
-                    <IconFiles size={50} color="#9A9A9A" stroke={1.5}/>
+                    <IconTrash size={50} color="#9A9A9A" stroke={1.5}/>
                 </Center>
                 <Space h="20px" />
                 <Center>

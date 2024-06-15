@@ -10,6 +10,10 @@ export class PostgreSQLUserRepository implements UserRepository {
     constructor(private orm: MikroORM) {
     }
 
+    private get em() {
+        return this.orm.em.fork()
+    }
+
     private getRepository(em: EntityManager) {
         const fork = em.getRepository<UserPrimitive>('Users');
 
@@ -17,14 +21,11 @@ export class PostgreSQLUserRepository implements UserRepository {
     }
 
     async save(user: User): Promise<void> {
-        const em = this.orm.em.fork()
-        this.getRepository(em).upsert(user.toPrimitives());
-        em.flush();
+        this.getRepository(this.em).upsert(user.toPrimitives());
     }
 
     async findById(id: Id): Promise<User | null> {
-        const em = this.orm.em.fork()
-        const result = await this.getRepository(em).findOne({ id: id.value });
+        const result = await this.getRepository(this.em).findOne({ id: id.value });
         if (!result) {
             return null;
         }
@@ -33,8 +34,7 @@ export class PostgreSQLUserRepository implements UserRepository {
     }
 
     async findByEmail(email: Email): Promise<User | null> {
-        const em = this.orm.em.fork()
-        const result = await this.getRepository(em).findOne({ email: email.value });
+        const result = await this.getRepository(this.em).findOne({ email: email.value });
         if (!result) {
             return null;
         }

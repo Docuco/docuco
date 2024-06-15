@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { InvalidToken } from "../../../_core/Auth/Domain/Exceptions/InvalidToken";
 import { BaseController } from "./BaseController";
 import { ProtectedController } from "./ProtectedController";
-import { Token, TokenPayload } from "../../../_core/Auth/Domain/VOs/Token";
+import { UserToken, UserTokenPayload } from "../../../_core/Auth/Domain/VOs/UserToken";
 import { Unauthorized } from "../../../_core/Shared/Domain/Exceptions/Unauthorized";
 import { cookies } from "next/headers";
 import { Auth } from "../../../_core/Auth/Domain/Entities/Auth";
+import { Token } from "../../../_core/Auth/Domain/VOs/Token";
+import { PermissionType } from "../../../_core/Shared/Domain/VOs/Permission";
 
 export class AuthProxyController<T extends ProtectedController & BaseController> implements BaseController {
 
@@ -26,7 +28,7 @@ export class AuthProxyController<T extends ProtectedController & BaseController>
 
         this.refreshToken(req, token)
         
-        const tokenPermissions = token.payload.permissions as string[];
+        const tokenPermissions = Token.extractPayload<{ permissions: PermissionType[]}>(token).permissions as string[];
         if (!tokenPermissions || !Array.isArray(tokenPermissions)) {
             throw new Unauthorized(requiredPermissions);
         }
@@ -37,14 +39,14 @@ export class AuthProxyController<T extends ProtectedController & BaseController>
         }
     }
 
-    private getTokenFromRequest(req: NextRequest): Token {
+    private getTokenFromRequest(req: NextRequest): string {
         const tokenPrimitive = this.getTokenPrimitiveFromRequest(req)
-
-        try {
-            return Token.reconstructor(process.env.JWT_SECRET!, tokenPrimitive);
-        } catch (error) {
+        
+        if (!Token.isValid(process.env.JWT_SECRET!, tokenPrimitive)) {
             throw new InvalidToken();
         }
+
+        return tokenPrimitive;
     }
 
     private getTokenPrimitiveFromRequest(req: NextRequest): string {
@@ -61,10 +63,11 @@ export class AuthProxyController<T extends ProtectedController & BaseController>
         throw new InvalidToken();
     }
 
-    private refreshToken(req: NextRequest, token: Token) {
-        const newToken = token.regenerate(process.env.JWT_SECRET!).value
+    private refreshToken(req: NextRequest, token: string) {
+        const newToken = Token.regenerate(process.env.JWT_SECRET!, token)
+        
         cookies().set('token', newToken, {
-            expires: new Date(new Date().getTime() + Auth.expiresIn * 1000)
+            expires: new Date(new Date().getTime() + Token.expiresIn * 1000)
         })
 
         const newHeaders = new Headers(req.headers)

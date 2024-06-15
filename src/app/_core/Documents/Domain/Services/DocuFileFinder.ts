@@ -9,14 +9,13 @@ export class DocuFileFinder {
         private docuFileRepository: DocuFileRepository,
     ) {}
 
-    public async run(idPrimitive: string): Promise<DocuFile> {
-        const id = new Id(idPrimitive)
-        const docuFile = await this.docuFileRepository.find(id)
+    public async run(id: string): Promise<DocuFile> {
+        const docuFile = await this.docuFileRepository.findById(new Id(id))
 
         if (!docuFile) {
             throw new DocuFileNotFound(id);
         }
 
-        return docuFile
+        return docuFile.get()
     }
 }

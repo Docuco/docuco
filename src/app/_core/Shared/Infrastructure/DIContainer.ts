@@ -10,6 +10,9 @@ import { AuthRepository } from "../../Auth/Domain/Repositories/AuthRepository";
 import { S3ContentFileStore } from "../../Documents/Infrastructure/Stores/S3ContentFileStore";
 import { PostgreSQLAuthRepository } from "../../Auth/Infrastructure/Repositories/PostgreSQLAuthRepository";
 import { GetInMemoryEventBus } from "./Events/GetInMemoryEventBus";
+import { ApiKeyRepository } from "../../Auth/Domain/Repositories/ApiKeyRepository";
+import { PostgreSQLApiKeyRepository } from "../../Auth/Infrastructure/Repositories/PostgreSQLApiKeyRepository";
+import { closeDBSession } from "./Persistence/MikroORM/destroy";
 
 type DependenciesImplementations = {
     [K in keyof Dependencies]: Dependencies[K];
@@ -21,6 +24,7 @@ export interface Dependencies {
     DocuFileRepository: DocuFileRepository;
     UserRepository: UserRepository;
     AuthRepository: AuthRepository;
+    ApiKeyRepository: ApiKeyRepository;
 }
 
 export class DIContainer {
@@ -56,6 +60,7 @@ export class DIContainer {
             DocuFileRepository: new PostgreSQLDocuFileRepository(orm),
             UserRepository: new PostgreSQLUserRepository(orm),
             AuthRepository: new PostgreSQLAuthRepository(orm),
+            ApiKeyRepository: new PostgreSQLApiKeyRepository(orm),
         };
 
         Object.entries(dependenciesImplementations).forEach(([key, value]) => {
@@ -63,6 +68,11 @@ export class DIContainer {
         });
 
         DIContainer.set('EventBus', GetInMemoryEventBus());
+    }
+
+    static async destroy(): Promise<void> {
+        console.log('Destroying DIContainer');
+        await closeDBSession();
     }
 }
 

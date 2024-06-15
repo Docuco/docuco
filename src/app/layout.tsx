@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 const theme = createTheme({
   primaryColor: 'blue',
   fontFamily: raleway.style.fontFamily,
+  cursorType: 'pointer',
   headings: {
     fontFamily: `${raleway.style.fontFamily}, ${DEFAULT_THEME.fontFamily}`,
   },

@@ -4,7 +4,7 @@ import { GetAuthFromLogin } from "../../../../_core/Auth/Application/Queries/Get
 import { BaseController } from "../../_shared/BaseController";
 import { DIContainer } from "../../../../_core/Shared/Infrastructure/DIContainer";
 import { cookies } from "next/headers";
-import { Auth } from "../../../../_core/Auth/Domain/Entities/Auth";
+import { Token } from "../../../../_core/Auth/Domain/VOs/Token";
 
 const schema = z.object({
     email: z.string(),
@@ -33,7 +33,7 @@ export class GetAuthFromLoginController implements BaseController {
         const auth = await this.getAuthFromLogin.run({ email, password })
 
         cookies().set('token', auth.accessToken, {
-            expires: new Date(new Date().getTime() + Auth.expiresIn * 1000)
+            expires: new Date(new Date().getTime() + Token.expiresIn * 1000)
         })
         return NextResponse.json(auth, { status: 200 });
     }

@@ -23,18 +23,14 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
         return fork;
     }
 
-
     async save(docuFile: DocuFile): Promise<void> {
-        const em = this.orm.em.fork()
-        this.getRepository(em).upsert(docuFile.toPrimitives());
-        this.orm.em.flush();
+        this.getRepository(this.em).upsert(docuFile.toPrimitives());
     }
 
     async getAll({filters}: {filters: Option<DocuFileFilters>}): Promise<DocuFile[]> {
-        const em = this.orm.em.fork()
         const filterQuery = this.mapFilterToMikroORM(filters);
 
-        const results = await this.getRepository(em).find(
+        const results = await this.getRepository(this.em).find(
             Object.assign({
                 isDeleted: false,
             }, filterQuery)
@@ -43,40 +39,36 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
     }
 
     async getDeleted(): Promise<DocuFile[]> {
-        const em = this.orm.em.fork()
-        const results = await this.getRepository(em).find({
+        const results = await this.getRepository(this.em).find({
             isDeleted: true,
         });
         return results.map((result) => DocuFile.fromPrimitives(result));
     }
 
-    async find(id: Id): Promise<DocuFile | null> {
-        const em = this.orm.em.fork()
-        const result = await this.getRepository(em).findOne({ id: id.value });
+    async findById(id: Id): Promise<Option<DocuFile>> {
+        const result = await this.getRepository(this.em).findOne({ id: id.value });
 
         if (!result) {
-            return null;
+            return Option.none();
         }
 
-        return DocuFile.fromPrimitives(result);
+        return Option.some(DocuFile.fromPrimitives(result));
     }
 
     async delete(docuFile: DocuFile): Promise<void> {
-        const em = this.orm.em.fork()
-        await this.getRepository(em).nativeDelete({id: docuFile.id.value});
+        await this.getRepository(this.em).nativeDelete({ id: docuFile.id.value });
     }
 
-    async findBySharedToken(sharedToken: SharedToken): Promise<DocuFile | null> {
-        const em = this.orm.em.fork()
-        const result = await this.getRepository(em).findOne({
+    async findBySharedToken(sharedToken: SharedToken): Promise<Option<DocuFile>> {
+        const result = await this.getRepository(this.em).findOne({
             sharedToken: sharedToken.value,
         });
 
         if (!result) {
-            return null;
+            return Option.none();
         }
 
-        return DocuFile.fromPrimitives(result);
+        return Option.some(DocuFile.fromPrimitives(result));
     }
 
     private mapFilterToMikroORM(filters: Option<DocuFileFilters>): FilterQuery<DocuFilePrimitive> {
