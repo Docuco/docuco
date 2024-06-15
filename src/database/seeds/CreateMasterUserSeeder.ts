@@ -35,6 +35,8 @@ export class CreateMasterUserSeeder extends Seeder {
     )
 
     await changePermissions.run({ userId: userCreated.id, permissions: Permission.ValidValues })
+
+    await DIContainer.destroy()
   }
 
 }

@@ -27,7 +27,6 @@ export function ListDocuFiles() {
     }
 
     function endPreviewFile() {
-        console.log('endPreviewFile')
         setDocuFileToPreview(null)
         closePDFViewer()
     }

@@ -12,6 +12,7 @@ import { PostgreSQLAuthRepository } from "../../Auth/Infrastructure/Repositories
 import { GetInMemoryEventBus } from "./Events/GetInMemoryEventBus";
 import { ApiKeyRepository } from "../../Auth/Domain/Repositories/ApiKeyRepository";
 import { PostgreSQLApiKeyRepository } from "../../Auth/Infrastructure/Repositories/PostgreSQLApiKeyRepository";
+import { closeDBSession } from "./Persistence/MikroORM/destroy";
 
 type DependenciesImplementations = {
     [K in keyof Dependencies]: Dependencies[K];
@@ -67,6 +68,11 @@ export class DIContainer {
         });
 
         DIContainer.set('EventBus', GetInMemoryEventBus());
+    }
+
+    static async destroy(): Promise<void> {
+        console.log('Destroying DIContainer');
+        await closeDBSession();
     }
 }
 

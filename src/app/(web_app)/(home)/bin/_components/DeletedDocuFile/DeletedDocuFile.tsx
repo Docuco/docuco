@@ -25,6 +25,7 @@ export function DeletedDocuFile({
             method: 'POST',
         })
         await mutate(API_ROUTES.DOCUMENTS);
+        await mutate(API_ROUTES.DOCUMENTS_DELETED);
     }
 
     return (

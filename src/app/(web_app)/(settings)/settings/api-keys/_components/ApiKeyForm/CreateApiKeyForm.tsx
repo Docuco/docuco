@@ -31,13 +31,13 @@ export function CreateApiKeyForm({
     const [isLoading, setIsLoading] = useState(false);
     const [nameLength, setNameLength] = useState(0);
     const [descriptionLength, setDescriptionLength] = useState(0);
-    const token = getCookie('token')!;
+    const token = getCookie('token');
 
     const form = useForm<CreateApiKeyDTO>({
         mode: 'uncontrolled',
         initialValues: {
             name: '',
-            creatorId: Token.extractPayload<UserTokenPayload>(token).userId,
+            creatorId: token ? Token.extractPayload<UserTokenPayload>(token).userId : '',
             description: '',
             permissions: [],
         },

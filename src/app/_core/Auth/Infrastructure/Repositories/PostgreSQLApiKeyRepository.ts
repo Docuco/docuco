@@ -22,9 +22,7 @@ export class PostgreSQLApiKeyRepository implements ApiKeyRepository {
     }
 
     async save(apiKey: ApiKey): Promise<void> {
-        this.getRepository(this.em).upsert(
-            this.mapFromDomainToPersistence(apiKey)
-        );
+        this.getRepository(this.em).upsert(this.mapFromDomainToPersistence(apiKey));
     }
 
     async findByApiKeyValue(apiKey: ApiKeyValue): Promise<Option<ApiKey>> {
@@ -74,7 +72,6 @@ export class PostgreSQLApiKeyRepository implements ApiKeyRepository {
 }
 
 function decryptApiKey(text: string): string {
-    console.log(text);
     const decipher = crypto.createDecipheriv('aes-256-ecb', getSecretToEncrypt(), null);
     let decrypted = decipher.update(text, 'hex', 'utf-8');
     decrypted += decipher.final('utf-8');
@@ -84,8 +81,6 @@ function decryptApiKey(text: string): string {
 
 function getSecretToEncrypt(): string {
     const data = exactSize(process.env.SECRET_ENCRYPT_KEY!, 32, '-');
-    console.log(data);
-    console.log(data.length);
     return data;
     function exactSize(text: string, width: number, fillWith: string): string {
         fillWith = fillWith || '0';

@@ -22,6 +22,10 @@ const globalMikroORMConfig: Options = {
     port: +process.env.DB_PORT!,
     dbName: process.env.DB_NAME,
     driver: PostgreSqlDriver,
+    pool: {
+        min: 2,
+        max: 10,
+    },
     forceUtcTimezone: true,
     flushMode: 'always',
     extensions: [SeedManager, Migrator],

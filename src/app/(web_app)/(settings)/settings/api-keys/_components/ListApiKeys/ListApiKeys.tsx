@@ -2,9 +2,9 @@
 
 import { ApiKey } from "../ApiKey/ApiKey";
 import classes from './ListApiKeys.module.css';
-import { DocuFileSkeleton } from "../ApiKey/ApiKeySkeleton";
+import { ApiKeySkeleton } from "../ApiKey/ApiKeySkeleton";
 import { Center, Space, Text } from "@mantine/core";
-import { IconFiles, IconKey } from "@tabler/icons-react";
+import { IconKey } from "@tabler/icons-react";
 import { useGetApiKeys } from "../../_hooks/useGetApiKeys";
 
 export function ListApiKeys() {
@@ -14,8 +14,8 @@ export function ListApiKeys() {
         return (
             <div className={classes.viewContainer}>
                 <section className={classes.listContainer}>
-                    {[...new Array(10).keys()].map((index) => (
-                        <DocuFileSkeleton key={index} />
+                    {[...new Array(5).keys()].map((index) => (
+                        <ApiKeySkeleton key={index} />
                     ))}
                 </section>
             </div>

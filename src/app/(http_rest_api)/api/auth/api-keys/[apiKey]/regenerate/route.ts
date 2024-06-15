@@ -1,8 +1,7 @@
-import { DIContainer } from "../../../../../../_core/Shared/Infrastructure/DIContainer";
 import { exceptionHandler } from "../../../../_shared/exceptionHandler";
+import { initzializeDependencies } from "../../../../_shared/initzializeDependencies";
 import { RegenerateApiKeyController } from "./_RegenerateApiKeyController";
 
-export const PUT = exceptionHandler(async (request, route) => {
-    await DIContainer.setup();
+export const PUT = exceptionHandler(initzializeDependencies(async (request, route) => {
     return new RegenerateApiKeyController().run(request, route.params);
-});
+}));
