@@ -12,7 +12,7 @@ const schema = z.object({
 })
 
 export class DeleteApiKeyController implements BaseController, ProtectedController {
-    static permissions: PermissionType[] = ['apikey:delete'];
+    static permissions: PermissionType[] = ['api_key:delete'];
     REQUIRED_PERMISSIONS: PermissionType[] = DeleteApiKeyController.permissions;
 
     private deleteApiKey: DeleteApiKey
@@ -44,8 +44,6 @@ export class DeleteApiKeyController implements BaseController, ProtectedControll
     }
 
     private async getParams(req: NextRequest, pathParams: Record<string, string>) {
-        const body = await req.json()
-
         return schema.parse({
             apiKey: pathParams.apiKey,
         })

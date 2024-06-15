@@ -1,22 +1,21 @@
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod";
-import { Permission, PermissionType } from "../../../../../../_core/Shared/Domain/VOs/Permission";
+import { PermissionType } from "../../../../../../_core/Shared/Domain/VOs/Permission";
 import { BaseController } from "../../../../_shared/BaseController";
 import { ProtectedController } from "../../../../_shared/ProtectedController";
-import { ChangeApiKeyPermissions } from "../../../../../../_core/Auth/Application/Commands/ChangeApiKeyPermissions";
 import { DIContainer } from "../../../../../../_core/Shared/Infrastructure/DIContainer";
 import { ApiKeyFinder } from "../../../../../../_core/Auth/Domain/Services/ApiKeyFinder";
+import { RegenerateApiKey } from "../../../../../../_core/Auth/Application/Commands/RegenerateApiKey";
 
 const schema = z.object({
     apiKey: z.string(),
-    newPermissions: z.enum(Permission.ValidValues).array(),
 })
 
-export class ChangeApiKeyPermissionsController implements BaseController, ProtectedController {
-    static permissions: PermissionType[] = ['api_key:change_permission'];
-    REQUIRED_PERMISSIONS: PermissionType[] = ChangeApiKeyPermissionsController.permissions;
+export class RegenerateApiKeyController implements BaseController, ProtectedController {
+    static permissions: PermissionType[] = ['api_key:regenerate'];
+    REQUIRED_PERMISSIONS: PermissionType[] = RegenerateApiKeyController.permissions;
 
-    private changeApiKeyPermissions: ChangeApiKeyPermissions
+    private regenerateApiKey: RegenerateApiKey
 
     constructor() {
         const apiKeyRepository = DIContainer.get('ApiKeyRepository')
@@ -26,7 +25,7 @@ export class ChangeApiKeyPermissionsController implements BaseController, Protec
             apiKeyRepository,
         )
 
-        this.changeApiKeyPermissions = new ChangeApiKeyPermissions(
+        this.regenerateApiKey = new RegenerateApiKey(
             apiKeyFinder,
             apiKeyRepository,
             eventBus
@@ -37,19 +36,16 @@ export class ChangeApiKeyPermissionsController implements BaseController, Protec
         req: NextRequest,
         pathParams: Record<string, string>
     ): Promise<NextResponse> {
-        const { apiKey, newPermissions } = await this.getParams(req, pathParams);
+        const { apiKey } = await this.getParams(req, pathParams);
 
-        await this.changeApiKeyPermissions.run({ apiKey, newPermissions })
+        await this.regenerateApiKey.run(apiKey)
 
         return NextResponse.json({}, { status: 200 });
     }
 
     private async getParams(req: NextRequest, pathParams: Record<string, string>) {
-        const body = await req.json()
-
         return schema.parse({
             apiKey: pathParams.apiKey,
-            newPermissions: body.permissions,
         })
     }
 }

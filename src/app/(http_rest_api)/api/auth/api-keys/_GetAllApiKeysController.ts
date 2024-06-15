@@ -7,7 +7,7 @@ import { GetApiKeys } from "../../../../_core/Auth/Application/Queries/GetApiKey
 import { ApiKey } from "../../../../_core/Auth/Domain/Entities/ApiKey";
 
 export class GetAllApiKeysController implements BaseController, ProtectedController {
-    static permissions: PermissionType[] = ['apikey:read'];
+    static permissions: PermissionType[] = ['api_key:read'];
     REQUIRED_PERMISSIONS: PermissionType[] = GetAllApiKeysController.permissions;
 
     private getApiKeys: GetApiKeys

@@ -25,7 +25,6 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
 
     async save(docuFile: DocuFile): Promise<void> {
         this.getRepository(this.em).upsert(docuFile.toPrimitives());
-        this.em.flush();
     }
 
     async getAll({filters}: {filters: Option<DocuFileFilters>}): Promise<DocuFile[]> {

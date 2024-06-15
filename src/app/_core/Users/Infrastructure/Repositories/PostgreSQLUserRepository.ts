@@ -22,7 +22,6 @@ export class PostgreSQLUserRepository implements UserRepository {
 
     async save(user: User): Promise<void> {
         this.getRepository(this.em).upsert(user.toPrimitives());
-        this.em.flush();
     }
 
     async findById(id: Id): Promise<User | null> {

@@ -24,6 +24,8 @@ export async function generalLoadingNotification({
         title: titleOnStart,
         message: messageOnStart,
         id: randomIdOperation,
+        loading: true,
+        autoClose: false,
     });
 
     try {
@@ -51,22 +53,29 @@ export async function generalLoadingNotification({
 
 }
 
-async function generalNotification({
+export async function generalNotification({
     id = Id.generate().value,
     title,
     message = '',
+    loading = false,
+    color,
+    autoClose = 6000,
 }: {
     id?: string;
     title: string;
     message?: string;
+    loading?: boolean;
+    color?: 'blue' | 'red' | 'yellow' | 'green' | 'gray' | 'dark',
+    autoClose?: number | boolean;
 }): Promise<void> {
     notifications.show({
         id,
-        loading: true,
+        loading,
         title,
         message,
-        autoClose: false,
+        color,
         disallowClose: true,
+        autoClose,
     });
 }
 

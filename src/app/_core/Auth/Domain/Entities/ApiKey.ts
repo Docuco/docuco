@@ -8,6 +8,7 @@ import { UpdateApiKeyDTO } from "../../Application/DTOs/UpdateApiKeyDTO";
 import { ApiKeyCreated } from "../Events/ApiKeyCreated";
 import { ApiKeyDeleted } from "../Events/ApiKeyDeleted";
 import { ApiKeyPermissionsChanged } from "../Events/ApiKeyPermissionsChanged";
+import { ApiKeyRegenerated } from "../Events/ApiKeyRegenerated";
 import { ApiKeyUpdated } from "../Events/ApiKeyUpdated";
 import { ApiKeyPrimitive } from "../Primitives/ApiKeyPrimitive";
 import { ApiKeyToken } from "../VOs/ApiKeyToken";
@@ -16,6 +17,7 @@ import { ApiKeyValue } from "../VOs/ApiKeyValue";
 export class ApiKey extends AggregateRoot {
 
     constructor(
+        private _id: Id,
         private _creatorId: Id,
         private _name: string,
         private _description: Option<string>,
@@ -25,6 +27,10 @@ export class ApiKey extends AggregateRoot {
         private _updatedAt: Date
     ) {
         super();
+    }
+
+    get id(): Id {
+        return this._id;
     }
 
     get creatorId(): Id {
@@ -61,6 +67,7 @@ export class ApiKey extends AggregateRoot {
 
     static create(dto: CreateApiKeyDTO): ApiKey {
         const primitive: ApiKeyPrimitive = {
+            id: Id.generate().value,
             creatorId: dto.creatorId,
             name: dto.name,
             description: dto.description,
@@ -101,6 +108,15 @@ export class ApiKey extends AggregateRoot {
         }
     }
 
+    regenerate(): void {
+        this._apiKeyValue = ApiKeyValue.generate();
+        this._updatedAt = new Date();
+        this.record(new ApiKeyRegenerated({
+            entityId: this._apiKeyValue.value,
+            attributes: this.toPrimitives(),
+        }));
+    }
+
     delete(): void {
         this.record(new ApiKeyDeleted({
             entityId: this._apiKeyValue.value,
@@ -125,6 +141,7 @@ export class ApiKey extends AggregateRoot {
 
     static fromPrimitives(primitives: ApiKeyPrimitive) {
         return new ApiKey(
+            new Id(primitives.id),
             new Id(primitives.creatorId),
             primitives.name,
             primitives.description ? Option.some(primitives.description) : Option.none(),
@@ -137,13 +154,14 @@ export class ApiKey extends AggregateRoot {
 
     toPrimitives(): ApiKeyPrimitive {
         return {
-            creatorId: this._creatorId.value,
-            name: this._name,
-            description: this._description.map((desc) => desc).getOrNull(),
-            apiKeyValue: this._apiKeyValue.value,
-            permissions: this._permissions.values.map((permission) => permission.value),
-            createdAt: this._createdAt.getTime(),
-            updatedAt: this._updatedAt.getTime(),
+            id: this.id.value,
+            creatorId: this.creatorId.value,
+            name: this.name,
+            description: this.description.map((desc) => desc).getOrNull(),
+            apiKeyValue: this.apiKeyValue.value,
+            permissions: this.permissions.values.map((permission) => permission.value),
+            createdAt: this.createdAt.getTime(),
+            updatedAt: this.updatedAt.getTime(),
         };
     }
 }

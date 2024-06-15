@@ -16,7 +16,7 @@ const schema = z.object({
 })
 
 export class UpdateApiKeyController implements BaseController, ProtectedController {
-    static permissions: PermissionType[] = ['apikey:update'];
+    static permissions: PermissionType[] = ['api_key:update'];
     REQUIRED_PERMISSIONS: PermissionType[] = UpdateApiKeyController.permissions;
 
     private updateApiKey: UpdateApiKey

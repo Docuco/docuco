@@ -2,7 +2,6 @@ import { EntityManager, MikroORM } from "@mikro-orm/core";
 import { ApiKeyRepository } from "../../Domain/Repositories/ApiKeyRepository";
 import { ApiKey } from "../../Domain/Entities/ApiKey";
 import { ApiKeyPrimitive } from "../../Domain/Primitives/ApiKeyPrimitive";
-import { Id } from "../../../Shared/Domain/VOs/Id";
 import { Option } from "../../../Shared/Domain/VOs/Option";
 import crypto from 'crypto';
 import { ApiKeyValue } from "../../Domain/VOs/ApiKeyValue";
@@ -26,23 +25,21 @@ export class PostgreSQLApiKeyRepository implements ApiKeyRepository {
         this.getRepository(this.em).upsert(
             this.mapFromDomainToPersistence(apiKey)
         );
-        this.em.flush();
     }
 
     async findByApiKeyValue(apiKey: ApiKeyValue): Promise<Option<ApiKey>> {
         const result = await this.getRepository(this.em).findOne({ apiKeyValue: encryptApiKey(apiKey.value) });
-        console.log('result', result);
 
         if (!result) {
             return Option.none();
         }
-        console.log('data', this.mapFromPersistenceToDomain(result));
+
         return Option.some(this.mapFromPersistenceToDomain(result));
     }
     
     async getAll(): Promise<ApiKey[]> {
         const results = await this.getRepository(this.em).findAll({
-            orderBy: { createdAt: 'ASC' }
+            orderBy: { createdAt: 'DESC' }
         });
         
         return results.map(this.mapFromPersistenceToDomain);

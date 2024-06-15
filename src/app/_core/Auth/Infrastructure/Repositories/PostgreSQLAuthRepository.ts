@@ -21,7 +21,6 @@ export class PostgreSQLAuthRepository implements AuthRepository {
 
     async save(auth: Auth): Promise<void> {
         this.getRepository(this.em).upsert(auth.toPrimitives());
-        this.em.flush();
     }
 
     async findByUserId(userId: Id): Promise<Auth[]> {

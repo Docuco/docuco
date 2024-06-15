@@ -7,11 +7,11 @@ import { API_ROUTES } from "../../../../../_utils/constants";
 
 export function DeleteApiKeyModal({
     apiKey,
-    opened,
+    isOpened,
     onClose
 }: {
     apiKey: ApiKeyPrimitive,
-    opened: boolean,
+    isOpened: boolean,
     onClose: () => void
 }) {
     const [isDeleting, setIsDeleting] = useState(false);
@@ -29,7 +29,7 @@ export function DeleteApiKeyModal({
     }
 
     return (
-        <Modal opened={opened} onClose={onClose} title="Delete api key" centered overlayProps={{
+        <Modal opened={isOpened} onClose={onClose} title="Delete api key" centered overlayProps={{
             backgroundOpacity: 0.55,
             blur: 3,
         }}>

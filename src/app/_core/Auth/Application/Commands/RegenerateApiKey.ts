@@ -1,9 +1,8 @@
 import { EventBus } from "../../../Shared/Domain/Events/EventBus";
 import { ApiKeyRepository } from "../../Domain/Repositories/ApiKeyRepository";
 import { ApiKeyFinder } from "../../Domain/Services/ApiKeyFinder";
-import { UpdateApiKeyDTO } from "../DTOs/UpdateApiKeyDTO";
 
-export class UpdateApiKey {
+export class RegenerateApiKey {
 
     constructor(
         private apiKeyFinder: ApiKeyFinder,
@@ -11,10 +10,10 @@ export class UpdateApiKey {
         private eventBus: EventBus,
     ) {}
 
-    public async run({ apiKeyValue, apiKeyData }: {apiKeyValue: string, apiKeyData: UpdateApiKeyDTO}): Promise<void> {
+    public async run(apiKeyValue: string): Promise<void> {
         const apiKey = await this.apiKeyFinder.run(apiKeyValue);
 
-        apiKey.update(apiKeyData)
+        apiKey.regenerate()
         
         await this.apiKeyRepository.save(apiKey);
 

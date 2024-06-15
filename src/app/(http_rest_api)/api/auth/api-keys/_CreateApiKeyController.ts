@@ -14,7 +14,7 @@ const schema = z.object({
 })
 
 export class CreateApiKeyController implements BaseController, ProtectedController {
-    static permissions: PermissionType[] = ['apikey:create'];
+    static permissions: PermissionType[] = ['api_key:create'];
     REQUIRED_PERMISSIONS: PermissionType[] = CreateApiKeyController.permissions;
 
     private createApiKey: CreateApiKey

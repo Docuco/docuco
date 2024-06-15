@@ -6,6 +6,15 @@
   "tables": [
     {
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "creator_id": {
           "name": "creator_id",
           "type": "varchar(255)",
@@ -62,6 +71,7 @@
             "apikey:read",
             "apikey:create",
             "apikey:delete",
+            "apikey:update",
             "apikey:change:permission"
           ],
           "mappedType": "array"
@@ -89,9 +99,19 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "api_keys_pkey",
           "columnNames": [
             "api_key_value"
+          ],
+          "composite": false,
+          "keyName": "api_keys_api_key_value_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "api_keys_pkey",
+          "columnNames": [
+            "id"
           ],
           "composite": false,
           "constraint": true,
@@ -321,6 +341,7 @@
             "apikey:read",
             "apikey:create",
             "apikey:delete",
+            "apikey:update",
             "apikey:change:permission"
           ],
           "mappedType": "array"

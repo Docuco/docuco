@@ -11,4 +11,5 @@ export const API_ROUTES = {
     API_KEY: (apiKey: string) => `${process.env.NEXT_PUBLIC_API_URL}/auth/api-keys/${apiKey}`,
     API_KEYS_LOGIN: `${process.env.NEXT_PUBLIC_API_URL}/auth/api-keys/login`,
     API_KEY_PERMISSIONS: (apiKey: string) => `${process.env.NEXT_PUBLIC_API_URL}/auth/api-keys/${apiKey}/permissions`,
+    API_KEY_REGENERATE: (apiKey: string) => `${process.env.NEXT_PUBLIC_API_URL}/auth/api-keys/${apiKey}/regenerate`,
 };
