@@ -13,6 +13,8 @@ import { PDFViewer } from "../PDFViewer/PDFViewer";
 import { useScreenSize } from "../../../../_utils/_hooks/useScreenSize";
 import { DocuFileFilters } from "../DocuFileFilters/DocuFileFilters";
 import { useFiltersFromURL } from "../../_hooks/useFiltersFromURL";
+import { DocuMimeType } from "../../../../../_core/Documents/Domain/VOs/DocuMimeType";
+import { DocViewer } from "../DocViewer/DocViewer";
 
 export function ListDocuFiles() {
     const { isDesktop, isTablet, isMobile } = useScreenSize()
@@ -95,10 +97,28 @@ export function ListDocuFiles() {
                         <Drawer.CloseButton />
                     </Drawer.Header>
                     <Drawer.Body style={{ height: 'calc(100% - 60px)' }}>
-                        {docuFileToPreview && <PDFViewer id="pdf-viewer-docuFile-list" docuFile={docuFileToPreview} fit='width' />}
+                        {getViewer(docuFileToPreview)}
                     </Drawer.Body>
                 </Drawer.Content>
             </Drawer.Root>
         </div>
     );
 }
+
+function getViewer(docuFileToPreview: DocuFilePrimitive | null): JSX.Element {
+    if (!docuFileToPreview) {
+        return <></>
+    }
+    
+    const map = { // TODO: improve type safety
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.csv]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.pdf]: <PDFViewer id="pdf-viewer-docuFile-list" docuFile={docuFileToPreview} fit='width' />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.doc]: <DocViewer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.docx]: <DocViewer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.xls]: <DocViewer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.xlsx]: <DocViewer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.odt]: <></>,
+    };
+
+    return map[docuFileToPreview.mimeType] || <></>;
+} 

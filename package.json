@@ -49,6 +49,7 @@
     "pdfobject": "2.3.0",
     "react": "18.2.0",
     "react-countup": "6.5.3",
+    "react-doc-viewer": "^0.1.11",
     "react-dom": "18.2.0",
     "recharts": "2.12.3",
     "swr": "2.2.5",

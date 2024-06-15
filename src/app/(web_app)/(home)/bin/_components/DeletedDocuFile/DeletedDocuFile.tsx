@@ -3,13 +3,13 @@
 import { ActionIcon, Card, CardSection, Center, Group, Menu, MenuDropdown, MenuItem, MenuTarget, Text, rem } from "@mantine/core";
 import { DocuFilePrimitive } from "../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import classes from './DeletedDocuFile.module.css'
-import { MIME_TYPES } from "@mantine/dropzone";
 import { IconDots, IconDownload, IconEye, IconFileShredder, IconFileTypeCsv, IconFileTypeDoc, IconFileTypeDocx, IconFileTypePdf, IconFileTypeXls, IconRestore, IconTrash } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { DeletePermanentlyDocuFileModal } from "./DeletePermanentlyDocuFileModal";
 import { mutate } from "swr";
 import { clientCustomFetch } from "../../../../_utils/fetch";
 import { API_ROUTES } from "../../../../_utils/constants";
+import { DocuMimeType, DocuMimeTypeType } from "../../../../../_core/Documents/Domain/VOs/DocuMimeType";
 
 export function DeletedDocuFile({
     docuFile
@@ -82,17 +82,18 @@ export function DeletedDocuFile({
     );
 }
 
-function getFileTypeIcon(mimeType: string): JSX.Element {
+function getFileTypeIcon(mimeType: DocuMimeTypeType): JSX.Element {
     const size = 32;
     const stroke = 1.3;
 
-    const icons: { [key: string]: JSX.Element} = {
-        [MIME_TYPES.csv]: <IconFileTypeCsv size={size} stroke={stroke} />,
-        [MIME_TYPES.pdf]: <IconFileTypePdf size={size} stroke={stroke} />,
-        [MIME_TYPES.doc]: <IconFileTypeDoc size={size} stroke={stroke} />,
-        [MIME_TYPES.docx]: <IconFileTypeDocx size={size} stroke={stroke} />,
-        [MIME_TYPES.xls]: <IconFileTypeXls size={size} stroke={stroke} />,
-        [MIME_TYPES.xlsx]: <IconFileTypeXls size={size} stroke={stroke} />,
+    const icons: { [key in DocuMimeTypeType]: JSX.Element } = {
+        'text/csv': <IconFileTypeCsv size={size} stroke={stroke} />,
+        'application/pdf': <IconFileTypePdf size={size} stroke={stroke} />,
+        'application/msword': <IconFileTypeDoc size={size} stroke={stroke} />,
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': <IconFileTypeDocx size={size} stroke={stroke} />,
+        'application/vnd.ms-excel': <IconFileTypeXls size={size} stroke={stroke} />,
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': <IconFileTypeXls size={size} stroke={stroke} />,
+        'application/vnd.oasis.opendocument.text': <IconFileTypeDoc size={size} stroke={stroke} />,
     }
 
     return icons[mimeType] || <IconFileTypeDoc />;

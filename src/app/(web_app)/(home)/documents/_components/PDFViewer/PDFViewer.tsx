@@ -35,7 +35,7 @@ export function PDFViewer({
 
     return (
         <>
-            <div id={id} className={classes.pdf_container}></div>
+            <div id={id} className={classes.container}></div>
         </>
     );
 }

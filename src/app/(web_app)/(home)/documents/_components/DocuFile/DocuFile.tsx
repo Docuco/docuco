@@ -1,14 +1,13 @@
 import { ActionIcon, Card, CardSection, Center, Group, Menu, MenuDropdown, MenuItem, MenuTarget, Popover, Text, Tooltip, rem } from "@mantine/core";
 import { DocuFilePrimitive } from "../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import classes from './DocuFile.module.css'
-import { MIME_TYPES } from "@mantine/dropzone";
 import { IconDots, IconEye, IconFileTypeCsv, IconFileTypeDoc, IconFileTypeDocx, IconFileTypePdf, IconFileTypeXls, IconShare, IconTrash } from "@tabler/icons-react";
 import { useClipboard, useDisclosure } from "@mantine/hooks";
 import { DeleteDocuFileModal } from "./DeleteDocuFileModal";
 import { ShareDocuFileModal, buildShareURL } from "./ShareDocuFileModal";
 import { API_ROUTES } from "../../../../_utils/constants";
 import { mutate } from "swr";
-import { DocuMimeTypeType } from "../../../../../_core/Documents/Domain/VOs/DocuMimeType";
+import { DocuMimeType, DocuMimeTypeType } from "../../../../../_core/Documents/Domain/VOs/DocuMimeType";
 
 export function DocuFile({
     docuFile,
@@ -98,13 +97,14 @@ function getFileTypeIcon(mimeType: DocuMimeTypeType): JSX.Element {
     const size = 32;
     const stroke = 1.3;
 
-    const icons: { [key in DocuMimeTypeType]: JSX.Element} = {
-        [MIME_TYPES.csv]: <IconFileTypeCsv size={size} stroke={stroke} />,
-        [MIME_TYPES.pdf]: <IconFileTypePdf size={size} stroke={stroke} />,
-        [MIME_TYPES.doc]: <IconFileTypeDoc size={size} stroke={stroke} />,
-        [MIME_TYPES.docx]: <IconFileTypeDocx size={size} stroke={stroke} />,
-        [MIME_TYPES.xls]: <IconFileTypeXls size={size} stroke={stroke} />,
-        [MIME_TYPES.xlsx]: <IconFileTypeXls size={size} stroke={stroke} />,
+    const icons = { // TODO: improve type safety
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.csv]: <IconFileTypeCsv size={size} stroke={stroke} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.pdf]: <IconFileTypePdf size={size} stroke={stroke} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.doc]: <IconFileTypeDoc size={size} stroke={stroke} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.docx]: <IconFileTypeDocx size={size} stroke={stroke} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.xls]: <IconFileTypeXls size={size} stroke={stroke} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.xlsx]: <IconFileTypeXls size={size} stroke={stroke} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.odt]: <IconFileTypeDoc size={size} stroke={stroke} />,
     }
 
     return icons[mimeType] || <IconFileTypeDoc />;

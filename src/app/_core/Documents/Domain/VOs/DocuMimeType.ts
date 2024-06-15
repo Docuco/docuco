@@ -3,10 +3,10 @@ import { Mutable } from '../../../Shared/Domain/VOs/Mutable';
 import { InvalidMimeType } from '../Exceptions/InvalidMimeType';
 
 export type DocuMimeTypeType = (typeof DocuMimeType.ValidValues)[number];
-export type DocuExtensionType = 'csv' | 'pdf' | 'doc' | 'docx' | 'xls' | 'xlsx';
+export type DocuExtensionType = 'csv' | 'pdf' | 'doc' | 'docx' | 'xls' | 'xlsx' | 'odt';
 
 export class DocuMimeType extends EnumValueObject<DocuMimeTypeType> {
-
+    
     protected static readonly OPTIONS = [
         'text/csv',
         'application/pdf',
@@ -14,6 +14,7 @@ export class DocuMimeType extends EnumValueObject<DocuMimeTypeType> {
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'application/vnd.ms-excel',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.oasis.opendocument.text',
     ] as const;
 
     public static readonly MIME_TYPES_EXTENSIONS: { [key in DocuMimeTypeType]: DocuExtensionType } = {
@@ -23,6 +24,17 @@ export class DocuMimeType extends EnumValueObject<DocuMimeTypeType> {
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
         'application/vnd.ms-excel': 'xls',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+        'application/vnd.oasis.opendocument.text': 'odt',
+    };
+
+    public static readonly EXTENSIONS_MIME_TYPES: { [key in DocuExtensionType]: DocuMimeTypeType } = {
+        'csv': 'text/csv',
+        'pdf': 'application/pdf',
+        'doc': 'application/msword',
+        'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'xls': 'application/vnd.ms-excel',
+        'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'odt': 'application/vnd.oasis.opendocument.text',
     };
 
     get extension(): DocuExtensionType {
