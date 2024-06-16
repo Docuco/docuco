@@ -1,13 +1,14 @@
-import { ActionIcon, Card, CardSection, Center, Group, Menu, MenuDropdown, MenuItem, MenuTarget, Popover, Text, Tooltip, rem } from "@mantine/core";
+import { ActionIcon, Card, CardSection, Center, Group, Menu, MenuDropdown, MenuItem, MenuTarget, Text, Tooltip, rem } from "@mantine/core";
 import { DocuFilePrimitive } from "../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import classes from './DocuFile.module.css'
-import { IconDots, IconEye, IconFileTypeCsv, IconFileTypeDoc, IconFileTypeDocx, IconFileTypePdf, IconFileTypeXls, IconShare, IconTrash } from "@tabler/icons-react";
+import { IconDots, IconDownload, IconEye, IconShare, IconTrash } from "@tabler/icons-react";
 import { useClipboard, useDisclosure } from "@mantine/hooks";
 import { DeleteDocuFileModal } from "./DeleteDocuFileModal";
 import { ShareDocuFileModal, buildShareURL } from "./ShareDocuFileModal";
 import { API_ROUTES } from "../../../../_utils/constants";
 import { mutate } from "swr";
 import { DocuMimeType, DocuMimeTypeType } from "../../../../../_core/Documents/Domain/VOs/DocuMimeType";
+import { getFileTypeIcon } from "../../../../_utils/getFileTypeIcon";
 
 export function DocuFile({
     docuFile,
@@ -22,6 +23,17 @@ export function DocuFile({
 
     const fileTypeIcon = getFileTypeIcon(docuFile.mimeType);
 
+    const canPreview = hasValidPreview(docuFile);
+
+    function download() {
+        const link = document.createElement('a');
+        link.href = docuFile.url;
+        link.download = docuFile.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     return (
         <>
             <Card
@@ -29,8 +41,8 @@ export function DocuFile({
                 padding="lg"
                 radius="md"
                 withBorder
-                className={classes.card}
-                onDoubleClick={() => onPreview(docuFile)}
+                className={`${classes.card} ${canPreview ? classes.card_can_preview : ''}`}
+                onDoubleClick={() => canPreview && onPreview(docuFile)}
             >
                 <CardSection inheritPadding py="xs">
                     <Group justify="space-between">
@@ -51,17 +63,23 @@ export function DocuFile({
                             </MenuTarget>
 
                             <MenuDropdown>
-                                <MenuItem
-                                    leftSection={<IconEye style={{ width: rem(14), height: rem(14) }} />}
+                                {canPreview && <MenuItem
+                                    leftSection={<IconEye color='indigo' style={{ width: rem(14), height: rem(14) }} />}
                                     onClick={() => onPreview(docuFile)}
                                 >
                                     Preview
-                                </MenuItem>
+                                </MenuItem>}
                                 <MenuItem
-                                    leftSection={<IconShare style={{ width: rem(14), height: rem(14) }} />}
+                                    leftSection={<IconShare color='lightseagreen' style={{ width: rem(14), height: rem(14) }} />}
                                     onClick={() => openShareModal()}
                                 >
                                     Share
+                                </MenuItem>
+                                <MenuItem
+                                    leftSection={<IconDownload color='darkcyan' style={{ width: rem(14), height: rem(14) }} />}
+                                    onClick={() => download()}
+                                >
+                                    Download
                                 </MenuItem>
                                 <MenuItem
                                     leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
@@ -93,19 +111,45 @@ export function DocuFile({
     );
 }
 
-function getFileTypeIcon(mimeType: DocuMimeTypeType): JSX.Element {
-    const size = 32;
-    const stroke = 1.3;
+function hasValidPreview(docuFile: DocuFilePrimitive): boolean {
+    const validExtensionsToPreview: DocuMimeTypeType[] = [
+        DocuMimeType.EXTENSIONS_MIME_TYPES.csv,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.txt,
 
-    const icons = { // TODO: improve type safety
-        [DocuMimeType.EXTENSIONS_MIME_TYPES.csv]: <IconFileTypeCsv size={size} stroke={stroke} />,
-        [DocuMimeType.EXTENSIONS_MIME_TYPES.pdf]: <IconFileTypePdf size={size} stroke={stroke} />,
-        [DocuMimeType.EXTENSIONS_MIME_TYPES.doc]: <IconFileTypeDoc size={size} stroke={stroke} />,
-        [DocuMimeType.EXTENSIONS_MIME_TYPES.docx]: <IconFileTypeDocx size={size} stroke={stroke} />,
-        [DocuMimeType.EXTENSIONS_MIME_TYPES.xls]: <IconFileTypeXls size={size} stroke={stroke} />,
-        [DocuMimeType.EXTENSIONS_MIME_TYPES.xlsx]: <IconFileTypeXls size={size} stroke={stroke} />,
-        [DocuMimeType.EXTENSIONS_MIME_TYPES.odt]: <IconFileTypeDoc size={size} stroke={stroke} />,
-    }
+        DocuMimeType.EXTENSIONS_MIME_TYPES.doc,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.xls,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.ppt,
+        
+        DocuMimeType.EXTENSIONS_MIME_TYPES.docx,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.xlsx,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.pptx,
+        
+        DocuMimeType.EXTENSIONS_MIME_TYPES.odt,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.ods,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.odp,
+        
+        DocuMimeType.EXTENSIONS_MIME_TYPES.pdf,
 
-    return icons[mimeType] || <IconFileTypeDoc />;
+        // DocuMimeType.EXTENSIONS_MIME_TYPES["7z"],
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.gz,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.rar,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.tar,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.zip,
+
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.azw,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.epub,
+
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.avif,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.bmp,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.gif,
+        DocuMimeType.EXTENSIONS_MIME_TYPES.jpeg,
+        DocuMimeType.EXTENSIONS_MIME_TYPES.jpg,
+        DocuMimeType.EXTENSIONS_MIME_TYPES.png,
+        DocuMimeType.EXTENSIONS_MIME_TYPES.svg,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.tif,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.tiff,
+        // DocuMimeType.EXTENSIONS_MIME_TYPES.webp,
+    ]
+
+    return validExtensionsToPreview.includes(docuFile.mimeType);
 }

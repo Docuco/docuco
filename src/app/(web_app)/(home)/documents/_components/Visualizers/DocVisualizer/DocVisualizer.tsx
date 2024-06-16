@@ -1,16 +1,15 @@
 'use client'
 
-import { DocuFilePrimitive } from '../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive';
-import Viewer, { DocViewerRenderers } from "react-doc-viewer";
-import { DocuMimeType } from '../../../../../_core/Documents/Domain/VOs/DocuMimeType';
+import { DocuFilePrimitive } from '../../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive';
+import Viewer, { DocViewerRenderers, IHeaderOverride } from "@cyntler/react-doc-viewer";
+import { DocuMimeType } from '../../../../../../_core/Documents/Domain/VOs/DocuMimeType';
 
-export function DocViewer({
+export function DocVisualizer({
     docuFile,
 }: {
     docuFile: DocuFilePrimitive,
 }) {
     const urlToFile = encodeURIComponent(docuFile.url);
-    const iframeSrc = `https://docs.google.com/gview?embedded=true&url=${urlToFile}`;
 
     return (
         <>
@@ -27,9 +26,17 @@ export function DocViewer({
                     header: {
                         disableHeader: true,
                         disableFileName: true,
+                        overrideComponent: EmptyHeader,
                     }
                 }}
             />
+        </>
+    );
+}
+
+const EmptyHeader: IHeaderOverride = () => {
+    return (
+        <>
         </>
     );
 }

@@ -3,11 +3,14 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 178px;
-    cursor: pointer;
     user-select: none
 }
 
-.card:hover {
+.card_can_preview {
+    cursor: pointer;
+}
+
+.card_can_preview:hover {
     background-color: #f7f7f7;
 }
 

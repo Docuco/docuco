@@ -94,7 +94,7 @@ export function AddNewDocumentButton() {
                                 Drag documents here or click to select files
                             </Text>
                             <Text size="sm" c="dimmed" inline mt={7}>
-                                Attach as many files as you like, each file should not exceed {MAXIMUM_FILE_SIZE_IN_BYTES / 1000 ** 2}MB and should be in one of the following formats: .csv, .pdf, .doc, .docx, .xls, .xlsx
+                                Attach as many files as you like, each file should not exceed {MAXIMUM_FILE_SIZE_IN_BYTES / 1000 ** 2}MB
                             </Text>
                         </div>
                     </Group>
