@@ -4,24 +4,22 @@ import {
     Fieldset,
     Group,
     Modal,
+    PasswordInput,
     SimpleGrid,
     Space,
-    Text,
     TextInput,
-    Textarea,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { getCookie } from 'cookies-next';
-import { Token } from '../../../../../../_core/Auth/Domain/VOs/Token';
-import { UserTokenPayload } from '../../../../../../_core/Auth/Domain/VOs/UserToken';
 import { Permission } from '../../../../../../_core/Shared/Domain/VOs/Permission';
 import { useState } from 'react';
-import { CreateApiKeyDTO } from '../../../../../../_core/Auth/Application/DTOs/CreateApiKeyDTO';
 import { clientCustomFetch } from '../../../../../_utils/fetch';
 import { mutate } from 'swr';
 import { API_ROUTES } from '../../../../../_utils/constants';
+import { CreateUserDTO } from '../../../../../../_core/Users/Application/DTOs/CreateUserDTO';
 
-export function CreateApiKeyForm({
+type CreateUserAuthDTO = CreateUserDTO & { password: string };
+
+export function CreateUserForm({
     onClose,
     isOpened,
 }:{
@@ -29,34 +27,23 @@ export function CreateApiKeyForm({
     isOpened: boolean,
 }) {
     const [isLoading, setIsLoading] = useState(false);
-    const [nameLength, setNameLength] = useState(0);
-    const [descriptionLength, setDescriptionLength] = useState(0);
 
-    const form = useForm<CreateApiKeyDTO>({
+    const form = useForm<CreateUserAuthDTO>({
         mode: 'uncontrolled',
         initialValues: {
-            name: '',
-            creatorId: '',
-            description: '',
+            email: '',
+            password: '',
             permissions: [],
         },
     });
 
-    form.watch('name', ({ previousValue, value, touched, dirty }) => {
-        setNameLength(value?.length || 0)
-    });
-
-    form.watch('description', ({ previousValue, value, touched, dirty }) => {
-        setDescriptionLength(value?.length || 0)
-    });
-
-    async function createApiKey(data: CreateApiKeyDTO) {
+    async function createApiKey(data: CreateUserAuthDTO) {
         setIsLoading(true);
-        await clientCustomFetch(`${API_ROUTES.API_KEYS}`, {
+        await clientCustomFetch(`${API_ROUTES.USERS}`, {
             method: 'POST',
             body: JSON.stringify(data),
         })
-        await mutate(API_ROUTES.API_KEYS);
+        await mutate(API_ROUTES.USERS);
         setIsLoading(false);
         onLocalClose();
     }
@@ -69,36 +56,26 @@ export function CreateApiKeyForm({
 
     return (
         <>
-            <Modal opened={isOpened} onClose={onLocalClose} size="xl" title="Add new api key" centered overlayProps={{
+            <Modal opened={isOpened} onClose={onLocalClose} size="xl" title="Add new user" centered overlayProps={{
                 backgroundOpacity: 0.55,
                 blur: 3,
             }}>
                 <form onSubmit={form.onSubmit(createApiKey)}>
                     <TextInput
                         withAsterisk
-                        label="Name"
-                        maxLength={50}
-                        placeholder="My Api Key"
-                        key={form.key('name')}
-                        {...form.getInputProps('name')}
+                        label="Email"
+                        placeholder="admin@admin.com"
+                        key={form.key('email')}
+                        {...form.getInputProps('email')}
                     />
-                    <Group justify='flex-end'>
-                        <Text size='sm' c='dimmed'>{nameLength}/{50}</Text>
-                    </Group>
                     <Space h="xl" />
-                    <Textarea
+                    <PasswordInput
                         withAsterisk
-                        resize="vertical"
-                        autosize
-                        label="Description"
-                        maxLength={250}
-                        placeholder="Api key for my app..."
-                        key={form.key('description')}
-                        {...form.getInputProps('description')}
+                        label="Password"
+                        placeholder="H@rdP@ssw0rd"
+                        key={form.key('password')}
+                        {...form.getInputProps('password')}
                     />
-                    <Group justify='flex-end'>
-                        <Text size='sm' c='dimmed'>{descriptionLength}/{250}</Text>
-                    </Group>
                     <Space h="xl" />
 
                     <Fieldset legend="Permissions">
@@ -120,7 +97,7 @@ export function CreateApiKeyForm({
                     </Fieldset>
                     <Space h="xl" />
                     <Group justify="flex-end" mt="md">
-                        <Button type="submit" loading={isLoading}>Create Api Key</Button>
+                        <Button type="submit" loading={isLoading}>Create user</Button>
                     </Group>
                 </form>
             </Modal>

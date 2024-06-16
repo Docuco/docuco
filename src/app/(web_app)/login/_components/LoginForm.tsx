@@ -6,6 +6,7 @@ import { clientCustomFetch } from '../../_utils/fetch';
 import { useRouter } from 'next/navigation';
 import { errorNotification } from '../../_utils/notifications';
 import { useState } from 'react';
+import { API_ROUTES } from '../../_utils/constants';
 
 interface LoginType {
   email: string;
@@ -30,14 +31,14 @@ export function LoginForm() {
   async function doLogin(values: LoginType) {
     try {
       setIsLoading(true);
-      await clientCustomFetch('/api/auth/login', {
+      await clientCustomFetch(API_ROUTES.AUTH_LOGIN, {
         method: 'POST',
         body: JSON.stringify(values),
       })
   
       router.push('/home');
     } catch (error) {
-      errorNotification({
+      await errorNotification({
         title: 'Invalid credentials',
       })
     }

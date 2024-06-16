@@ -34,10 +34,8 @@ export class GetDocuFilesController implements BaseController, ProtectedControll
         
         const docuFiles = await this.getDocuFiles.run({ filters })
 
-        const files = this.mapResponse(docuFiles)
-        return NextResponse.json({
-            files
-        }, { status: 200 });
+        const filesResponse = this.mapResponse(docuFiles)
+        return NextResponse.json({ files: filesResponse }, { status: 200 });
     }
 
     private mapResponse(docuFiles: DocuFile[]): DocuFilePrimitive[] {

@@ -1,5 +1,4 @@
 import {
-    ActionIcon,
     Button,
     Checkbox,
     CopyButton,
@@ -11,22 +10,16 @@ import {
     Text,
     TextInput,
     Textarea,
-    Tooltip,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { getCookie } from 'cookies-next';
-import { Token } from '../../../../../../_core/Auth/Domain/VOs/Token';
-import { UserTokenPayload } from '../../../../../../_core/Auth/Domain/VOs/UserToken';
 import { Permission } from '../../../../../../_core/Shared/Domain/VOs/Permission';
 import { useState } from 'react';
 import { ApiKeyPrimitive } from '../../../../../../_core/Auth/Domain/Primitives/ApiKeyPrimitive';
-import { CreateApiKeyDTO } from '../../../../../../_core/Auth/Application/DTOs/CreateApiKeyDTO';
 import { clientCustomFetch } from '../../../../../_utils/fetch';
 import { mutate } from 'swr';
 import { API_ROUTES } from '../../../../../_utils/constants';
 import { UpdateApiKeyDTO } from '../../../../../../_core/Auth/Application/DTOs/UpdateApiKeyDTO';
 import { errorNotification, generalNotification } from '../../../../../_utils/notifications';
-import { useClipboard } from '@mantine/hooks';
 
 export function UpdateApiKeyForm({
     apiKey,
@@ -41,8 +34,6 @@ export function UpdateApiKeyForm({
     const [descriptionLength, setDescriptionLength] = useState(apiKey.description?.length || 0);
     const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
     const [isLoadingChangePermissions, setIsLoadingChangePermissions] = useState(false);
-
-    const clipboard = useClipboard({ timeout: 1000 });
 
     const updateForm = useForm<UpdateApiKeyDTO>({
         mode: 'uncontrolled',
@@ -76,7 +67,7 @@ export function UpdateApiKeyForm({
             })
             await generalNotification({ title: 'Api Key updated', message: `Api Key "${apiKey.name}" has been updated`})
         } catch (error) {
-            errorNotification({ title: 'Error updating Api Key', message: (error as any).message });
+            await errorNotification({ title: 'Error updating Api Key', message: (error as any).message });
         }
         setIsLoadingUpdate(false);
     }
@@ -90,12 +81,14 @@ export function UpdateApiKeyForm({
             })
             await generalNotification({ title: 'Permissions changed', message: `Permissions for the Api Key "${apiKey.name}" have been changed`})
         } catch (error) {
-            errorNotification({ title: 'Error changing permissions', message: (error as any).message });
+            await errorNotification({ title: 'Error changing permissions', message: (error as any).message });
         }
         setIsLoadingChangePermissions(false);
     }
 
     async function onLocalClose() {
+        setIsLoadingChangePermissions(false);
+        setIsLoadingUpdate(false);
         await mutate(API_ROUTES.API_KEYS);
         onClose();
     }

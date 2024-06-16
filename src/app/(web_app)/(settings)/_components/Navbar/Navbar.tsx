@@ -1,7 +1,7 @@
 import { Button, Space } from "@mantine/core";
 import Link from "next/link";
 import { Fragment } from "react";
-import { IconArrowLeft, IconBox, IconKey, IconUserCircle } from "@tabler/icons-react";
+import { IconArrowLeft, IconBox, IconKey, IconUserCircle, IconUsers } from "@tabler/icons-react";
 
 const navLinks = (path: string) => [
     {
@@ -15,6 +15,12 @@ const navLinks = (path: string) => [
         icon: <IconUserCircle stroke={1.3} />,
         href: '/settings/account',
         variant: path === '/settings/account' ? 'filled' : 'subtle',
+    },
+    {
+        label: 'Users',
+        icon: <IconUsers stroke={1.3} />,
+        href: '/settings/users',
+        variant: path === '/settings/users' ? 'filled' : 'subtle',
     },
     {
         label: 'Api keys',

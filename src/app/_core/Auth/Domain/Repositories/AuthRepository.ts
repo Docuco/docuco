@@ -4,4 +4,5 @@ import { Auth } from "../Entities/Auth";
 export interface AuthRepository {
     save(auth: Auth): Promise<void>;
     findByUserId(userId: Id): Promise<Auth[]>;
+    delete(auth: Auth): Promise<void>;
 }

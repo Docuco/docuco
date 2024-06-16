@@ -41,4 +41,14 @@ export class PostgreSQLUserRepository implements UserRepository {
 
         return User.fromPrimitives(result);
     }
+
+    async getAll(): Promise<User[]> {
+        const result = await this.getRepository(this.em).findAll();
+        
+        return result.map(user => User.fromPrimitives(user));
+    }
+
+    async delete(user: User): Promise<void> {
+        this.getRepository(this.em).nativeDelete({ id: user.id.value });
+    }
 }

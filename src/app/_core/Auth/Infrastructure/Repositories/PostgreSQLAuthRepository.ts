@@ -28,4 +28,8 @@ export class PostgreSQLAuthRepository implements AuthRepository {
         
         return results.map((result) => Auth.fromPrimitives(result));
     }
+
+    async delete(auth: Auth): Promise<void> {
+        this.getRepository(this.em).nativeDelete({ id: auth.id.value });
+    }
 }

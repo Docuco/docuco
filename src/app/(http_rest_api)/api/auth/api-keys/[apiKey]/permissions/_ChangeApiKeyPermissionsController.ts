@@ -13,7 +13,7 @@ const schema = z.object({
 })
 
 export class ChangeApiKeyPermissionsController implements BaseController, ProtectedController {
-    static permissions: PermissionType[] = ['api_key:change_permission'];
+    static permissions: PermissionType[] = ['api_key:change_permissions'];
     REQUIRED_PERMISSIONS: PermissionType[] = ChangeApiKeyPermissionsController.permissions;
 
     private changeApiKeyPermissions: ChangeApiKeyPermissions

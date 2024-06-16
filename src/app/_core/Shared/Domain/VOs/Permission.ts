@@ -16,14 +16,15 @@ export class Permission extends EnumValueObject<PermissionType> {
         'users:read',
         'users:create',
         'users:delete',
-        'users:change_permission',
+        'users:change_permissions',
+        'users:change_password',
 
         'api_key:read',
         'api_key:create',
         'api_key:delete',
         'api_key:update',
         'api_key:regenerate',
-        'api_key:change_permission',
+        'api_key:change_permissions',
     ] as const;
 
     public static readonly ValidValues = Permission.OPTIONS as Mutable<typeof Permission.OPTIONS>;

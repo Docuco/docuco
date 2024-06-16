@@ -17,7 +17,8 @@ export async function clientCustomFetch(input: RequestInfo, init?: RequestInit):
     const res = await fetch(input, options)
     
     if (!res.ok) {
-        throw new Error(res.statusText)
+        const error = await res.json()
+        throw new Error(error.error)
     }
 
     return res

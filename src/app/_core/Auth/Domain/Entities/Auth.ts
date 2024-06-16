@@ -7,6 +7,8 @@ import { UserToken } from "../VOs/UserToken";
 import { Option } from "../../../Shared/Domain/VOs/Option";
 import { User } from "../../../Users/Domain/Entities/User";
 import { AuthDoesNotHavePasswordToValidate } from "../Exceptions/AuthDoesNotHavePasswordToValidate";
+import { AuthPasswordChanged } from "../Events/AuthPasswordChanged";
+import { AuthDeleted } from "../Events/AuthDeleted";
 
 export class Auth extends AggregateRoot {
 
@@ -43,6 +45,23 @@ export class Auth extends AggregateRoot {
 
     public isPasswordAuth() {
         return this._password ? true : false;
+    }
+
+    public changePassword(newPassword: string) {
+        this._password = Option.some(Password.fromRaw(newPassword));
+        this._updatedAt = new Date();
+
+        this.record(new AuthPasswordChanged({
+            entityId: this._id.value,
+            attributes: this.toPrimitives(),
+        }));
+    }
+
+    public delete() {
+        this.record(new AuthDeleted({
+            entityId: this._id.value,
+            attributes: this.toPrimitives(),
+        }));
     }
 
     public static create({ userId, password }: { userId: Id, password: string }) {
