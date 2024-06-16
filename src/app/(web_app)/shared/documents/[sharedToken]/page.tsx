@@ -1,8 +1,8 @@
 import { Center, Space, Text } from "@mantine/core";
-import { PDFViewer } from "../../../(home)/documents/_components/PDFViewer/PDFViewer";
 import { DocuFilePrimitive } from "../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import { API_ROUTES } from "../../../_utils/constants";
 import { IconFileOff } from "@tabler/icons-react";
+import { PDFVisualizer } from "../../../(home)/documents/_components/Visualizers/PDFVisualizer/PDFVisualizer";
 
 export default async function Page({
   params,
@@ -32,7 +32,7 @@ export default async function Page({
   return (
     <html style={{height: '100%', padding: 0, margin: 0}}>
       <body style={{ height: '100%', padding: 0, margin: 0 }}>
-        <PDFViewer id='shared-docuFile' docuFile={docuFile}/>
+        <PDFVisualizer id='shared-docuFile' docuFile={docuFile}/>
       </body>
     </html>
   );

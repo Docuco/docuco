@@ -3,13 +3,13 @@
 import { ActionIcon, Card, CardSection, Center, Group, Menu, MenuDropdown, MenuItem, MenuTarget, Text, rem } from "@mantine/core";
 import { DocuFilePrimitive } from "../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import classes from './DeletedDocuFile.module.css'
-import { MIME_TYPES } from "@mantine/dropzone";
-import { IconDots, IconDownload, IconEye, IconFileShredder, IconFileTypeCsv, IconFileTypeDoc, IconFileTypeDocx, IconFileTypePdf, IconFileTypeXls, IconRestore, IconTrash } from "@tabler/icons-react";
+import { IconDots, IconEye, IconFileShredder, IconRestore } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { DeletePermanentlyDocuFileModal } from "./DeletePermanentlyDocuFileModal";
 import { mutate } from "swr";
 import { clientCustomFetch } from "../../../../_utils/fetch";
 import { API_ROUTES } from "../../../../_utils/constants";
+import { getFileTypeIcon } from "../../../../_utils/getFileTypeIcon";
 
 export function DeletedDocuFile({
     docuFile
@@ -42,7 +42,7 @@ export function DeletedDocuFile({
 
                             <MenuDropdown>
                                 <MenuItem
-                                    leftSection={<IconEye style={{ width: rem(14), height: rem(14) }} />}
+                                    leftSection={<IconEye color='indigo' style={{ width: rem(14), height: rem(14) }} />}
                                     component="a"
                                     target="_blank"
                                     href={docuFile.url}
@@ -50,8 +50,7 @@ export function DeletedDocuFile({
                                     Preview
                                 </MenuItem>
                                 <MenuItem
-                                    leftSection={<IconRestore style={{ width: rem(14), height: rem(14) }} />}
-                                    color="green"
+                                    leftSection={<IconRestore color="green" style={{ width: rem(14), height: rem(14) }} />}
                                     onClick={restore}
                                 >
                                     Restore
@@ -80,20 +79,4 @@ export function DeletedDocuFile({
             <DeletePermanentlyDocuFileModal docuFile={docuFile} onClose={closeDeleteModal} opened={isOpenedDeleteModal}/>
         </>
     );
-}
-
-function getFileTypeIcon(mimeType: string): JSX.Element {
-    const size = 32;
-    const stroke = 1.3;
-
-    const icons: { [key: string]: JSX.Element} = {
-        [MIME_TYPES.csv]: <IconFileTypeCsv size={size} stroke={stroke} />,
-        [MIME_TYPES.pdf]: <IconFileTypePdf size={size} stroke={stroke} />,
-        [MIME_TYPES.doc]: <IconFileTypeDoc size={size} stroke={stroke} />,
-        [MIME_TYPES.docx]: <IconFileTypeDocx size={size} stroke={stroke} />,
-        [MIME_TYPES.xls]: <IconFileTypeXls size={size} stroke={stroke} />,
-        [MIME_TYPES.xlsx]: <IconFileTypeXls size={size} stroke={stroke} />,
-    }
-
-    return icons[mimeType] || <IconFileTypeDoc />;
 }

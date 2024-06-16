@@ -21,7 +21,7 @@ export function TypeFilter({
         const extension = DocuMimeType.MIME_TYPES_EXTENSIONS[mimeType]
         
         return  extension
-    });
+    }).sort()
     
     return (
         <>

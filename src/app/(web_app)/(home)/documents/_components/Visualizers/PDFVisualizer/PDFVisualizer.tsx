@@ -1,11 +1,11 @@
 'use client'
 
 import { useEffect } from 'react';
-import classes from './PDFViewer.module.css';
-import { DocuFilePrimitive } from '../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive';
+import classes from './PDFVisualizer.module.css';
 import PDFObject from 'pdfobject';
+import { DocuFilePrimitive } from '../../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive';
 
-export function PDFViewer({
+export function PDFVisualizer({
     id,
     docuFile,
     fit,
@@ -35,7 +35,7 @@ export function PDFViewer({
 
     return (
         <>
-            <div id={id} className={classes.pdf_container}></div>
+            <div id={id} className={classes.container}></div>
         </>
     );
 }

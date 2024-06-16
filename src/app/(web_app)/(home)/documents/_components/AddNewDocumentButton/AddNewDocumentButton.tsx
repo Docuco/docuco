@@ -11,11 +11,12 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { IconFiles, IconUpload, IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
-import { Dropzone, DropzoneAccept, DropzoneIdle, DropzoneReject, FileRejection, FileWithPath, MIME_TYPES } from '@mantine/dropzone';
+import { Dropzone, DropzoneAccept, DropzoneIdle, DropzoneReject, FileRejection, FileWithPath } from '@mantine/dropzone';
 import classes from './AddNewDocumentButton.module.css';
 import { mutate } from 'swr';
 import { API_ROUTES } from '../../../../_utils/constants';
 import { clientCustomFetch } from '../../../../_utils/fetch';
+import { DocuMimeType } from '../../../../../_core/Documents/Domain/VOs/DocuMimeType';
 
 export function AddNewDocumentButton() {
     const [isOpened, { open, close }] = useDisclosure(false);
@@ -66,14 +67,7 @@ export function AddNewDocumentButton() {
                     onReject={setFileErrors}
                     maxSize={MAXIMUM_FILE_SIZE_IN_BYTES}
                     loading={isUploadingFiles}
-                    accept={[
-                        MIME_TYPES.csv,
-                        MIME_TYPES.pdf,
-                        MIME_TYPES.doc,
-                        MIME_TYPES.docx,
-                        MIME_TYPES.xls,
-                        MIME_TYPES.xlsx,
-                    ]}
+                    accept={DocuMimeType.ValidValues}
                 >
                     <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
                         <DropzoneAccept>
@@ -100,7 +94,7 @@ export function AddNewDocumentButton() {
                                 Drag documents here or click to select files
                             </Text>
                             <Text size="sm" c="dimmed" inline mt={7}>
-                                Attach as many files as you like, each file should not exceed {MAXIMUM_FILE_SIZE_IN_BYTES / 1000 ** 2}MB and should be in one of the following formats: .csv, .pdf, .doc, .docx, .xls, .xlsx
+                                Attach as many files as you like, each file should not exceed {MAXIMUM_FILE_SIZE_IN_BYTES / 1000 ** 2}MB
                             </Text>
                         </div>
                     </Group>

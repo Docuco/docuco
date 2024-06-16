@@ -9,10 +9,13 @@ import { IconFiles } from "@tabler/icons-react";
 import { DocuFilePrimitive } from "../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
-import { PDFViewer } from "../PDFViewer/PDFViewer";
 import { useScreenSize } from "../../../../_utils/_hooks/useScreenSize";
 import { DocuFileFilters } from "../DocuFileFilters/DocuFileFilters";
 import { useFiltersFromURL } from "../../_hooks/useFiltersFromURL";
+import { DocuMimeType } from "../../../../../_core/Documents/Domain/VOs/DocuMimeType";
+import { DocVisualizer } from "../Visualizers/DocVisualizer/DocVisualizer";
+import { PDFVisualizer } from "../Visualizers/PDFVisualizer/PDFVisualizer";
+import { ImageVisualizer } from "../Visualizers/ImageVisualizer/ImageVisualizer";
 
 export function ListDocuFiles() {
     const { isDesktop, isTablet, isMobile } = useScreenSize()
@@ -95,10 +98,57 @@ export function ListDocuFiles() {
                         <Drawer.CloseButton />
                     </Drawer.Header>
                     <Drawer.Body style={{ height: 'calc(100% - 60px)' }}>
-                        {docuFileToPreview && <PDFViewer id="pdf-viewer-docuFile-list" docuFile={docuFileToPreview} fit='width' />}
+                        {getVisualizer(docuFileToPreview)}
                     </Drawer.Body>
                 </Drawer.Content>
             </Drawer.Root>
         </div>
     );
 }
+
+function getVisualizer(docuFileToPreview: DocuFilePrimitive | null): JSX.Element {
+    if (!docuFileToPreview) {
+        return <></>
+    }
+    
+    const map = { // TODO: improve type safety
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.csv]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.txt]: <></>,
+        
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.doc]: <DocVisualizer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.xls]: <DocVisualizer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.ppt]: <DocVisualizer docuFile={docuFileToPreview} />,
+
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.docx]: <DocVisualizer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.xlsx]: <DocVisualizer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.pptx]: <DocVisualizer docuFile={docuFileToPreview} />,
+
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.odt]: <DocVisualizer docuFile={docuFileToPreview} />,
+        // [DocuMimeType.EXTENSIONS_MIME_TYPES.ods]: <></>,
+        // [DocuMimeType.EXTENSIONS_MIME_TYPES.odp]: <></>,
+        
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.pdf]: <PDFVisualizer id="pdf-viewer-docuFile-list" docuFile={docuFileToPreview} fit='width' />,
+
+        [DocuMimeType.EXTENSIONS_MIME_TYPES["7z"]]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.gz]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.rar]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.tar]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.zip]: <></>,
+
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.azw]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.epub]: <></>,
+
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.avif]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.bmp]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.gif]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.jpeg]: <ImageVisualizer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.jpg]: <ImageVisualizer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.png]: <ImageVisualizer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.svg]: <ImageVisualizer docuFile={docuFileToPreview} />,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.tif]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.tiff]: <></>,
+        [DocuMimeType.EXTENSIONS_MIME_TYPES.webp]: <></>,
+    };
+
+    return map[docuFileToPreview.mimeType] || <></>;
+} 
