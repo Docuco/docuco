@@ -1,9 +1,11 @@
 import { BaseException } from '../../../Shared/Domain/Exceptions/BaseException';
+import { ErrorCode } from '../../../Shared/Domain/Exceptions/ErrorCode';
 
 export class UserAlreadyExists extends BaseException {
 
     constructor(email: string) {
         super(
+            ErrorCode.UserAlreadyExists,
             `User with email "${email}" not found.`,
             {
                 email,

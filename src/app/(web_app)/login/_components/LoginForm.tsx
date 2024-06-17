@@ -29,19 +29,14 @@ export function LoginForm() {
   });
   
   async function doLogin(values: LoginType) {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       await clientCustomFetch(API_ROUTES.AUTH_LOGIN, {
         method: 'POST',
         body: JSON.stringify(values),
       })
-  
       router.push('/home');
-    } catch (error) {
-      await errorNotification({
-        title: 'Invalid credentials',
-      })
-    }
+    } catch {}
     setIsLoading(false);
   }
 

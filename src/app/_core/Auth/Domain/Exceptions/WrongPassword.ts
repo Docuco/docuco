@@ -1,9 +1,11 @@
 import { BaseException } from "../../../Shared/Domain/Exceptions/BaseException";
+import { ErrorCode } from "../../../Shared/Domain/Exceptions/ErrorCode";
 
 export class WrongPassword extends BaseException {
 
     constructor(password: string) {
         super(
+            ErrorCode.WrongPassword,
             `The password "${password}" is wrong.`,
             {
                 password,

@@ -16,6 +16,7 @@ import { clientCustomFetch } from '../../../../../_utils/fetch';
 import { mutate } from 'swr';
 import { API_ROUTES } from '../../../../../_utils/constants';
 import { CreateUserDTO } from '../../../../../../_core/Users/Application/DTOs/CreateUserDTO';
+import { errorNotification } from '../../../../../_utils/notifications';
 
 type CreateUserAuthDTO = CreateUserDTO & { password: string };
 

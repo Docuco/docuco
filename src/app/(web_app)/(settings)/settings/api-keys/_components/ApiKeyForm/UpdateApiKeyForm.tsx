@@ -60,29 +60,21 @@ export function UpdateApiKeyForm({
 
     async function updateApiKey(data: UpdateApiKeyDTO) {
         setIsLoadingUpdate(true);
-        try {
-            await clientCustomFetch(`${API_ROUTES.API_KEY(apiKey.apiKeyValue)}`, {
-                method: 'PUT',
-                body: JSON.stringify(data),
-            })
-            await generalNotification({ title: 'Api Key updated', message: `Api Key "${apiKey.name}" has been updated`})
-        } catch (error) {
-            await errorNotification({ title: 'Error updating Api Key', message: (error as any).message });
-        }
+        await clientCustomFetch(`${API_ROUTES.API_KEY(apiKey.apiKeyValue)}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        })
+        await generalNotification({ title: 'Api Key updated', message: `Api Key "${apiKey.name}" has been updated`})
         setIsLoadingUpdate(false);
     }
 
     async function changeApiKeyPermissions(data: { permissions: string[] }) {
         setIsLoadingChangePermissions(true);
-        try {
-            await clientCustomFetch(`${API_ROUTES.API_KEY_PERMISSIONS(apiKey.apiKeyValue)}`, {
-                method: 'PUT',
-                body: JSON.stringify(data),
-            })
-            await generalNotification({ title: 'Permissions changed', message: `Permissions for the Api Key "${apiKey.name}" have been changed`})
-        } catch (error) {
-            await errorNotification({ title: 'Error changing permissions', message: (error as any).message });
-        }
+        await clientCustomFetch(`${API_ROUTES.API_KEY_PERMISSIONS(apiKey.apiKeyValue)}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        })
+        await generalNotification({ title: 'Permissions changed', message: `Permissions for the Api Key "${apiKey.name}" have been changed`})
         setIsLoadingChangePermissions(false);
     }
 

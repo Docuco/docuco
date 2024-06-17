@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { clientCustomFetch } from '../../../../../_utils/fetch';
 import { mutate } from 'swr';
 import { API_ROUTES } from '../../../../../_utils/constants';
-import { errorNotification, generalNotification } from '../../../../../_utils/notifications';
+import { generalNotification } from '../../../../../_utils/notifications';
 import { UserPrimitive } from '../../../../../../_core/Users/Domain/Primitives/UserPrimitive';
 
 export function UpdateUserForm({
@@ -45,15 +45,11 @@ export function UpdateUserForm({
 
     async function changePasswordToUser(data: { password: string }) {
         setIsLoadingChangePassword(true);
-        try {
-            await clientCustomFetch(`${API_ROUTES.USER_CHANGE_PASSWORD(user.id)}`, {
-                method: 'PUT',
-                body: JSON.stringify(data),
-            })
-            await generalNotification({ title: 'Password changed', message: `Password for the user "${user.email}" has been changed`})
-        } catch (error) {
-            await errorNotification({ title: 'Error changing password', message: (error as any).message });
-        }
+        await clientCustomFetch(`${API_ROUTES.USER_CHANGE_PASSWORD(user.id)}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        })
+        await generalNotification({ title: 'Password changed', message: `Password for the user "${user.email}" has been changed`})
         passwordForm.reset();
         setIsLoadingChangePassword(false);
     }
@@ -67,9 +63,8 @@ export function UpdateUserForm({
             })
             await generalNotification({ title: 'Permissions changed', message: `Permissions for the user "${user.email}" have been changed`})
         } catch (error) {
-            await errorNotification({ title: 'Error changing permissions', message: (error as any).message });
+            permissionsForm.reset();
         }
-        permissionsForm.reset();
         setIsLoadingChangePermissions(false);
     }
 
@@ -106,6 +101,7 @@ export function UpdateUserForm({
                         <Checkbox.Group
                             label=""
                             withAsterisk
+                            key={permissionsForm.key('permissions')}
                             {...permissionsForm.getInputProps('permissions')}
                         >
                             <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">

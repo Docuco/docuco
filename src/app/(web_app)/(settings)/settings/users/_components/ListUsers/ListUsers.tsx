@@ -42,7 +42,7 @@ export function ListUsers() {
     return (
         <div className={classes.viewContainer}>
             <section className={classes.listContainer}>
-                {users.map((user) => (
+                {[...users].sort((u1, u2) => u1.createdAt - u2.createdAt).map((user) => (
                     <User
                         key={user.id}
                         user={user}

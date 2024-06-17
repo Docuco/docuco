@@ -19,16 +19,10 @@ export function DeleteUserModal({
 
     async function deleteUser() {
         setIsDeleting(true);
-       
-        try {
-            await clientCustomFetch(`${API_ROUTES.USER(user.id)}`, {
-                method: 'DELETE',
-            })
-            await mutate(API_ROUTES.USERS);
-        } catch (error) {
-            await errorNotification({ title: 'Error deleting user', message: (error as any).message });
-        }
-                
+        await clientCustomFetch(`${API_ROUTES.USER(user.id)}`, {
+            method: 'DELETE',
+        })
+        await mutate(API_ROUTES.USERS);
         setIsDeleting(false);
         onClose();
     }

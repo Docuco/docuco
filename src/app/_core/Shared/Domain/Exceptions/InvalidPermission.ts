@@ -1,9 +1,11 @@
 import { BaseException } from '../../../Shared/Domain/Exceptions/BaseException';
+import { ErrorCode } from './ErrorCode';
 
 export class InvalidPermission extends BaseException {
 
     constructor(permission: string) {
         super(
+            ErrorCode.InvalidPermission,
             `The permission "${permission}" is invalid.`,
             {
                 permission,
