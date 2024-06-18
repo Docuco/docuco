@@ -1,11 +1,11 @@
 'use client'
 
-import { useGetUser } from "./_hooks/useGetUser";
+import { useGetUserAccount } from "./_hooks/useGetUserAccount";
 
 
 export default function Page() {
 
-  const {user, isLoading} = useGetUser()
+  const {user, isLoading} = useGetUserAccount()
 
   if (isLoading || !user) {
     return null

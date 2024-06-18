@@ -13,6 +13,8 @@ export const API_ROUTES = {
     USER_CHANGE_PERMISSIONS: (userId: string) => `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/permissions`,
     USER_CHANGE_PASSWORD: (userId: string) => `${process.env.NEXT_PUBLIC_API_URL}/auth/${userId}/password`,
 
+    USER_ACCOUNT: () => `${process.env.NEXT_PUBLIC_API_URL}/account`,
+
     AUTH_LOGIN: `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
     AUTH_API_KEYS_LOGIN: `${process.env.NEXT_PUBLIC_API_URL}/auth/api-keys/login`,
     
