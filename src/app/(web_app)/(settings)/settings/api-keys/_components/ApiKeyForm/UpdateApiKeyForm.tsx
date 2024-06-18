@@ -10,6 +10,7 @@ import {
     Text,
     TextInput,
     Textarea,
+    Tooltip,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { Permission } from '../../../../../../_core/Shared/Domain/VOs/Permission';
@@ -20,6 +21,7 @@ import { mutate } from 'swr';
 import { API_ROUTES } from '../../../../../_utils/constants';
 import { UpdateApiKeyDTO } from '../../../../../../_core/Auth/Application/DTOs/UpdateApiKeyDTO';
 import { errorNotification, generalNotification } from '../../../../../_utils/notifications';
+import { useTokenPayload } from '../../../../../_utils/_hooks/useTokenPayload';
 
 export function UpdateApiKeyForm({
     apiKey,
@@ -34,6 +36,10 @@ export function UpdateApiKeyForm({
     const [descriptionLength, setDescriptionLength] = useState(apiKey.description?.length || 0);
     const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
     const [isLoadingChangePermissions, setIsLoadingChangePermissions] = useState(false);
+    const tokenPayload = useTokenPayload();
+
+    const canUpdate = tokenPayload.permissions.includes('api_key:update')
+    const canChangePermissions = tokenPayload.permissions.includes('api_key:change_permissions')
 
     const updateForm = useForm<UpdateApiKeyDTO>({
         mode: 'uncontrolled',
@@ -91,79 +97,86 @@ export function UpdateApiKeyForm({
                 backgroundOpacity: 0.55,
                 blur: 3,
             }}>
-                <form onSubmit={updateForm.onSubmit(updateApiKey)}>
+                <Tooltip.Floating label="You don't have permissions to change the api key" disabled={canUpdate}> 
+                    <form onSubmit={updateForm.onSubmit(updateApiKey)}>
+                            <TextInput
+                                label="Api Key"
+                                disabled
+                                readOnly
+                                value={apiKey.apiKeyValue}
+                                rightSectionWidth='auto'
+                                rightSection={
+                                    <>
+                                        <CopyButton value={apiKey.apiKeyValue}>
+                                            {({ copied, copy }) => (
+                                                <Button color={copied ? 'teal' : 'blue'} variant='light' onClick={copy}>
+                                                    {copied ? 'Copied Api Key' : 'Copy Api Key'}
+                                                </Button>
+                                            )}
+                                        </CopyButton>
+                                    </>
+                                }
+                            />
+                        <Space h="xl" />
                         <TextInput
-                            label="Api Key"
-                            disabled
-                            readOnly
-                            value={apiKey.apiKeyValue}
-                            rightSectionWidth='auto'
-                            rightSection={
-                                <>
-                                    <CopyButton value={apiKey.apiKeyValue}>
-                                        {({ copied, copy }) => (
-                                            <Button color={copied ? 'teal' : 'blue'} variant='light' onClick={copy}>
-                                                {copied ? 'Copied Api Key' : 'Copy Api Key'}
-                                            </Button>
-                                        )}
-                                    </CopyButton>
-                                </>
-                            }
+                            withAsterisk
+                            label="Name"
+                            maxLength={50}
+                            disabled={!canUpdate}
+                            placeholder="My Api Key"
+                            key={updateForm.key('name')}
+                            {...updateForm.getInputProps('name')}
                         />
-                    <Space h="xl" />
-                    <TextInput
-                        withAsterisk
-                        label="Name"
-                        maxLength={50}
-                        placeholder="My Api Key"
-                        key={updateForm.key('name')}
-                        {...updateForm.getInputProps('name')}
-                    />
-                    <Group justify='flex-end'>
-                        <Text size='sm' c='dimmed'>{nameLength}/{50}</Text>
-                    </Group>
-                    <Space h="xl" />
-                    <Textarea
-                        withAsterisk
-                        resize="vertical"
-                        label="Description"
-                        maxLength={250}
-                        placeholder="Api key for my app..."
-                        key={updateForm.key('description')}
-                        {...updateForm.getInputProps('description')}
-                    />
-                    <Group justify='flex-end'>
-                        <Text size='sm' c='dimmed'>{descriptionLength}/{250}</Text>
-                    </Group>
-                    <Group justify="flex-end" mt="md">
-                        <Button type="submit" loading={isLoadingUpdate}>Update Api Key</Button>
-                    </Group>
-                </form>
+                        <Group justify='flex-end'>
+                            <Text size='sm' c='dimmed'>{nameLength}/{50}</Text>
+                        </Group>
+                        <Space h="xl" />
+                        <Textarea
+                            withAsterisk
+                            resize="vertical"
+                            label="Description"
+                            maxLength={250}
+                            disabled={!canUpdate}
+                            placeholder="Api key for my app..."
+                            key={updateForm.key('description')}
+                            {...updateForm.getInputProps('description')}
+                        />
+                        <Group justify='flex-end'>
+                            <Text size='sm' c='dimmed'>{descriptionLength}/{250}</Text>
+                        </Group>
+                        <Group justify="flex-end" mt="md">
+                            <Button type="submit" loading={isLoadingUpdate} disabled={!canUpdate}>Update Api Key</Button>
+                        </Group>
+                    </form>
+                </Tooltip.Floating>
 
                 <Space h="xl" />
 
-                <form onSubmit={permissionsForm.onSubmit(changeApiKeyPermissions)}>
-                    <Fieldset legend="Permissions">
-                        <Checkbox.Group
-                            label=""
-                            withAsterisk
-                            {...permissionsForm.getInputProps('permissions')}
-                        >
-                            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
-                                {Permission.ValidValues.map((permission) => (
-                                    <Checkbox
-                                        key={permission}
-                                        value={permission}
-                                        label={permission}
-                                    />
-                                ))}
-                            </SimpleGrid>
-                        </Checkbox.Group>
-                    </Fieldset>
-                    <Group justify="flex-end" mt="md">
-                        <Button type="submit" loading={isLoadingChangePermissions}>Change permissions</Button>
-                    </Group>
-                </form>
+                <Tooltip.Floating label="You don't have permissions to change the permissions" disabled={canChangePermissions}> 
+                    <form onSubmit={permissionsForm.onSubmit(changeApiKeyPermissions)}>
+                        <Fieldset legend="Permissions">
+                            <Checkbox.Group
+                                label=""
+                                withAsterisk
+                                {...permissionsForm.getInputProps('permissions')}
+                            >
+                                <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
+                                    {Permission.ValidValues.map((permission) => (
+                                        <Checkbox
+                                            disabled={!canChangePermissions}
+                                            key={permission}
+                                            value={permission}
+                                            label={permission}
+                                        />
+                                    ))}
+                                </SimpleGrid>
+                            </Checkbox.Group>
+                        </Fieldset>
+                        <Group justify="flex-end" mt="md">
+                            <Button type="submit" loading={isLoadingChangePermissions} disabled={!canChangePermissions}>Change permissions</Button>
+                        </Group>
+                    </form>
+                </Tooltip.Floating>
             </Modal>
         </>
     );

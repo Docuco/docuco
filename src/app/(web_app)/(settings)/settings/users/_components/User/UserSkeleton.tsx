@@ -21,23 +21,7 @@ export function UserSkeleton() {
                 </Group>
             </CardSection>
             
-            <Space h="lg" />
-
-            <Group justify="flex-start" gap={1}>
-                <Skeleton height={15} width={90} radius="xl" />
-                <IconCopy style={{ width: rem(16), height: rem(16) }} />
-            </Group>
-            
-            <Space h='md' />
-
-            <Skeleton height={18} width={'90%'} radius="xl" />
-
-            <Group mt="md" mb="xs" className={classes.text} display='block'>
-                <Space h='md' />
-                <Skeleton height={10} radius="xl" />
-                <Space h='md' />
-                <Skeleton height={10} width={'40%'} radius="xl" />
-            </Group>
+            <Space h="sm" />
 
             <CardSection px='xs' pb='xs' inheritPadding py="xs">
                 <Group justify="flex-end">

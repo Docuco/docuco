@@ -13,14 +13,12 @@ export class GetAuthFromLogin {
     ) {}
 
     public async run({ email, password }: { email: string, password: string }): Promise<AuthDTO> {
-        const user = await this.userRepository.findByEmail(new Email(email));
-        if (!user) {
-            throw new InvalidLogin();
-        }
+        const userOptional = await this.userRepository.findByEmail(new Email(email));
+        const user = userOptional.getOrThrow(new InvalidLogin());
 
         const auths = await this.authRepository.findByUserId(user.id);
         const passwordAuth = auths.find(auth => auth.isPasswordAuth());
-        if (auths.length === 0 || !passwordAuth) {
+        if (!passwordAuth) {
             throw new InvalidLogin();
         }
 

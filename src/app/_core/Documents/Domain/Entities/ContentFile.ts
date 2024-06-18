@@ -1,5 +1,6 @@
 import { AggregateRoot } from "../../../Shared/Domain/AggregateRoot";
 import { Id } from "../../../Shared/Domain/VOs/Id";
+import { Option } from "../../../Shared/Domain/VOs/Option";
 import { ContentFilePrimitive } from "../Primitives/ContentFilePrimitive";
 
 export class ContentFile extends AggregateRoot {
@@ -9,7 +10,7 @@ export class ContentFile extends AggregateRoot {
         private _name: string,
         private _mimeType: string,
         private _sizeInBytes: number,
-        private _extension: string | null,
+        private _extension: Option<string>,
         private _content: Blob,
     ) {
         super();
@@ -31,7 +32,7 @@ export class ContentFile extends AggregateRoot {
         return this._sizeInBytes;
     }
 
-    get extension(): string | null {
+    get extension(): Option<string> {
         return this._extension;
     }
 
@@ -47,14 +48,14 @@ export class ContentFile extends AggregateRoot {
         const id = Id.generate();
         const fileParts = file.name.split('.');
         const fileName = fileParts[0] ?? '';
-        const fileExtension = fileParts[1] ?? '';
+        const fileExtension = fileParts[1] ?? null;
 
         return new ContentFile(
             id,
             fileName,
             file.type,
             file.size,
-            fileExtension,
+            Option.fromValue(fileExtension),
             new Blob([file], { type: file.type }),
         );
     }
@@ -65,7 +66,7 @@ export class ContentFile extends AggregateRoot {
             primitives.name,
             primitives.mimeType,
             primitives.sizeInBytes,
-            primitives.extension,
+            Option.fromValue(primitives.extension),
             new Blob([primitives.content], { type: primitives.mimeType }),
         );
     }
@@ -76,7 +77,7 @@ export class ContentFile extends AggregateRoot {
             name: this._name,
             mimeType: this._mimeType,
             sizeInBytes: this._sizeInBytes,
-            extension: this._extension,
+            extension: this._extension.getOrNull(),
             content: this._content,
         };
     }

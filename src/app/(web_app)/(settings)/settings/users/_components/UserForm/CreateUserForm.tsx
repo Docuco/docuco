@@ -85,7 +85,7 @@ export function CreateUserForm({
                             withAsterisk
                             {...form.getInputProps('permissions')}
                         >
-                            <SimpleGrid cols={2} spacing="xl">
+                            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
                                 {Permission.ValidValues.map((permission) => (
                                     <Checkbox
                                         key={permission}

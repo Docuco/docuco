@@ -3,6 +3,7 @@ import { ContentFileStore } from "../../Domain/Repositories/ContentFileStore";
 import { DocuFile } from "../../Domain/Entities/DocuFile";
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { Id } from "../../../Shared/Domain/VOs/Id";
+import { Option } from "../../../Shared/Domain/VOs/Option";
 
 export class S3ContentFileStore implements ContentFileStore {
 
@@ -50,7 +51,7 @@ export class S3ContentFileStore implements ContentFileStore {
         await this.s3Client.send(putObjectCommand);
     }
 
-    private buildObjectKey<T extends {id: Id, extension: string | null}>(data: T) {
-        return `${data.id.value}.${data.extension}`;
+    private buildObjectKey<T extends {id: Id, extension: Option<string>}>(data: T) {
+        return `${data.id.value}.${data.extension.getOrElse('')}`;
     }
 }

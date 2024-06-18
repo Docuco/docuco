@@ -10,6 +10,7 @@ import { mutate } from "swr";
 import { clientCustomFetch } from "../../../../_utils/fetch";
 import { API_ROUTES } from "../../../../_utils/constants";
 import { getFileTypeIcon } from "../../../../_utils/getFileTypeIcon";
+import { useTokenPayload } from "../../../../_utils/_hooks/useTokenPayload";
 
 export function DeletedDocuFile({
     docuFile
@@ -17,6 +18,11 @@ export function DeletedDocuFile({
     docuFile: DocuFilePrimitive
 }) {
     const [isOpenedDeleteModal, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+
+    const tokenPayload = useTokenPayload()
+
+    const canDelete = tokenPayload.permissions.includes('documents:delete')
+    const canRestore = tokenPayload.permissions.includes('documents:restore')
 
     const fileTypeIcon = getFileTypeIcon(docuFile.mimeType);
 
@@ -49,19 +55,19 @@ export function DeletedDocuFile({
                                 >
                                     Preview
                                 </MenuItem>
-                                <MenuItem
+                                {canRestore && <MenuItem
                                     leftSection={<IconRestore color="green" style={{ width: rem(14), height: rem(14) }} />}
                                     onClick={restore}
                                 >
                                     Restore
-                                </MenuItem>
-                                <MenuItem
+                                </MenuItem>}
+                                {canDelete && <MenuItem
                                     leftSection={<IconFileShredder style={{ width: rem(14), height: rem(14) }} />}
                                     color="red"
                                     onClick={openDeleteModal}
                                 >
                                     Delete permanently
-                                </MenuItem>
+                                </MenuItem>}
                             </MenuDropdown>
                         </Menu>
                     </Group>

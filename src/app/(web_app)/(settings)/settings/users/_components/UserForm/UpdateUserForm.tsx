@@ -7,6 +7,7 @@ import {
     PasswordInput,
     SimpleGrid,
     Space,
+    Tooltip,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { Permission } from '../../../../../../_core/Shared/Domain/VOs/Permission';
@@ -16,6 +17,7 @@ import { mutate } from 'swr';
 import { API_ROUTES } from '../../../../../_utils/constants';
 import { generalNotification } from '../../../../../_utils/notifications';
 import { UserPrimitive } from '../../../../../../_core/Users/Domain/Primitives/UserPrimitive';
+import { useTokenPayload } from '../../../../../_utils/_hooks/useTokenPayload';
 
 export function UpdateUserForm({
     user,
@@ -28,6 +30,10 @@ export function UpdateUserForm({
 }) {
     const [isLoadingChangePassword, setIsLoadingChangePassword] = useState(false);
     const [isLoadingChangePermissions, setIsLoadingChangePermissions] = useState(false);
+    const tokenPayload = useTokenPayload();
+
+    const canChangePassowrd = tokenPayload.permissions.includes('users:change_password')
+    const canChangePermissions = tokenPayload.permissions.includes('users:change_permissions')
 
     const passwordForm = useForm({
         mode: 'uncontrolled',
@@ -81,44 +87,50 @@ export function UpdateUserForm({
                 backgroundOpacity: 0.55,
                 blur: 3,
             }}>
-                <form onSubmit={passwordForm.onSubmit(changePasswordToUser)}>
-                    <PasswordInput
-                        withAsterisk
-                        label="New Password"
-                        placeholder="H@rdP@ssw0rd"
-                        key={passwordForm.key('password')}
-                        {...passwordForm.getInputProps('password')}
-                    />
-                    <Group justify="flex-end" mt="md">
-                        <Button type="submit" loading={isLoadingChangePassword}>Change password</Button>
-                    </Group>
-                </form>
+                <Tooltip.Floating label="You don't have permissions to change the passwords" disabled={canChangePassowrd}> 
+                    <form onSubmit={passwordForm.onSubmit(changePasswordToUser)}>
+                        <PasswordInput
+                            withAsterisk
+                            label="New Password"
+                            placeholder="H@rdP@ssw0rd"
+                            disabled={!canChangePassowrd}
+                            key={passwordForm.key('password')}
+                            {...passwordForm.getInputProps('password')}
+                        />
+                        <Group justify="flex-end" mt="md">
+                            <Button type="submit" loading={isLoadingChangePassword} disabled={!canChangePassowrd}>Change password</Button>
+                        </Group>
+                    </form>
+                </Tooltip.Floating>
 
                 <Space h="xl" />
 
-                <form onSubmit={permissionsForm.onSubmit(changeUserPermissions)}>
-                    <Fieldset legend="Permissions">
-                        <Checkbox.Group
-                            label=""
-                            withAsterisk
-                            key={permissionsForm.key('permissions')}
-                            {...permissionsForm.getInputProps('permissions')}
-                        >
-                            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
-                                {Permission.ValidValues.map((permission) => (
-                                    <Checkbox
-                                        key={permission}
-                                        value={permission}
-                                        label={permission}
-                                    />
-                                ))}
-                            </SimpleGrid>
-                        </Checkbox.Group>
-                    </Fieldset>
-                    <Group justify="flex-end" mt="md">
-                        <Button type="submit" loading={isLoadingChangePermissions}>Change permissions</Button>
-                    </Group>
-                </form>
+                <Tooltip.Floating label="You don't have permissions to change the permissions" disabled={canChangePermissions}> 
+                    <form onSubmit={permissionsForm.onSubmit(changeUserPermissions)}>
+                        <Fieldset legend="Permissions">
+                            <Checkbox.Group
+                                label=""
+                                withAsterisk
+                                key={permissionsForm.key('permissions')}
+                                {...permissionsForm.getInputProps('permissions')}
+                            >
+                                <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
+                                    {Permission.ValidValues.map((permission) => (
+                                        <Checkbox
+                                            disabled={!canChangePermissions}
+                                            key={permission}
+                                            value={permission}
+                                            label={permission}
+                                        />
+                                    ))}
+                                </SimpleGrid>
+                            </Checkbox.Group>
+                        </Fieldset>
+                        <Group justify="flex-end" mt="md">
+                            <Button type="submit" loading={isLoadingChangePermissions} disabled={!canChangePermissions}>Change permissions</Button>
+                        </Group>
+                    </form>
+                </Tooltip.Floating>
             </Modal>
         </>
     );

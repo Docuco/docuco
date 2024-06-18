@@ -19,7 +19,7 @@ export class CreateUser {
     public async run({ email, password, permissions }: { email: string, password: string, permissions: PermissionType[] }): Promise<UserPrimitive> {
         const existingUser = await this.userRepository.findByEmail(new Email(email))
 
-        if (existingUser) {
+        if (existingUser.isSome()) {
             throw new UserAlreadyExists(email)
         }
 
