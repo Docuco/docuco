@@ -1,9 +1,11 @@
 import { BaseException } from "../../../Shared/Domain/Exceptions/BaseException";
+import { ErrorCode } from "../../../Shared/Domain/Exceptions/ErrorCode";
 
 export class InvalidMimeType extends BaseException {
 
     constructor(mimetype: string) {
         super(
+            ErrorCode.InvalidMimeType,
             `The mimetype "${mimetype}" is invalid.`,
             {
                 mimetype,

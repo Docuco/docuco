@@ -22,18 +22,6 @@ export class Token {
         return token;
     }
 
-    public static regenerate(secretKey: string, token: string): string {
-        if (!Token.isValid(secretKey, token)) {
-            throw new InvalidToken();
-        }
-
-        const payload: any = Token.extractPayload(token);
-        delete payload.iat;
-        delete payload.exp;
-
-        return Token.generate(secretKey, payload);
-    }
-
     static extractPayload<T extends object>(token: string): T {
         const tokenDecoded = jwt.decode(token, {
             complete: true,

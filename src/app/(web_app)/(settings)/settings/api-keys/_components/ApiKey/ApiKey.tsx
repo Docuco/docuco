@@ -7,6 +7,7 @@ import { ApiKeyPrimitive } from "../../../../../../_core/Auth/Domain/Primitives/
 import { UpdateApiKeyForm } from "../ApiKeyForm/UpdateApiKeyForm";
 import { relativeTimeFormat } from "../../../../../_utils/relativeTimeFormat";
 import { RegenerateApiKeyModal } from "./RegenerateApiKeyModal";
+import { useTokenPayload } from "../../../../../_utils/_hooks/useTokenPayload";
 
 export function ApiKey({
     apiKey,
@@ -16,8 +17,15 @@ export function ApiKey({
     const [isOpenedDeleteModal, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
     const [isOpenedUpdateModal, { open: openUpdateModal, close: closeUpdateModal }] = useDisclosure(false);
     const [isOpenedRegenerateModal, { open: openRegenerateModal, close: closeRegenerateModal }] = useDisclosure(false);
-
     const clipboard = useClipboard({ timeout: 1000 });
+    const tokenPayload = useTokenPayload()
+    
+    const canDelete = tokenPayload.permissions.includes('api_key:delete')
+    const canUpdateData = tokenPayload.permissions.includes('api_key:update')
+    const canChangePermissions = tokenPayload.permissions.includes('api_key:change_permissions')
+    const canRegenerate = tokenPayload.permissions.includes('api_key:regenerate')
+    const canUpdate = canUpdateData || canChangePermissions
+    
 
     return (
         <>
@@ -32,7 +40,7 @@ export function ApiKey({
                 <CardSection inheritPadding py="xs">
                     <Group justify="space-between" align="center">
                         <Text fw={600}>{apiKey.name}</Text>
-                        <Menu withinPortal position="bottom-end" shadow="sm">
+                        {(canUpdate || canRegenerate || canDelete) && <Menu withinPortal position="bottom-end" shadow="sm">
                             <MenuTarget>
                                 <ActionIcon variant="subtle" color="gray" onClick={(e) => e.stopPropagation()}>
                                     <IconDots style={{ width: rem(16), height: rem(16) }} />
@@ -40,7 +48,7 @@ export function ApiKey({
                             </MenuTarget>
 
                             <MenuDropdown>
-                                <MenuItem
+                                {canUpdate && <MenuItem
                                     leftSection={<IconTransform color='teal' style={{ width: rem(14), height: rem(14) }} />}
                                     onClick={(e) => {
                                         e.stopPropagation()
@@ -48,8 +56,8 @@ export function ApiKey({
                                     }}
                                 >
                                     Update
-                                </MenuItem>
-                                <MenuItem
+                                </MenuItem>}
+                                {canRegenerate && <MenuItem
                                     leftSection={<IconRefresh color="orange"  style={{ width: rem(14), height: rem(14) }} />}
                                     onClick={(e) => {
                                         e.stopPropagation()
@@ -57,8 +65,8 @@ export function ApiKey({
                                     }}
                                 >
                                     Regenerate
-                                </MenuItem>
-                                <MenuItem
+                                </MenuItem>}
+                                {canDelete && <MenuItem
                                     leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
                                     color="red"
                                     onClick={(e) => {
@@ -67,9 +75,9 @@ export function ApiKey({
                                     }}
                                 >
                                     Delete
-                                </MenuItem>
+                                </MenuItem>}
                             </MenuDropdown>
-                        </Menu>
+                        </Menu>}
                     </Group>
                 </CardSection>
                 

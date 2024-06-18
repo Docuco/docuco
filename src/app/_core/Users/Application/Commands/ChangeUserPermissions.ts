@@ -3,7 +3,7 @@ import { UserRepository } from "../../Domain/Repositories/UserRepository"
 import { UserFinder } from "../../Domain/Services/UserFinder"
 import { PermissionType } from "../../../Shared/Domain/VOs/Permission"
 
-export class ChangePermissions {
+export class ChangeUserPermissions {
 
     constructor(
         private userFinder: UserFinder,
@@ -11,10 +11,10 @@ export class ChangePermissions {
         private eventBus: EventBus,
     ) {}
 
-    public async run({ userId, permissions }: { userId: string, permissions: PermissionType[] }): Promise<void> {
+    public async run({ userId, newPermissions }: { userId: string, newPermissions: PermissionType[] }): Promise<void> {
         const user = await this.userFinder.run(userId)
 
-        user.changePermissions(permissions)
+        user.changePermissions(newPermissions)
 
         await this.userRepository.save(user),
         this.eventBus.publish(user.pullDomainEvents());

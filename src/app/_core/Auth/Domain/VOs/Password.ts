@@ -1,13 +1,14 @@
 import bcrypt from 'bcryptjs';
 import { WrongPassword } from '../Exceptions/WrongPassword';
+import { Option } from '../../../Shared/Domain/VOs/Option';
 
 export class Password {
 
     private _hash: string;
-    private _raw: string | null;
+    private _raw: Option<string>;
 
     private constructor(
-        raw: string | null,
+        raw: Option<string>,
         hash: string
     ) {
         this._raw = raw;
@@ -18,11 +19,11 @@ export class Password {
         this.ensureIsValid(raw)
         const hash = bcrypt.hashSync(raw, 10);
 
-        return new Password(raw, hash);
+        return new Password(Option.some(raw), hash);
     }
 
     public static fromHash(hash: string): Password {
-        return new Password(null, hash);
+        return new Password(Option.none(), hash);
     }
 
     public get hash(): string {
@@ -30,7 +31,7 @@ export class Password {
     }
 
     private hasRawPassword(): boolean {
-        return this._raw !== null;
+        return this._raw.isSome();
     }
 
     // public isEqual(password: Password): boolean {

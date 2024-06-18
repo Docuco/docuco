@@ -1,10 +1,11 @@
 import { BaseException } from '../../../Shared/Domain/Exceptions/BaseException';
-import { Id } from '../../../Shared/Domain/VOs/Id';
+import { ErrorCode } from '../../../Shared/Domain/Exceptions/ErrorCode';
 
 export class DocuFileNotFound extends BaseException {
 
     constructor(id: string) {
         super(
+            ErrorCode.DocuFileNotFound,
             `Docufile with id "${id}" not found.`,
             {
                 id,

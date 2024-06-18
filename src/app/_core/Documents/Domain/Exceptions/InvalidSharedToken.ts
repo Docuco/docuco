@@ -1,9 +1,11 @@
 import { BaseException } from '../../../Shared/Domain/Exceptions/BaseException';
+import { ErrorCode } from '../../../Shared/Domain/Exceptions/ErrorCode';
 
 export class InvalidSharedToken extends BaseException {
 
     constructor(sharedToken: string) {
         super(
+            ErrorCode.InvalidSharedToken,
             `The shared token "${sharedToken}" is invalid.`,
             {
                 sharedToken,

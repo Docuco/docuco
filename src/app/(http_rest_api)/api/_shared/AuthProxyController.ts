@@ -8,27 +8,29 @@ import { cookies } from "next/headers";
 import { Auth } from "../../../_core/Auth/Domain/Entities/Auth";
 import { Token } from "../../../_core/Auth/Domain/VOs/Token";
 import { PermissionType } from "../../../_core/Shared/Domain/VOs/Permission";
+import { GetAuthFromUserToken } from "../../../_core/Auth/Application/Queries/GetAuthFromUserToken";
+import { UserFinder } from "../../../_core/Users/Domain/Services/UserFinder";
+import { DIContainer } from "../../../_core/Shared/Infrastructure/DIContainer";
 
 export class AuthProxyController<T extends ProtectedController & BaseController> implements BaseController {
 
     constructor(private controller: T) { }
 
     public async run(req: NextRequest, pathParams?: Record<string, string>): Promise<NextResponse> {
-        this.ensureRequestHasPermissions(req);
+        await this.ensureRequestHasPermissions(req);
         return this.controller.run(req, pathParams);
     }
 
-    public ensureRequestHasPermissions(req: NextRequest): void {
+    public async ensureRequestHasPermissions(req: NextRequest): Promise<void> {
         const requiredPermissions = this.controller.REQUIRED_PERMISSIONS;
         if (requiredPermissions.length === 0) {
             return;
         }
 
         const token = this.getTokenFromRequest(req);
-
-        this.refreshToken(req, token)
+        const newToken = await this.getAndRefreshNewToken(req, token)
         
-        const tokenPermissions = Token.extractPayload<{ permissions: PermissionType[]}>(token).permissions as string[];
+        const tokenPermissions = Token.extractPayload<{ permissions: PermissionType[] }>(newToken).permissions as string[];
         if (!tokenPermissions || !Array.isArray(tokenPermissions)) {
             throw new Unauthorized(requiredPermissions);
         }
@@ -63,20 +65,33 @@ export class AuthProxyController<T extends ProtectedController & BaseController>
         throw new InvalidToken();
     }
 
-    private refreshToken(req: NextRequest, token: string) {
-        const newToken = Token.regenerate(process.env.JWT_SECRET!, token)
-        
-        cookies().set('token', newToken, {
+    private async getAndRefreshNewToken(req: NextRequest, token: string): Promise<string> {
+        const userRepository = DIContainer.get('UserRepository')
+        const authRepository = DIContainer.get('AuthRepository')
+
+        const userFinder = new UserFinder(
+            userRepository
+        )
+        const getAuthFromUserToken = new GetAuthFromUserToken(
+            userFinder,
+            authRepository
+        )
+
+        const auth = await getAuthFromUserToken.run(token);
+
+        cookies().set('token', auth.accessToken, {
             expires: new Date(new Date().getTime() + Token.expiresIn * 1000)
         })
 
         const newHeaders = new Headers(req.headers)
-        newHeaders.set('Authorization', `Bearer ${newToken}`)
+        newHeaders.set('Authorization', `Bearer ${auth.accessToken}`)
         NextResponse.next({
             request: {
                 headers: newHeaders
             }
         })
+
+        return auth.accessToken
     }
 
 } 

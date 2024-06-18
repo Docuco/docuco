@@ -1,9 +1,11 @@
 import { BaseException } from '../../../Shared/Domain/Exceptions/BaseException';
+import { ErrorCode } from '../../../Shared/Domain/Exceptions/ErrorCode';
 
 export class AuthNotFound extends BaseException {
 
     constructor(userId: string) {
         super(
+            ErrorCode.AuthNotFound,
             `Auth with userId "${userId}" not found.`,
             {
                 userId,

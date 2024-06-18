@@ -9,6 +9,7 @@ import { API_ROUTES } from "../../../../_utils/constants";
 import { mutate } from "swr";
 import { DocuMimeType, DocuMimeTypeType } from "../../../../../_core/Documents/Domain/VOs/DocuMimeType";
 import { getFileTypeIcon } from "../../../../_utils/getFileTypeIcon";
+import { useTokenPayload } from "../../../../_utils/_hooks/useTokenPayload";
 
 export function DocuFile({
     docuFile,
@@ -21,8 +22,12 @@ export function DocuFile({
     const [isOpenedShareModal, { open: openShareModal, close: closeShareModal }] = useDisclosure(false);
     const clipboard = useClipboard({ timeout: 1000 });
 
-    const fileTypeIcon = getFileTypeIcon(docuFile.mimeType);
+    const tokenPayload = useTokenPayload()
 
+    const canDelete = tokenPayload.permissions.includes('documents:delete')
+    const canShare = tokenPayload.permissions.includes('documents:share')
+    
+    const fileTypeIcon = getFileTypeIcon(docuFile.mimeType);
     const canPreview = hasValidPreview(docuFile);
 
     function download() {
@@ -69,25 +74,25 @@ export function DocuFile({
                                 >
                                     Preview
                                 </MenuItem>}
-                                <MenuItem
+                                {canShare && <MenuItem
                                     leftSection={<IconShare color='lightseagreen' style={{ width: rem(14), height: rem(14) }} />}
                                     onClick={() => openShareModal()}
                                 >
                                     Share
-                                </MenuItem>
+                                </MenuItem>}
                                 <MenuItem
                                     leftSection={<IconDownload color='darkcyan' style={{ width: rem(14), height: rem(14) }} />}
                                     onClick={() => download()}
                                 >
                                     Download
                                 </MenuItem>
-                                <MenuItem
+                                {canDelete && <MenuItem
                                     leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
                                     color="red"
                                     onClick={openDeleteModal}
                                 >
                                     Delete
-                                </MenuItem>
+                                </MenuItem>}
                             </MenuDropdown>
                         </Menu>
                     </Group>

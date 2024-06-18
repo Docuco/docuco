@@ -36,7 +36,7 @@ export class CreateApiKeyController implements BaseController, ProtectedControll
 
         await this.createApiKey.run(apiKey)
 
-        return NextResponse.json({}, { status: 200 });
+        return NextResponse.json({}, { status: 201 });
     }
 
     private async getParams(req: NextRequest) {

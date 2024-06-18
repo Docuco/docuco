@@ -1,9 +1,11 @@
 import { BaseException } from './BaseException';
+import { ErrorCode } from './ErrorCode';
 
 export class InvalidId extends BaseException {
 
     constructor(id: string) {
         super(
+            ErrorCode.InvalidId,
             `Id "${id}" is invalid`,
             {
                 id,

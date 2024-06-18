@@ -6,6 +6,8 @@ import { UserPermissionsChanged } from "../Events/UserPermissionsChanged";
 import { UserPrimitive } from "../Primitives/UserPrimitive";
 import { Email } from "../VOs/Email";
 import { Permission, PermissionType } from "../../../Shared/Domain/VOs/Permission";
+import { CreateUserDTO } from "../../Application/DTOs/CreateUserDTO";
+import { UserDeleted } from "../Events/UserDeleted";
 
 export class User extends AggregateRoot {
 
@@ -42,13 +44,18 @@ export class User extends AggregateRoot {
         }));
     }
 
-    static create({ email }: { email: string }) {
+    delete() {
+        this.record(new UserDeleted({
+            entityId: this._id.value,
+            attributes: this.toPrimitives(),
+        }));
+    }
+
+    static create({ email, permissions }: CreateUserDTO) {
         const primitive: UserPrimitive = {
             id: Id.generate().value,
-            email: email,
-            permissions: [
-                'documents:read',
-            ],
+            email,
+            permissions,
             createdAt: Date.now(),
             updatedAt: Date.now(),
         };

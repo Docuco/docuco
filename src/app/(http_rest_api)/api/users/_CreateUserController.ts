@@ -4,11 +4,12 @@ import { z } from "zod";
 import { DIContainer } from "../../../_core/Shared/Infrastructure/DIContainer";
 import { CreateUser } from "../../../_core/Users/Application/Commands/CreateUser";
 import { ProtectedController } from "../_shared/ProtectedController";
-import { PermissionType } from "../../../_core/Shared/Domain/VOs/Permission";
+import { Permission, PermissionType } from "../../../_core/Shared/Domain/VOs/Permission";
 
 const schema = z.object({
     email: z.string(),
     password: z.string(),
+    permissions: z.enum(Permission.ValidValues).array(),
 })
 
 export class CreateUserController implements BaseController, ProtectedController{
@@ -28,9 +29,9 @@ export class CreateUserController implements BaseController, ProtectedController
     async run(
         req: NextRequest,
     ): Promise<NextResponse> {
-        const { email, password } = await this.getParams(req);
+        const { email, password, permissions } = await this.getParams(req);
 
-        await this.createUser.run({email, password})
+        await this.createUser.run({ email, password, permissions })
 
         return NextResponse.json({}, { status: 201 });
     }
@@ -41,6 +42,7 @@ export class CreateUserController implements BaseController, ProtectedController
         return schema.parse({
             email: body.email,
             password: body.password,
+            permissions: body.permissions,
         })
     }
 }

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { BaseException } from "../../../_core/Shared/Domain/Exceptions/BaseException";
-import { InvalidId } from "../../../_core/Shared/Domain/Exceptions/InvalidId";
-import { DocuFileNotFound } from "../../../_core/Documents/Domain/Exceptions/DocuFileNotFound";
+import { ErrorCode } from "../../../_core/Shared/Domain/Exceptions/ErrorCode";
 
 export function exceptionHandler(
     handler: (
@@ -12,11 +11,11 @@ export function exceptionHandler(
     return async (req: NextRequest, params: { params: Record<string, string> }): Promise<NextResponse> => {
         return handler(req, params).catch((error) => {
             if (error instanceof BaseException) {
-                const { message, data } = error as BaseException
-                const httpCode = mapErrors(error);
+                const { message, data, code } = error as BaseException
+                const httpCode = mapErrors(code);
 
                 const resObject = NextResponse.json({
-                    error: error.constructor.name,
+                    code,
                     message,
                     data,
                 }, { status: httpCode })
@@ -24,11 +23,11 @@ export function exceptionHandler(
                 return resObject
             }
 
+            console.error('UNKNOWN_ERROR', error)
+
             const resObject = NextResponse.json({
-                error: 'Unknown error',
-                name: error.name,
+                code: 'UNKNOWN_ERROR',
                 message: error.message,
-                stack: error.stack,
             }, { status: 500 });
 
             return resObject
@@ -36,13 +35,28 @@ export function exceptionHandler(
     }
 }
 
-function mapErrors(error: BaseException): number {
-    switch (error.constructor.name) {
-        case InvalidId.name:
-            return 400;
-        case DocuFileNotFound.name:
-            return 404;
-        default:
-            return 500;
+function mapErrors(code: ErrorCode): number {
+    const map: {[key in ErrorCode]: number} = {
+        [ErrorCode.ApiKeyNotFound]: 404,
+        [ErrorCode.AuthDoesNotHavePasswordToValidate]: 400,
+        [ErrorCode.AuthNotFound]: 404,
+        [ErrorCode.CantComparePasswords]: 400,
+        [ErrorCode.CantGetValueFromOption]: 500,
+        [ErrorCode.DocuFileNotFound]: 404,
+        [ErrorCode.InvalidApiKeyValue]: 401,
+        [ErrorCode.InvalidId]: 422,
+        [ErrorCode.InvalidLogin]: 401,
+        [ErrorCode.InvalidMimeType]: 422,
+        [ErrorCode.InvalidPassword]: 422,
+        [ErrorCode.InvalidPermission]: 422,
+        [ErrorCode.InvalidSharedToken]: 422,
+        [ErrorCode.InvalidToken]: 422,
+        [ErrorCode.SharedDocuFileNotFound]: 404,
+        [ErrorCode.Unauthorized]: 403,
+        [ErrorCode.UserAlreadyExists]: 409,
+        [ErrorCode.UserNotFound]: 404,
+        [ErrorCode.WrongPassword]: 401,
     }
+
+    return map[code] || 500;
 }

@@ -1,9 +1,11 @@
 import { BaseException } from '../../../Shared/Domain/Exceptions/BaseException';
+import { ErrorCode } from '../../../Shared/Domain/Exceptions/ErrorCode';
 
 export class AuthDoesNotHavePasswordToValidate extends BaseException {
 
     constructor() {
         super(
+            ErrorCode.AuthDoesNotHavePasswordToValidate,
             `Auth does not have password to validate.`,
             {},
         );

@@ -18,7 +18,7 @@ export class DocuFile extends AggregateRoot {
         private _name: string,
         private _mimeType: DocuMimeType,
         private _sizeInBytes: number,
-        private _extension: string | null,
+        private _extension: Option<string>,
         private _url: string,
         private _isDeleted: boolean,
         private _sharedToken: Option<SharedToken>,
@@ -44,7 +44,7 @@ export class DocuFile extends AggregateRoot {
         return this._sizeInBytes;
     }
 
-    get extension(): string | null {
+    get extension(): Option<string> {
         return this._extension;
     }
 
@@ -70,7 +70,7 @@ export class DocuFile extends AggregateRoot {
             name: file.name,
             mimeType: file.mimeType as DocuMimeTypeType,
             sizeInBytes: file.sizeInBytes,
-            extension: file.extension,
+            extension: file.extension.getOrNull(),
             url,
             isDeleted: false,
             sharedToken: null,
@@ -148,7 +148,7 @@ export class DocuFile extends AggregateRoot {
             primitives.name,
             new DocuMimeType(primitives.mimeType),
             primitives.sizeInBytes,
-            primitives.extension,
+            Option.fromValue(primitives.extension),
             primitives.url,
             primitives.isDeleted,
             primitives.sharedToken ? Option.some(new SharedToken(primitives.sharedToken)) : Option.none(),
@@ -163,7 +163,7 @@ export class DocuFile extends AggregateRoot {
             name: this._name,
             mimeType: this._mimeType.value,
             sizeInBytes: this._sizeInBytes,
-            extension: this._extension,
+            extension: this._extension.getOrNull(),
             url: this._url,
             isDeleted: this._isDeleted,
             sharedToken: this._sharedToken.map((token) => token.value).getOrNull(),

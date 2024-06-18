@@ -31,13 +31,12 @@ export function CreateApiKeyForm({
     const [isLoading, setIsLoading] = useState(false);
     const [nameLength, setNameLength] = useState(0);
     const [descriptionLength, setDescriptionLength] = useState(0);
-    const token = getCookie('token');
 
     const form = useForm<CreateApiKeyDTO>({
         mode: 'uncontrolled',
         initialValues: {
             name: '',
-            creatorId: token ? Token.extractPayload<UserTokenPayload>(token).userId : '',
+            creatorId: '',
             description: '',
             permissions: [],
         },
@@ -63,6 +62,7 @@ export function CreateApiKeyForm({
     }
 
     function onLocalClose() {
+        setIsLoading(false);
         form.reset();
         onClose();
     }
@@ -107,7 +107,7 @@ export function CreateApiKeyForm({
                             withAsterisk
                             {...form.getInputProps('permissions')}
                         >
-                            <SimpleGrid cols={2} spacing="xl">
+                            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
                                 {Permission.ValidValues.map((permission) => (
                                     <Checkbox
                                         key={permission}

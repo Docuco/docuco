@@ -10,12 +10,9 @@ export class UserFinder {
     ) {}
 
     public async run(id: string): Promise<User> {
-        const user = await this.userRepository.findById(new Id(id))
-
-        if (!user) {
-            throw new UserNotFound(id);
-        }
-
+        const userOptional = await this.userRepository.findById(new Id(id))
+        const user = userOptional.getOrThrow(new UserNotFound(id));
+        
         return user
     }
 }
