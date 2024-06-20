@@ -13,6 +13,8 @@ import { GetInMemoryEventBus } from "./Events/GetInMemoryEventBus";
 import { ApiKeyRepository } from "../../Auth/Domain/Repositories/ApiKeyRepository";
 import { PostgreSQLApiKeyRepository } from "../../Auth/Infrastructure/Repositories/PostgreSQLApiKeyRepository";
 import { closeDBSession } from "./Persistence/MikroORM/destroy";
+import { FolderRepository } from "../../Folders/Domain/Repositories/FolderRepository";
+import { PostgreSQLFolderRepository } from "../../Folders/Infrastructure/Repositories/PostgreSQLFolderRepository";
 
 type DependenciesImplementations = {
     [K in keyof Dependencies]: Dependencies[K];
@@ -25,6 +27,7 @@ export interface Dependencies {
     UserRepository: UserRepository;
     AuthRepository: AuthRepository;
     ApiKeyRepository: ApiKeyRepository;
+    FolderRepository: FolderRepository;
 }
 
 export class DIContainer {
@@ -61,6 +64,7 @@ export class DIContainer {
             UserRepository: new PostgreSQLUserRepository(orm),
             AuthRepository: new PostgreSQLAuthRepository(orm),
             ApiKeyRepository: new PostgreSQLApiKeyRepository(orm),
+            FolderRepository: new PostgreSQLFolderRepository(orm),
         };
 
         Object.entries(dependenciesImplementations).forEach(([key, value]) => {

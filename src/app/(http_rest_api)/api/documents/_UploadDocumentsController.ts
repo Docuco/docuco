@@ -8,7 +8,8 @@ import { ProtectedController } from "../_shared/ProtectedController";
 import { PermissionType } from "../../../_core/Shared/Domain/VOs/Permission";
 
 const schema = z.object({
-    files: z.array(z.instanceof(File))
+    files: z.array(z.instanceof(File)),
+    folderParentId: z.string().nullable(),
 })
 
 export class UploadDocumentsController implements BaseController, ProtectedController {
@@ -31,10 +32,11 @@ export class UploadDocumentsController implements BaseController, ProtectedContr
     async run(
         req: NextRequest,
     ): Promise<NextResponse> {
-        const { files } = await this.getParams(req);
+        const { files, folderParentId } = await this.getParams(req);
 
         await this.uploadDocuments.run({
-            files
+            files,
+            folderParentId,
         })
 
         return NextResponse.json({}, { status: 201 });
@@ -44,7 +46,8 @@ export class UploadDocumentsController implements BaseController, ProtectedContr
         const formData = await req.formData()
 
         return schema.parse({
-            files: formData.getAll('documents[]')
+            files: formData.getAll('documents[]'),
+            folderParentId: formData.get('folderParentId'),
         })
     }
 }

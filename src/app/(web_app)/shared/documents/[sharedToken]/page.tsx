@@ -2,7 +2,7 @@ import { Center, Space, Text } from "@mantine/core";
 import { DocuFilePrimitive } from "../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import { API_ROUTES } from "../../../_utils/constants";
 import { IconFileOff } from "@tabler/icons-react";
-import { PDFVisualizer } from "../../../(home)/documents/_components/Visualizers/PDFVisualizer/PDFVisualizer";
+import { PDFVisualizer } from "../../../(home)/folders/_components/Visualizers/PDFVisualizer/PDFVisualizer";
 
 export default async function Page({
   params,

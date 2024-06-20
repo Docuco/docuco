@@ -62,8 +62,10 @@ export function CreateApiKeyForm({
     }
 
     function onLocalClose() {
-        setIsLoading(false);
+        setNameLength(0);
+        setDescriptionLength(0);
         form.reset();
+        setIsLoading(false);
         onClose();
     }
 

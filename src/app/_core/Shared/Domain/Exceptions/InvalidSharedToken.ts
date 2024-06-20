@@ -1,5 +1,5 @@
-import { BaseException } from '../../../Shared/Domain/Exceptions/BaseException';
-import { ErrorCode } from '../../../Shared/Domain/Exceptions/ErrorCode';
+import { BaseException } from './BaseException';
+import { ErrorCode } from './ErrorCode';
 
 export class InvalidSharedToken extends BaseException {
 

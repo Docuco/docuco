@@ -5,7 +5,7 @@ import { DocuFilePrimitive } from "../../Domain/Primitives/DocuFilePrimitive";
 import { Id } from "../../../Shared/Domain/VOs/Id";
 import { DocuFileFilters } from "../../Domain/VOs/DocuFileFilters";
 import { Option } from "../../../Shared/Domain/VOs/Option";
-import { SharedToken } from "../../Domain/VOs/ShareToken";
+import { SharedToken } from "../../../Shared/Domain/VOs/ShareToken";
 import { EntityManager } from "@mikro-orm/core";
 
 export class PostgreSQLDocuFileRepository implements DocuFileRepository {
@@ -27,13 +27,14 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
         this.getRepository(this.em).upsert(docuFile.toPrimitives());
     }
 
-    async getAll({filters}: {filters: Option<DocuFileFilters>}): Promise<DocuFile[]> {
+    async getAll({ folderParentId, filters }: { folderParentId: Option<Id>, filters: Option<DocuFileFilters>}): Promise<DocuFile[]> {
         const filterQuery = this.mapFilterToMikroORM(filters);
 
         const results = await this.getRepository(this.em).find(
             Object.assign({
                 isDeleted: false,
-            }, filterQuery)
+                folderParentId: folderParentId.map((id) => id.value).getOrNull(),
+            }, filterQuery) as FilterQuery<DocuFilePrimitive>
         );
         return results.map((result) => DocuFile.fromPrimitives(result));
     }

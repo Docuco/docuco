@@ -8,6 +8,13 @@ export const API_ROUTES = {
     DOCUMENT_SHARE: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/documents/${id}/share`,
     GET_DOCUMENT_BY_SHARE_TOKEN: (sharedToken: string) => `${process.env.NEXT_PUBLIC_API_URL}/shared/documents/${sharedToken}`,
     
+    ROOT_FOLDER_DOCUMENTS: `${process.env.NEXT_PUBLIC_API_URL}/folders/documents`,
+    FOLDER_DOCUMENTS: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${id}/documents`,
+    
+    FOLDERS: `${process.env.NEXT_PUBLIC_API_URL}/folders`,
+    FOLDER: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${id}`,
+    FOLDER_SHARE: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${id}/share`,
+
     USERS: `${process.env.NEXT_PUBLIC_API_URL}/users`,
     USER: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`,
     USER_CHANGE_PERMISSIONS: (userId: string) => `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/permissions`,

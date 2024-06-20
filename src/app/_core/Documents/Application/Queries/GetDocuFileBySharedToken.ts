@@ -1,7 +1,7 @@
 import { DocuFileRepository } from "../../Domain/Repositories/DocuFileRepository"
 import { DocuFile } from "../../Domain/Entities/DocuFile"
 import { SharedDocuFileNotFound } from "../../Domain/Exceptions/SharedDocuFileNotFound"
-import { SharedToken } from "../../Domain/VOs/ShareToken"
+import { SharedToken } from "../../../Shared/Domain/VOs/ShareToken"
 
 export class GetDocuFileBySharedToken {
 

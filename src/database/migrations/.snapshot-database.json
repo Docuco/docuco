@@ -64,15 +64,22 @@
             "documents:delete",
             "documents:restore",
             "documents:share",
+            "folders:read",
+            "folders:create",
+            "folders:delete",
+            "folders:restore",
+            "folders:share",
             "users:read",
             "users:create",
             "users:delete",
-            "users:change:permission",
-            "apikey:read",
-            "apikey:create",
-            "apikey:delete",
-            "apikey:update",
-            "apikey:change:permission"
+            "users:change_permissions",
+            "users:change_password",
+            "api_key:read",
+            "api_key:create",
+            "api_key:delete",
+            "api_key:update",
+            "api_key:regenerate",
+            "api_key:change_permissions"
           ],
           "mappedType": "array"
         },
@@ -209,6 +216,15 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "folder_parent_id": {
+          "name": "folder_parent_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
         "mime_type": {
           "name": "mime_type",
           "type": "varchar(255)",
@@ -312,6 +328,91 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "folder_parent_id": {
+          "name": "folder_parent_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "is_deleted": {
+          "name": "is_deleted",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "shared_token": {
+          "name": "shared_token",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "folders",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "folders_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "email": {
           "name": "email",
           "type": "varchar(255)",
@@ -334,15 +435,22 @@
             "documents:delete",
             "documents:restore",
             "documents:share",
+            "folders:read",
+            "folders:create",
+            "folders:delete",
+            "folders:restore",
+            "folders:share",
             "users:read",
             "users:create",
             "users:delete",
-            "users:change:permission",
-            "apikey:read",
-            "apikey:create",
-            "apikey:delete",
-            "apikey:update",
-            "apikey:change:permission"
+            "users:change_permissions",
+            "users:change_password",
+            "api_key:read",
+            "api_key:create",
+            "api_key:delete",
+            "api_key:update",
+            "api_key:regenerate",
+            "api_key:change_permissions"
           ],
           "mappedType": "array"
         },

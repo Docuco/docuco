@@ -4,7 +4,7 @@ import { useGetDocuFiles } from "../../_hooks/useGetDocuFiles";
 import { DocuFile } from "../DocuFile/DocuFile";
 import classes from './ListDocuFiles.module.css';
 import { DocuFileSkeleton } from "../DocuFile/DocuFileSkeleton";
-import { Center, Drawer, Space, Text } from "@mantine/core";
+import { Center, Drawer, Space, Text, Title } from "@mantine/core";
 import { IconFiles } from "@tabler/icons-react";
 import { DocuFilePrimitive } from "../../../../../_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import { useDisclosure } from "@mantine/hooks";
@@ -17,10 +17,14 @@ import { DocVisualizer } from "../Visualizers/DocVisualizer/DocVisualizer";
 import { PDFVisualizer } from "../Visualizers/PDFVisualizer/PDFVisualizer";
 import { ImageVisualizer } from "../Visualizers/ImageVisualizer/ImageVisualizer";
 
-export function ListDocuFiles() {
+export function ListDocuFiles({
+    folderParentId
+}: {
+    folderParentId: string | null
+}) {
     const { isDesktop, isTablet, isMobile } = useScreenSize()
     const [ filters, setFilters ] = useFiltersFromURL();
-    const { docuFiles, isLoading } = useGetDocuFiles(filters);
+    const { docuFiles, isLoading } = useGetDocuFiles({ filters, folderParentId });
     const [ docuFileToPreview, setDocuFileToPreview ] = useState<null | DocuFilePrimitive>(null);
     const [isPDFViewerOpen, { open: openPDFViewer, close: closePDFViewer }] = useDisclosure(false);
 
@@ -37,7 +41,9 @@ export function ListDocuFiles() {
     if (isLoading) {
         return (
             <div className={classes.viewContainer}>
+                <Title order={3} size={14} my={5}>Files</Title>
                 <DocuFileFilters filters={filters} onChange={setFilters} />
+                <Space h={'xs'} />
 
                 <section className={classes.listContainer}>
                     {[...new Array(10).keys()].map((index) => (
@@ -51,8 +57,10 @@ export function ListDocuFiles() {
     if (docuFiles.length === 0) {
         return (
             <div className={classes.viewContainer}>
+                <Title order={3} size={14} my={5}>Files</Title>
                 <DocuFileFilters filters={filters} onChange={setFilters} />
-            
+                <Space h={'xs'} />
+
                 <section>
                     <Space h="120px" />
                     <Center>
@@ -69,7 +77,9 @@ export function ListDocuFiles() {
     
     return (
         <div className={classes.viewContainer}>
+            <Title order={3} size={14} my={5}>Files</Title>
             <DocuFileFilters filters={filters} onChange={setFilters} />
+            <Space h={'xs'}/>
 
             <section className={classes.listContainer}>
                 {docuFiles.map((docuFile) => (

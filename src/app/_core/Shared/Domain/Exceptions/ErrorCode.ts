@@ -5,6 +5,7 @@ export enum ErrorCode {
     CantComparePasswords = 'CANT_COMPARE_PASSWORDS',
     CantGetValueFromOption = 'CANT_GET_VALUE_FROM_OPTION',
     DocuFileNotFound = 'DOC_FILE_NOT_FOUND',
+    FolderNotFound = 'FOLDER_NOT_FOUND',
     InvalidApiKeyValue = 'INVALID_API_KEY_VALUE',
     InvalidId = 'INVALID_ID',
     InvalidLogin = 'INVALID_LOGIN',
