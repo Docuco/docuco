@@ -20,6 +20,34 @@ export class Folder extends AggregateRoot {
         super();
     }
 
+    get id(): Id {
+        return this._id;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get folderParentId(): Option<Id> {
+        return this._folderParentId;
+    }
+
+    get isDeleted(): boolean {
+        return this._isDeleted;
+    }
+
+    get sharedToken(): Option<SharedToken> {
+        return this._sharedToken;
+    }
+
+    get createdAt(): Date {
+        return this._createdAt;
+    }
+
+    get updatedAt(): Date {
+        return this._updatedAt;
+    }
+
     static create(folderDTO: CreateFolderDTO) {
         const primitive: FolderPrimitive = {
             id: Id.generate().value,

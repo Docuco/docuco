@@ -5,6 +5,7 @@ import { FolderPrimitive } from "../../Domain/Primitives/FolderPrimitive";
 import { Folder } from "../../Domain/Entities/Folder";
 import { Id } from "../../../Shared/Domain/VOs/Id";
 import { Option } from "../../../Shared/Domain/VOs/Option";
+import { FolderAncestorsDTO } from "../../Application/DTOs/FolderAncestorsDTO";
 
 export class PostgreSQLFolderRepository implements FolderRepository {
 
@@ -41,6 +42,52 @@ export class PostgreSQLFolderRepository implements FolderRepository {
         }
 
         return Option.some(Folder.fromPrimitives(result));
+    }
+
+    async getAncestors(id: Id): Promise<Option<FolderAncestorsDTO>> {
+        const folder = await this.findById(id);
+        if (folder.isNone()) {
+            return Option.none();
+        }
+        
+        let allHierarchy = [folder.get()]
+        
+        const hasParent = folder.get().folderParentId.isSome();
+        if (!hasParent) {
+            return Option.some(this.mapFoldersToAncestorsDTO(allHierarchy)!);
+        }
+
+        let parent = await this.getParentFolder(folder.get());
+        while (parent.isSome()) {
+            allHierarchy.push(parent.get());
+            parent = await this.getParentFolder(parent.get());
+        }
+
+        return Option.some(this.mapFoldersToAncestorsDTO(allHierarchy)!);
+    }
+
+    private async getParentFolder(folder: Folder): Promise<Option<Folder>> {
+        if (folder.folderParentId.isNone()) {
+            return Option.none();
+        }
+
+        return this.findById(folder.folderParentId.get());
+    }
+
+    private mapFoldersToAncestorsDTO(folders: Folder[], parent: Option<Folder> = Option.none()): FolderAncestorsDTO | null {
+        const childrenFolder = folders.find(folder => {
+            return (parent.isSome() && folder.folderParentId.isSome() && folder.folderParentId.get().equals(parent.get().id))
+                || (parent.isNone() && folder.folderParentId.isNone())
+        });
+
+        if (childrenFolder === undefined) {
+            return null
+        }
+
+        return {
+            ...childrenFolder.toPrimitives(),
+            folderChildren: this.mapFoldersToAncestorsDTO(folders, Option.some(childrenFolder)),
+        }
     }
 
     // async getDeleted(): Promise<DocuFile[]> {

@@ -4,6 +4,7 @@ import { AddNewDocumentButton } from "../_components/AddNewDocumentButton/AddNew
 import { AddNewFolderButton } from "../_components/AddNewFolderButton/AddNewFolderButton";
 import { ListDocuFiles } from "../_components/ListDocuFiles/ListDocuFiles";
 import { ListFolders } from "../_components/ListFolders/ListFolders";
+import { Breadcrumbs } from "./_components/Breadcrumbs/Breadcrumbs";
 
 export default function Page({
   params,
@@ -15,6 +16,7 @@ export default function Page({
 
   return (
     <>
+      <Breadcrumbs folderId={params.folderId} />
       <Group gap={10}>
         {canAddDocuments && <AddNewDocumentButton folderParentId={params.folderId} />}
         <AddNewFolderButton folderParentId={params.folderId}/>
