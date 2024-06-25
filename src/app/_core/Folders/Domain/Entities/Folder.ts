@@ -5,6 +5,8 @@ import { Option } from "../../../Shared/Domain/VOs/Option";
 import { CreateFolderDTO } from "../../Application/DTOs/CreateFolderDTO";
 import { FolderCreated } from "../Events/FolderCreated";
 import { FolderPrimitive } from "../Primitives/FolderPrimitive";
+import { FolderDeleted } from "../Events/FolderDeleted";
+import { FolderHasStoppedBeingShared } from "../Events/FolderHasStoppedBeingShared";
 
 export class Folder extends AggregateRoot {
 
@@ -67,6 +69,34 @@ export class Folder extends AggregateRoot {
         }));
 
         return folder;
+    }
+
+    delete(): void {
+        if (this._isDeleted) {
+            return
+        }
+
+        this._isDeleted = true;
+
+        this.record(new FolderDeleted({
+            entityId: this.id.value,
+            attributes: this.toPrimitives(),
+        }));
+
+        this.stopSharing();
+    }
+
+    stopSharing(): void {
+        if (this._sharedToken.isNone()) {
+            return;
+        }
+
+        this._sharedToken = Option.none();
+
+        this.record(new FolderHasStoppedBeingShared({
+            entityId: this.id.value,
+            attributes: this.toPrimitives(),
+        }));
     }
 
     static fromPrimitives(primitives: FolderPrimitive): Folder {
