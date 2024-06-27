@@ -13,9 +13,10 @@ export class DeleteFolder {
     public async run({ id }: { id: string}): Promise<void> {
         const folder = await this.folderFinder.run(id)
         
+        folder.unlinkFromParent()
         folder.delete()
         await this.folderRepository.save(folder)
 
-        this.eventBus.publish(folder.pullDomainEvents());
+        await this.eventBus.publish(folder.pullDomainEvents());
     }
 }

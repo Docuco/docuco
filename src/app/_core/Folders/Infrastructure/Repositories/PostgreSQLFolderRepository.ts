@@ -29,8 +29,17 @@ export class PostgreSQLFolderRepository implements FolderRepository {
     async getAll({ folderParentId }: { folderParentId: Option<Id> }): Promise<Folder[]> {
         const results = await this.getRepository(this.em).find({
             folderParentId: folderParentId.map(id => id.value).getOrNull(),
+            isDeleted: false,
         });
         
+        return results.map((result) => Folder.fromPrimitives(result));
+    }
+
+    async getDeleted({ folderParentId }: { folderParentId: Option<Id> }): Promise<Folder[]> {
+        const results = await this.getRepository(this.em).find({
+            folderParentId: folderParentId.map(id => id.value).getOrNull(),
+            isDeleted: true,
+        });
         return results.map((result) => Folder.fromPrimitives(result));
     }
 
@@ -42,6 +51,14 @@ export class PostgreSQLFolderRepository implements FolderRepository {
         }
 
         return Option.some(Folder.fromPrimitives(result));
+    }
+
+    async findByParentId(id: Id): Promise<Folder[]> {
+        const results = await this.getRepository(this.em).find({
+            folderParentId: id.value,
+        });
+
+        return results.map((result) => Folder.fromPrimitives(result));
     }
 
     async getAncestors(id: Id): Promise<Option<FolderAncestorsDTO>> {

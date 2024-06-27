@@ -16,8 +16,6 @@ export class DocuFileSaver {
         const docuFile = DocuFile.create({ file, url, folderParentId })
         await this.docuFileRepository.save(docuFile)
 
-        this.eventBus.publish(docuFile.pullDomainEvents());
-
-        return
+        await this.eventBus.publish(docuFile.pullDomainEvents());
     }
 }

@@ -22,7 +22,8 @@ export class GetAllApiKeysController implements BaseController, ProtectedControl
 
     async run(
         req: NextRequest,
-    ): Promise<NextResponse> {
+        pathParams: Record<string, string>
+     ): Promise<NextResponse> {
         const apiKeys = await this.getApiKeys.run()
 
         const apiKeysResponse = this.mapToResponse(apiKeys);

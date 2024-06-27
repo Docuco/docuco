@@ -16,6 +16,6 @@ export class StartSharingDocuFile {
         docuFile.startSharing()
         await this.docuFileRepository.save(docuFile)
 
-        this.eventBus.publish(docuFile.pullDomainEvents());
+        await this.eventBus.publish(docuFile.pullDomainEvents());
     }
 }

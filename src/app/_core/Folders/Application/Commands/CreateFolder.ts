@@ -14,6 +14,6 @@ export class CreateFolder {
         const folder = Folder.create(folderToCreate)
 
         await this.folderRespository.save(folder)
-        this.eventBus.publish(folder.pullDomainEvents())
+        await this.eventBus.publish(folder.pullDomainEvents())
     }
 }

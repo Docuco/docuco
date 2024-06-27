@@ -13,9 +13,10 @@ export class RestoreDocuFile {
     public async run({ id }: { id: string }): Promise<void> {
         const docuFile = await this.docuFileFinder.run(id)
         
+        docuFile.unlinkFromParent()
         docuFile.restore()
         await this.docuFileRepository.save(docuFile)
 
-        this.eventBus.publish(docuFile.pullDomainEvents());
+        await this.eventBus.publish(docuFile.pullDomainEvents());
     }
 }

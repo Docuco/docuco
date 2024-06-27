@@ -15,7 +15,7 @@ export class ContentFileDeleter {
         const docuFile = DocuFile.fromPrimitives(docuFilePrimitive)
         await this.contentFileStore.delete(docuFile)
         
-        this.eventBus.publish([
+        await this.eventBus.publish([
             new ContentFileDeleted({
                 entityId: docuFile.id.value,
                 attributes: docuFile.toPrimitives(),

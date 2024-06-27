@@ -25,6 +25,6 @@ export class DeleteUser {
             ...auths.map((auth) => this.authRepository.delete(auth))
         ])
 
-        this.eventBus.publish(user.pullDomainEvents());
+        await this.eventBus.publish(user.pullDomainEvents());
     }
 }

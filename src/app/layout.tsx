@@ -9,7 +9,7 @@ import '@mantine/notifications/styles.css';
 import "./globals.css";
 import { Notifications } from "@mantine/notifications";
 
-const raleway = Raleway({ subsets: ["latin"] });
+const mainFont = Raleway({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Docuco - Your document manager",
@@ -18,10 +18,10 @@ export const metadata: Metadata = {
 
 const theme = createTheme({
   primaryColor: 'blue',
-  fontFamily: raleway.style.fontFamily,
+  fontFamily: mainFont.style.fontFamily,
   cursorType: 'pointer',
   headings: {
-    fontFamily: `${raleway.style.fontFamily}, ${DEFAULT_THEME.fontFamily}`,
+    fontFamily: `${mainFont.style.fontFamily}, ${DEFAULT_THEME.fontFamily}`,
   },
 });
 
@@ -36,7 +36,7 @@ export default function RootLayout({
         <link rel="icon" href="/assets/logo.svg"/>
         <ColorSchemeScript defaultColorScheme="light"/>
       </head>
-      <body className={raleway.className}>
+      <body className={mainFont.className}>
         <MantineProvider defaultColorScheme="light" theme={theme}>
           <ModalsProvider>
             {children}

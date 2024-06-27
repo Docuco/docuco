@@ -1,13 +1,11 @@
-import { ActionIcon, Box, Card, CardSection, Group, Menu, MenuDropdown, MenuItem, MenuTarget, Text, Tooltip, rem } from "@mantine/core";
+import { ActionIcon, Box, Card, CardSection, Group, Menu, MenuDropdown, MenuItem, MenuTarget, Text, rem } from "@mantine/core";
 import classes from './Folder.module.css'
-import { IconDots, IconFolder, IconFolderShare, IconShare, IconTrash } from "@tabler/icons-react";
-import { useClipboard, useDisclosure } from "@mantine/hooks";
+import { IconDots, IconFolder, IconTrash } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
 import { DeleteFolderModal } from "./DeleteFolderModal";
-import { ShareFolderModal, buildShareURL } from "./ShareFolderModal";
-import { API_ROUTES } from "../../../../_utils/constants";
-import { mutate } from "swr";
 import { useTokenPayload } from "../../../../_utils/_hooks/useTokenPayload";
 import { FolderPrimitive } from "../../../../../_core/Folders/Domain/Primitives/FolderPrimitive";
+import { useRouter } from "next/navigation";
 
 export function Folder({
     folder,
@@ -18,14 +16,16 @@ export function Folder({
     folderParentId: string | null,
     onClick: (folder: FolderPrimitive) => void
 }) {
+    const router = useRouter();
+
     const [isOpenedDeleteModal, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
-    const [isOpenedShareModal, { open: openShareModal, close: closeShareModal }] = useDisclosure(false);
-    const clipboard = useClipboard({ timeout: 1000 });
+    // const [isOpenedShareModal, { open: openShareModal, close: closeShareModal }] = useDisclosure(false);
+    // const clipboard = useClipboard({ timeout: 1000 });
 
     const tokenPayload = useTokenPayload()
 
     const canDelete = tokenPayload.permissions.includes('folders:delete')
-    const canShare = tokenPayload.permissions.includes('folders:share')
+    // const canShare = tokenPayload.permissions.includes('folders:share')
     
     return (
         <>
@@ -35,25 +35,14 @@ export function Folder({
                 withBorder
                 p={'xs'}
                 className={classes.card}
-                onDoubleClick={() => onClick(folder)}
+                onDoubleClick={() => {
+                    router.push(`/folders/${folder.id}`)
+                }}
             >
                 <CardSection inheritPadding py="md" px='md'>
                     <Group justify="space-between" gap={0} wrap="nowrap">
                         <Group gap={10} wrap="nowrap" maw={'88%'}>
-                            {folder.sharedToken ?
-                                (
-                                    <Tooltip label={clipboard.copied ? 'Copied' : 'Copy shared URL'}>
-                                        {/** TODO: fix build url for folder */}
-                                        <ActionIcon variant="subtle" color={clipboard.copied ? 'teal' : 'gray'} onClick={() => clipboard.copy(buildShareURL(folder.sharedToken))}>
-                                            <IconFolderShare size={16} stroke={1.3} />
-                                        </ActionIcon>
-                                    </Tooltip>
-                                )
-                                :
-                                (
-                                    <IconFolder size={16} stroke={1.3} />
-                                )
-                            }
+                            <IconFolder size={16} stroke={1.3} />
                             <Box maw={'87%'}>
                                 <Text fw={500} truncate="end">{folder.name}</Text>
                             </Box>
@@ -66,12 +55,12 @@ export function Folder({
                             </MenuTarget>
 
                             <MenuDropdown>
-                                {canShare && <MenuItem
+                                {/* {canShare && <MenuItem
                                     leftSection={<IconShare color='lightseagreen' style={{ width: rem(14), height: rem(14) }} />}
                                     onClick={() => openShareModal()}
                                 >
                                     Share
-                                </MenuItem>}
+                                </MenuItem>} */}
                                 {canDelete && <MenuItem
                                     leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
                                     color="red"
@@ -85,11 +74,7 @@ export function Folder({
                 </CardSection>
             </Card>
 
-            <DeleteFolderModal folder={folder} folderParentId={folderParentId} onClose={closeDeleteModal} opened={isOpenedDeleteModal} />
-            <ShareFolderModal folder={folder} onClose={async() => {
-                await mutate(API_ROUTES.FOLDERS)
-                closeShareModal()
-            }} opened={isOpenedShareModal}/>
+            <DeleteFolderModal folder={folder} folderParentId={folderParentId} onClose={closeDeleteModal} opened={isOpenedDeleteModal} />            
         </>
     );
 }

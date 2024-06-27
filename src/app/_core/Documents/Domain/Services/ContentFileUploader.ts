@@ -14,7 +14,7 @@ export class ContentFileUploader {
         const contentFile = ContentFile.create(file)
         const { url } = await this.contentFileStore.upload(contentFile)
         
-        this.eventBus.publish([
+        await this.eventBus.publish([
             new ContentFileUploaded({
                 entityId: contentFile.id.value,
                 attributes: {

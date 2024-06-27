@@ -26,6 +26,7 @@ export class CreateFolderController implements BaseController, ProtectedControll
 
     async run(
         req: NextRequest,
+        pathParams: Record<string, string>
     ): Promise<NextResponse> {
         const { name, folderParentId } = await this.getParams(req);
 

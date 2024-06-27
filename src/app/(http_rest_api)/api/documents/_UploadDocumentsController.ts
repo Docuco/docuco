@@ -31,6 +31,7 @@ export class UploadDocumentsController implements BaseController, ProtectedContr
 
     async run(
         req: NextRequest,
+        pathParams: Record<string, string>
     ): Promise<NextResponse> {
         const { files, folderParentId } = await this.getParams(req);
 

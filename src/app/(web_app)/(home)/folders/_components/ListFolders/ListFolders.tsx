@@ -14,10 +14,9 @@ export function ListFolders({
     folderParentId: string | null
 }) {
     const { folders, isLoading } = useGetFolders(folderParentId);
-    const router = useRouter();
 
     async function goToFolder(folder: FolderPrimitive) {
-        router.push(`/folders/${folder.id}`)
+        
     }
 
     if (isLoading) {

@@ -35,7 +35,8 @@ export class GetDocumentsFromRootFolderController implements BaseController, Pro
 
     async run(
         req: NextRequest,
-    ): Promise<NextResponse> {
+        pathParams: Record<string, string>
+     ): Promise<NextResponse> {
         const { filters } = this.getParams(req)
 
         const files = await this.getDocuFilesInFolder.run({ folderParentId: null, filters })

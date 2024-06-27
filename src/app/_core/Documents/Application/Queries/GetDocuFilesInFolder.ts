@@ -5,6 +5,7 @@ import { Option } from "../../../Shared/Domain/VOs/Option"
 import { DocuFileFilters } from "../../Domain/VOs/DocuFileFilters"
 import { FolderFinder } from "../../../Folders/Domain/Services/FolderFinder"
 import { Id } from "../../../Shared/Domain/VOs/Id"
+import { FolderNotFound } from "../../../Folders/Domain/Exceptions/FolderNotFound"
 
 export class GetDocuFilesInFolder {
 
@@ -21,7 +22,10 @@ export class GetDocuFilesInFolder {
         filters?: DocuFileFiltersPrimitives
     }): Promise<DocuFile[]> {
         if (folderParentId) {
-            await this.folderFinder.run(folderParentId)
+            const folderParent = await this.folderFinder.run(folderParentId)
+            if (folderParent.isDeleted) {
+                throw new FolderNotFound(folderParentId)
+            }
         }
 
         return this.docuFileRepository.getAll({

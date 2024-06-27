@@ -8,7 +8,6 @@ export const FolderSchema = new EntitySchema<FolderPrimitive>({
         name: { type: types.string },
         folderParentId: { type: types.string, nullable: true },
         isDeleted: { type: types.boolean, default: false },
-        sharedToken: { type: types.string, nullable: true },
         createdAt: { type: new BigIntType('number') },
         updatedAt: { type: new BigIntType('number') },
     },

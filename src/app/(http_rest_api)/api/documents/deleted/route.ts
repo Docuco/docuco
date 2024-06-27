@@ -1,8 +1,8 @@
 import { AuthProxyController } from "../../_shared/AuthProxyController";
 import { exceptionHandler } from "../../_shared/exceptionHandler";
 import { initzializeDependencies } from "../../_shared/initzializeDependencies";
-import { GetDeletedDocuFilesController } from "./_GetDeletedDocuFilesController";
+import { GetRootDeletedDocuFilesController } from "./_GetRootDeletedDocuFilesController";
 
-export const GET = exceptionHandler(initzializeDependencies(async (request) => {
-    return new AuthProxyController(new GetDeletedDocuFilesController()).run(request);
+export const GET = exceptionHandler(initzializeDependencies(async (request, route) => {
+    return new AuthProxyController(new GetRootDeletedDocuFilesController()).run(request, route.params);
 }));

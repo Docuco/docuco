@@ -356,15 +356,6 @@
           "default": "false",
           "mappedType": "boolean"
         },
-        "shared_token": {
-          "name": "shared_token",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
         "created_at": {
           "name": "created_at",
           "type": "bigint",

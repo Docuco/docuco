@@ -18,9 +18,9 @@ const schema = z.object({
     })
 })
 
-export class GetDocumentsFromFolderController implements BaseController, ProtectedController {
+export class GetDocuFilesFromFolderController implements BaseController, ProtectedController {
     static permissions: PermissionType[] = ['documents:read'];
-    REQUIRED_PERMISSIONS: PermissionType[] = GetDocumentsFromFolderController.permissions;
+    REQUIRED_PERMISSIONS: PermissionType[] = GetDocuFilesFromFolderController.permissions;
 
     private getDocuFilesInFolder: GetDocuFilesInFolder
 

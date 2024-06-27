@@ -22,7 +22,7 @@ export function DeletePermanentlyDocuFileModal({
         await clientCustomFetch(`${API_ROUTES.DOCUMENT_DELETED(docuFile.id)}`, {
             method: 'DELETE',
         })
-        await mutate(API_ROUTES.DOCUMENTS_DELETED);
+        await mutate(API_ROUTES.ROOT_DOCUMENTS_DELETED);
         
         setIsDeletingDocuFile(false);
         onClose();

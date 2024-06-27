@@ -39,8 +39,9 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
         return results.map((result) => DocuFile.fromPrimitives(result));
     }
 
-    async getDeleted(): Promise<DocuFile[]> {
+    async getDeleted({ folderParentId }: { folderParentId: Option<Id> }): Promise<DocuFile[]> {
         const results = await this.getRepository(this.em).find({
+            folderParentId: folderParentId.map((id) => id.value).getOrNull(),
             isDeleted: true,
         });
         return results.map((result) => DocuFile.fromPrimitives(result));
@@ -54,6 +55,14 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
         }
 
         return Option.some(DocuFile.fromPrimitives(result));
+    }
+
+    async findByParentId(id: Id): Promise<DocuFile[]> {
+        const results = await this.getRepository(this.em).find({
+            folderParentId: id.value,
+        });
+
+        return results.map((result) => DocuFile.fromPrimitives(result));
     }
 
     async delete(docuFile: DocuFile): Promise<void> {

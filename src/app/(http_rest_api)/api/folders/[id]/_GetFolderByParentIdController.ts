@@ -7,6 +7,7 @@ import { GetFoldersInParent } from "../../../../_core/Folders/Application/Querie
 import { Folder } from "../../../../_core/Folders/Domain/Entities/Folder";
 import { FolderPrimitive } from "../../../../_core/Folders/Domain/Primitives/FolderPrimitive";
 import { z } from "zod";
+import { FolderFinder } from "../../../../_core/Folders/Domain/Services/FolderFinder";
 
 const schema = z.object({
     id: z.string()
@@ -19,7 +20,12 @@ export class GetFolderByParentIdController implements BaseController, ProtectedC
     private getFoldersInParent: GetFoldersInParent
 
     constructor() {
+        const folderFinder = new FolderFinder(
+            DIContainer.get('FolderRepository'),
+        )
+
         this.getFoldersInParent = new GetFoldersInParent(
+            folderFinder,
             DIContainer.get('FolderRepository'),
         )
     }

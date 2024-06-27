@@ -18,6 +18,6 @@ export class ChangeApiKeyPermissions {
         
         await this.apiKeyRepository.save(apiKey);
 
-        this.eventBus.publish(apiKey.pullDomainEvents())
+        await this.eventBus.publish(apiKey.pullDomainEvents())
     }
 }

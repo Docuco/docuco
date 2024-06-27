@@ -61,9 +61,18 @@ export function Breadcrumb({
                 variant="transparent"
                 size='compact-lg'
                 component={Link}
+                maw={250}
                 href={`${process.env.NEXT_PUBLIC_URL}/folders/${folder.id}`}
             >
-                {folder.name}
+                <span style={{
+                    width: '100%',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    padding: '5px 0',
+                }}>
+                    {folder.name}
+                </span>
             </Button>
             {folder.folderChildren && <IconMathGreater size={16} stroke={1.3} />}
             {folder.folderChildren && <Breadcrumb folder={folder.folderChildren}/>}

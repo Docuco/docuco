@@ -10,7 +10,7 @@ export function initzializeDependencies(
     return async (req: NextRequest, params: { params: Record<string, string> }): Promise<NextResponse> => {
         await DIContainer.setup();
         const response = await handler(req, params)
-        await DIContainer.destroy();
+        // await DIContainer.destroy();
 
         return response
     }

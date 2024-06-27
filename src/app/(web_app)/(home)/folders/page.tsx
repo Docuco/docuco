@@ -1,4 +1,4 @@
-import { Group } from "@mantine/core";
+import { Group, Space } from "@mantine/core";
 import { getTokenPayload } from "../../_utils/getTokenPayload";
 import { AddNewDocumentButton } from "./_components/AddNewDocumentButton/AddNewDocumentButton";
 import { AddNewFolderButton } from "./_components/AddNewFolderButton/AddNewFolderButton";
@@ -13,6 +13,7 @@ export default function Page() {
   return (
     <>
       <Breadcrumbs folderId={null} />
+      <Space h="lg" />
       <Group gap={10}>
         {canAddDocuments && <AddNewDocumentButton folderParentId={null} />}
         <AddNewFolderButton folderParentId={null} />

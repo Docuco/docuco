@@ -6,7 +6,8 @@ import { CreateFolderDTO } from "../../Application/DTOs/CreateFolderDTO";
 import { FolderCreated } from "../Events/FolderCreated";
 import { FolderPrimitive } from "../Primitives/FolderPrimitive";
 import { FolderDeleted } from "../Events/FolderDeleted";
-import { FolderHasStoppedBeingShared } from "../Events/FolderHasStoppedBeingShared";
+import { FolderUnlinkedFromParent } from "../Events/FolderUnlinkedFromParent";
+import { FolderRestored } from "../Events/FolderRestored";
 
 export class Folder extends AggregateRoot {
 
@@ -15,7 +16,6 @@ export class Folder extends AggregateRoot {
         private _name: string,
         private _folderParentId: Option<Id>,
         private _isDeleted: boolean,
-        private _sharedToken: Option<SharedToken>,
         private _createdAt: Date,
         private _updatedAt: Date
     ) {
@@ -38,10 +38,6 @@ export class Folder extends AggregateRoot {
         return this._isDeleted;
     }
 
-    get sharedToken(): Option<SharedToken> {
-        return this._sharedToken;
-    }
-
     get createdAt(): Date {
         return this._createdAt;
     }
@@ -56,7 +52,6 @@ export class Folder extends AggregateRoot {
             name: folderDTO.name,
             folderParentId: folderDTO.folderParentId,
             isDeleted: false,
-            sharedToken: null,
             createdAt: Date.now(),
             updatedAt: Date.now(),
         };
@@ -71,6 +66,19 @@ export class Folder extends AggregateRoot {
         return folder;
     }
 
+    restore(): void {
+        if (!this._isDeleted) {
+            return
+        }
+
+        this._isDeleted = false;
+
+        this.record(new FolderRestored({
+            entityId: this.id.value,
+            attributes: this.toPrimitives(),
+        }));
+    }
+
     delete(): void {
         if (this._isDeleted) {
             return
@@ -82,18 +90,12 @@ export class Folder extends AggregateRoot {
             entityId: this.id.value,
             attributes: this.toPrimitives(),
         }));
-
-        this.stopSharing();
     }
 
-    stopSharing(): void {
-        if (this._sharedToken.isNone()) {
-            return;
-        }
+    unlinkFromParent(): void {
+        this._folderParentId = Option.none();
 
-        this._sharedToken = Option.none();
-
-        this.record(new FolderHasStoppedBeingShared({
+        this.record(new FolderUnlinkedFromParent({
             entityId: this.id.value,
             attributes: this.toPrimitives(),
         }));
@@ -105,7 +107,6 @@ export class Folder extends AggregateRoot {
             primitives.name,
             Option.fromValue(primitives.folderParentId).map((id) => new Id(id)),
             primitives.isDeleted,
-            Option.fromValue(primitives.sharedToken).map((token) => new SharedToken(token)),
             new Date(primitives.createdAt),
             new Date(primitives.updatedAt),
         );
@@ -117,7 +118,6 @@ export class Folder extends AggregateRoot {
             name: this._name,
             folderParentId: this._folderParentId.map((id) => id.value).getOrNull(),
             isDeleted: this._isDeleted,
-            sharedToken: this._sharedToken.map((token) => token.value).getOrNull(),
             createdAt: this._createdAt.getTime(),
             updatedAt: this._updatedAt.getTime(),
         }

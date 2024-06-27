@@ -37,8 +37,8 @@ function getURL({
     
     if (folderParentId) {
         return hasParams
-            ? `${API_ROUTES.FOLDER_DOCUMENTS(folderParentId)}?${queryParams.toString()}`
-            : `${API_ROUTES.FOLDER_DOCUMENTS(folderParentId)}`;
+            ? `${API_ROUTES.DOCUMENTS_BY_FOLDER(folderParentId)}?${queryParams.toString()}`
+            : `${API_ROUTES.DOCUMENTS_BY_FOLDER(folderParentId)}`;
     }
     
     return hasParams

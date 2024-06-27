@@ -10,6 +10,7 @@ import { Option } from "../../../Shared/Domain/VOs/Option";
 import { SharedToken } from "../../../Shared/Domain/VOs/ShareToken";
 import { DocuFileHasStoppedBeingShared } from "../Events/DocuFileHasStoppedBeingShared";
 import { DocuFileHasStartedToBeShared } from "../Events/DocuFileHasStartedToBeShared";
+import { DocuFileUnlinkedFromParent } from "../Events/DocuFileUnlinkedFromParent";
 
 export class DocuFile extends AggregateRoot {
     
@@ -92,6 +93,15 @@ export class DocuFile extends AggregateRoot {
         }));
 
         return document;
+    }
+
+    unlinkFromParent(): void {
+        this._folderParentId = Option.none();
+
+        this.record(new DocuFileUnlinkedFromParent({
+            entityId: this.id.value,
+            attributes: this.toPrimitives(),
+        }));
     }
 
     delete(): void {

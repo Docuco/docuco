@@ -3,7 +3,6 @@ export interface FolderPrimitive {
     name: string;
     folderParentId: string | null;
     isDeleted: boolean;
-    sharedToken: string | null;
     createdAt: number;
     updatedAt: number;
 }

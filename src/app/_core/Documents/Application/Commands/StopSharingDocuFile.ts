@@ -16,6 +16,6 @@ export class StopSharingDocuFile {
         docuFile.stopSharing()
         await this.docuFileRepository.save(docuFile)
 
-        this.eventBus.publish(docuFile.pullDomainEvents());
+        await this.eventBus.publish(docuFile.pullDomainEvents());
     }
 }

@@ -1,10 +1,17 @@
-import { ListDeletedDocuFiles } from "./_components/ListDocuFiles/ListDeletedDocuFiles";
+import { Space } from "@mantine/core";
+import { ListDeletedDocuFiles } from "./_components/ListDeletedDocuFiles/ListDeletedDocuFiles";
+import { ListDeletedFolders } from "./_components/ListDeletedFolders/ListDeletedFolders";
+import { BinBreadcrumbs } from "./folders/[folderId]/_components/BinBreadcrumbs/BinBreadcrumbs";
 
 export default function Page() {
 
   return (
     <>
-      <ListDeletedDocuFiles />
+      <BinBreadcrumbs folderId={null} />
+      <Space h="lg" />
+
+      <ListDeletedFolders folderParentId={null} />
+      <ListDeletedDocuFiles folderParentId={null} />
     </>
   );
 }
