@@ -1,14 +1,18 @@
 import { DeleteContentFileWhenDocuFileDeletedPermanently } from "../../../Documents/Application/EventSubscriber/DeleteContentFileWhenDocuFileDeletedPermanently";
 import { DeleteDocuFileWhenParentIsDeleted } from "../../../Documents/Application/EventSubscriber/DeleteDocuFileWhenParentIsDeleted";
+import { DeletePermanentlyDocuFileWhenParentIsDeletedPermanently } from "../../../Documents/Application/EventSubscriber/DeletePermanentlyDocuFileWhenParentIsDeletedPermanently";
 import { RestoreDocuFileWhenParentIsRestored } from "../../../Documents/Application/EventSubscriber/RestoreDocuFileWhenParentIsRestored";
 import { SaveDocuFileWhenContentFileUploaded } from "../../../Documents/Application/EventSubscriber/SaveDocuFileWhenContentFileUploaded";
 import { ContentFileDeleter } from "../../../Documents/Domain/Services/ContentFileDeleter";
 import { DocuFileDeleterByParent } from "../../../Documents/Domain/Services/DocuFileDeleterByParent";
+import { DocuFileDeleterPermanentlyByParent } from "../../../Documents/Domain/Services/DocuFileDeleterPermanentlyByParent";
 import { DocuFileRestorerByParent } from "../../../Documents/Domain/Services/DocuFileRestorerByParent";
 import { DocuFileSaver } from "../../../Documents/Domain/Services/DocuFileSaver";
 import { DeleteFolderWhenParentIsDeleted } from "../../../Folders/Application/EventSubscriber/DeleteFolderWhenParentIsDeleted";
+import { DeletePermanentlyFolderWhenParentIsDeletedPermanently } from "../../../Folders/Application/EventSubscriber/DeletePermanentlyFolderWhenParentIsDeletedPermanently";
 import { RestoreFolderWhenParentIsRestored } from "../../../Folders/Application/EventSubscriber/RestoreFolderWhenParentIsRestored";
 import { FolderDeleterByParent } from "../../../Folders/Domain/Services/FolderDeleterByParent";
+import { FolderDeleterPermanentlyByParent } from "../../../Folders/Domain/Services/FolderDeleterPermanentlyByParent";
 import { FolderRestorerByParent } from "../../../Folders/Domain/Services/FolderRestorerByParent";
 import { DIContainer } from "../DIContainer";
 import { InMemoryEventBus } from "./InMemoryEventBus";
@@ -46,6 +50,16 @@ export function GetInMemoryEventBus(): InMemoryEventBus {
         eventBus
     )
 
+    const docuFileDeleterPermanentlyByParent = new DocuFileDeleterPermanentlyByParent(
+        DIContainer.get('DocuFileRepository'),
+        eventBus
+    )
+
+    const folderDeleterPermanentlyByParent = new FolderDeleterPermanentlyByParent(
+        DIContainer.get('FolderRepository'),
+        eventBus
+    )
+
     eventBus.addSubscribers([
         new SaveDocuFileWhenContentFileUploaded(documentSaver),
         new DeleteContentFileWhenDocuFileDeletedPermanently(contentFileDeleter),
@@ -53,6 +67,8 @@ export function GetInMemoryEventBus(): InMemoryEventBus {
         new DeleteFolderWhenParentIsDeleted(folderDeleterByParent),
         new RestoreDocuFileWhenParentIsRestored(docuFileRestorerByParent),
         new RestoreFolderWhenParentIsRestored(folderRestorerByParent),
+        new DeletePermanentlyDocuFileWhenParentIsDeletedPermanently(docuFileDeleterPermanentlyByParent),
+        new DeletePermanentlyFolderWhenParentIsDeletedPermanently(folderDeleterPermanentlyByParent),
     ]);
 
     return eventBus;

@@ -15,6 +15,7 @@ export const API_ROUTES = {
     ROOT_FOLDER_DOCUMENTS: `${process.env.NEXT_PUBLIC_API_URL}/folders/documents`,
     FOLDER_ANCESTORS: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${id}/ancestors`,
     FOLDERS_DELETED: `${process.env.NEXT_PUBLIC_API_URL}/folders/deleted`,
+    FOLDER_DELETED: (folderId: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/deleted/${folderId}`,
     FOLDER_DELETED_BY_FOLDER_PARENT: (folderParentId: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${folderParentId}/deleted`,
     FOLDER_RESTORE: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${id}/restore`,
 

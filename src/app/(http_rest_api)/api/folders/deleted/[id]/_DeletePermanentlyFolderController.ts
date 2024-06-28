@@ -1,29 +1,29 @@
 import { NextRequest, NextResponse } from "next/server"
 import { BaseController } from "../../../_shared/BaseController";
 import { DIContainer } from "../../../../../_core/Shared/Infrastructure/DIContainer";
-import { DocuFileFinder } from "../../../../../_core/Documents/Domain/Services/DocuFileFinder";
 import { z } from "zod";
-import { DeletePermanentlyDocuFile } from "../../../../../_core/Documents/Application/Commands/DeletePermanentlyDocuFile";
 import { ProtectedController } from "../../../_shared/ProtectedController";
 import { PermissionType } from "../../../../../_core/Shared/Domain/VOs/Permission";
+import { DeletePermanentlyFolder } from "../../../../../_core/Folders/Application/Commands/DeletePermanentlyFolder";
+import { FolderFinder } from "../../../../../_core/Folders/Domain/Services/FolderFinder";
 
 const schema = z.object({
     id: z.string()
 })
 
-export class DeletePermanentlyDocuFileController implements BaseController, ProtectedController {
-    static permissions: PermissionType[] = ['documents:delete'];
-    REQUIRED_PERMISSIONS: PermissionType[] = DeletePermanentlyDocuFileController.permissions;
+export class DeletePermanentlyFolderController implements BaseController, ProtectedController {
+    static permissions: PermissionType[] = ['folders:delete'];
+    REQUIRED_PERMISSIONS: PermissionType[] = DeletePermanentlyFolderController.permissions;
 
-    private deletePermanentlyDocuFile: DeletePermanentlyDocuFile
+    private deletePermanentlyFolder: DeletePermanentlyFolder
 
     constructor() {
-        const docuFileRepository = DIContainer.get('DocuFileRepository')
+        const folderRepository = DIContainer.get('FolderRepository')
         const eventBus = DIContainer.get('EventBus')
 
-        this.deletePermanentlyDocuFile = new DeletePermanentlyDocuFile(
-            new DocuFileFinder(docuFileRepository),
-            docuFileRepository,
+        this.deletePermanentlyFolder = new DeletePermanentlyFolder(
+            new FolderFinder(folderRepository),
+            folderRepository,
             eventBus
         )
     }
@@ -34,7 +34,7 @@ export class DeletePermanentlyDocuFileController implements BaseController, Prot
     ): Promise<NextResponse> {
         const { id } = await this.getParams(req, pathParams);
 
-        await this.deletePermanentlyDocuFile.run({ id })
+        await this.deletePermanentlyFolder.run({ id })
 
         return NextResponse.json({}, { status: 200 });
     }

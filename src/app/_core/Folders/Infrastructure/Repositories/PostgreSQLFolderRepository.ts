@@ -83,6 +83,10 @@ export class PostgreSQLFolderRepository implements FolderRepository {
         return Option.some(this.mapFoldersToAncestorsDTO(allHierarchy)!);
     }
 
+    async delete(folder: Folder): Promise<void> {
+        await this.getRepository(this.em).nativeDelete({ id: folder.id.value });
+    }
+
     private async getParentFolder(folder: Folder): Promise<Option<Folder>> {
         if (folder.folderParentId.isNone()) {
             return Option.none();

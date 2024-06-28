@@ -10,4 +10,5 @@ export interface FolderRepository {
     findById(id: Id): Promise<Option<Folder>>;
     findByParentId(id: Id): Promise<Folder[]>;
     getAncestors(id: Id): Promise<Option<FolderAncestorsDTO>>;
+    delete(folder: Folder): Promise<void>;
 }
