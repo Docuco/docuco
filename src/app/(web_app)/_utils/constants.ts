@@ -1,13 +1,24 @@
 export const API_ROUTES = {
     DOCUMENTS: `${process.env.NEXT_PUBLIC_API_URL}/documents`,
-    DOCUMENT: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/documents/${id}`,
-    DOCUMENTS_DELETED: `${process.env.NEXT_PUBLIC_API_URL}/documents/deleted`,
-    DOCUMENT_DELETED: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/documents/deleted/${id}`,
-    DOCUMENT_RESTORE: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/documents/${id}/restore`,
+    DOCUMENT: (documentId: string) => `${process.env.NEXT_PUBLIC_API_URL}/documents/${documentId}`,
+    ROOT_DOCUMENTS_DELETED: `${process.env.NEXT_PUBLIC_API_URL}/documents/deleted`,
+    DOCUMENTS_BY_FOLDER: (folderId: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${folderId}/documents`,
+    DOCUMENTS_DELETED_BY_FOLDER: (folderId: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${folderId}/documents/deleted`,
+    DOCUMENT_DELETED: (documentId: string) => `${process.env.NEXT_PUBLIC_API_URL}/documents/deleted/${documentId}`,
+    DOCUMENT_RESTORE: (documentId: string) => `${process.env.NEXT_PUBLIC_API_URL}/documents/${documentId}/restore`,
     
     DOCUMENT_SHARE: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/documents/${id}/share`,
     GET_DOCUMENT_BY_SHARE_TOKEN: (sharedToken: string) => `${process.env.NEXT_PUBLIC_API_URL}/shared/documents/${sharedToken}`,
     
+    FOLDERS: `${process.env.NEXT_PUBLIC_API_URL}/folders`,
+    FOLDER: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${id}`,
+    ROOT_FOLDER_DOCUMENTS: `${process.env.NEXT_PUBLIC_API_URL}/folders/documents`,
+    FOLDER_ANCESTORS: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${id}/ancestors`,
+    FOLDERS_DELETED: `${process.env.NEXT_PUBLIC_API_URL}/folders/deleted`,
+    FOLDER_DELETED: (folderId: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/deleted/${folderId}`,
+    FOLDER_DELETED_BY_FOLDER_PARENT: (folderParentId: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${folderParentId}/deleted`,
+    FOLDER_RESTORE: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/folders/${id}/restore`,
+
     USERS: `${process.env.NEXT_PUBLIC_API_URL}/users`,
     USER: (id: string) => `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`,
     USER_CHANGE_PERMISSIONS: (userId: string) => `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/permissions`,

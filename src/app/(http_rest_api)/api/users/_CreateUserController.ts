@@ -28,7 +28,8 @@ export class CreateUserController implements BaseController, ProtectedController
 
     async run(
         req: NextRequest,
-    ): Promise<NextResponse> {
+        pathParams: Record<string, string>
+     ): Promise<NextResponse> {
         const { email, password, permissions } = await this.getParams(req);
 
         await this.createUser.run({ email, password, permissions })

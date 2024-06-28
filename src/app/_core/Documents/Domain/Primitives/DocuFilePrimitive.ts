@@ -3,6 +3,7 @@ import { DocuMimeTypeType } from "../VOs/DocuMimeType";
 export interface DocuFilePrimitive {
     id: string;
     name: string,
+    folderParentId: string | null,
     mimeType: DocuMimeTypeType,
     sizeInBytes: number,
     extension: string | null,

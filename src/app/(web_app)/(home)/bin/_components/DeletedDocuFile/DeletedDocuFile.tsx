@@ -31,7 +31,7 @@ export function DeletedDocuFile({
             method: 'POST',
         })
         await mutate(API_ROUTES.DOCUMENTS);
-        await mutate(API_ROUTES.DOCUMENTS_DELETED);
+        await mutate(API_ROUTES.ROOT_DOCUMENTS_DELETED);
     }
 
     return (
@@ -78,7 +78,7 @@ export function DeletedDocuFile({
                 </Center>
 
                 <Group justify="space-between" mt="md" mb="xs" className={classes.text}>
-                    <Text fw={500} lineClamp={2}>{docuFile.name}</Text>
+                    <Text fw={500} lineClamp={2}>{docuFile.name}.{docuFile.extension}</Text>
                 </Group>
             </Card>
 

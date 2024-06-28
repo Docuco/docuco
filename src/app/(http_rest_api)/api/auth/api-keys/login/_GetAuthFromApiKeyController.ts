@@ -28,6 +28,7 @@ export class GetAuthFromApiKeyController implements BaseController {
 
     async run(
         req: NextRequest,
+        pathParams: Record<string, string>
     ): Promise<NextResponse> {
         const { apiKey } = await this.getParams(req);
 

@@ -4,10 +4,10 @@ import { initzializeDependencies } from "../_shared/initzializeDependencies";
 import { CreateUserController } from "./_CreateUserController";
 import { GetUsersController } from "./_GetUserController";
 
-export const GET = exceptionHandler(initzializeDependencies(async (request) => {
-    return new AuthProxyController(new GetUsersController()).run(request);
+export const GET = exceptionHandler(initzializeDependencies(async (request, route) => {
+    return new AuthProxyController(new GetUsersController()).run(request, route.params);
 }));
 
-export const POST = exceptionHandler(initzializeDependencies(async (request) => {
-    return new AuthProxyController(new CreateUserController()).run(request);
+export const POST = exceptionHandler(initzializeDependencies(async (request, route) => {
+    return new AuthProxyController(new CreateUserController()).run(request, route.params);
 }));

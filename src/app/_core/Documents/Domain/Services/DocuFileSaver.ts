@@ -11,13 +11,11 @@ export class DocuFileSaver {
         private eventBus: EventBus,
     ) {}
 
-    public async run(filePrimitive: ContentFilePrimitive, url: string): Promise<void> {
-        const file = ContentFile.fromPrimitives(filePrimitive)
-        const docuFile = DocuFile.create({ file, url })
+    public async run({ contentFile, url, folderParentId }: { contentFile: ContentFilePrimitive, url: string, folderParentId: string | null}): Promise<void> {
+        const file = ContentFile.fromPrimitives(contentFile)
+        const docuFile = DocuFile.create({ file, url, folderParentId })
         await this.docuFileRepository.save(docuFile)
 
-        this.eventBus.publish(docuFile.pullDomainEvents());
-
-        return
+        await this.eventBus.publish(docuFile.pullDomainEvents());
     }
 }

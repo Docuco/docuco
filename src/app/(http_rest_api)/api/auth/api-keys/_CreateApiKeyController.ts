@@ -31,7 +31,8 @@ export class CreateApiKeyController implements BaseController, ProtectedControll
 
     async run(
         req: NextRequest,
-    ): Promise<NextResponse> {
+        pathParams: Record<string, string>
+     ): Promise<NextResponse> {
         const apiKey = await this.getParams(req);
 
         await this.createApiKey.run(apiKey)

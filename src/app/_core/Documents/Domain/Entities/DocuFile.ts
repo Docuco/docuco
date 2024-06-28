@@ -7,15 +7,17 @@ import { DocuFileRestored } from "../Events/DocuFileRestored";
 import { DocuMimeType, DocuMimeTypeType } from "../VOs/DocuMimeType";
 import { Id } from "../../../Shared/Domain/VOs/Id";
 import { Option } from "../../../Shared/Domain/VOs/Option";
-import { SharedToken } from "../VOs/ShareToken";
+import { SharedToken } from "../../../Shared/Domain/VOs/ShareToken";
 import { DocuFileHasStoppedBeingShared } from "../Events/DocuFileHasStoppedBeingShared";
 import { DocuFileHasStartedToBeShared } from "../Events/DocuFileHasStartedToBeShared";
+import { DocuFileUnlinkedFromParent } from "../Events/DocuFileUnlinkedFromParent";
 
 export class DocuFile extends AggregateRoot {
     
     constructor(
         private _id: Id,
         private _name: string,
+        private _folderParentId: Option<Id>,
         private _mimeType: DocuMimeType,
         private _sizeInBytes: number,
         private _extension: Option<string>,
@@ -34,6 +36,10 @@ export class DocuFile extends AggregateRoot {
 
     get name(): string {
         return this._name;
+    }
+
+    get folderParentId(): Option<Id> {
+        return this._folderParentId;
     }
 
     get mimeType(): DocuMimeType {
@@ -64,10 +70,11 @@ export class DocuFile extends AggregateRoot {
         return this._updatedAt;
     }
     
-    static create({ file, url }: { file: ContentFile, url: string}) {
+    static create({ file, url, folderParentId }: { file: ContentFile, url: string, folderParentId: string | null }) {
         const primitive: DocuFilePrimitive = {
             id: file.id.value,
             name: file.name,
+            folderParentId,
             mimeType: file.mimeType as DocuMimeTypeType,
             sizeInBytes: file.sizeInBytes,
             extension: file.extension.getOrNull(),
@@ -86,6 +93,15 @@ export class DocuFile extends AggregateRoot {
         }));
 
         return document;
+    }
+
+    unlinkFromParent(): void {
+        this._folderParentId = Option.none();
+
+        this.record(new DocuFileUnlinkedFromParent({
+            entityId: this.id.value,
+            attributes: this.toPrimitives(),
+        }));
     }
 
     delete(): void {
@@ -146,12 +162,13 @@ export class DocuFile extends AggregateRoot {
         return new DocuFile(
             new Id(primitives.id),
             primitives.name,
+            Option.fromValue(primitives.folderParentId).map(folderParentId => new Id(folderParentId)),
             new DocuMimeType(primitives.mimeType),
             primitives.sizeInBytes,
             Option.fromValue(primitives.extension),
             primitives.url,
             primitives.isDeleted,
-            primitives.sharedToken ? Option.some(new SharedToken(primitives.sharedToken)) : Option.none(),
+            Option.fromValue(primitives.sharedToken).map(sharedToken => new SharedToken(sharedToken)),
             new Date(primitives.createdAt),
             new Date(primitives.updatedAt),
         );
@@ -161,6 +178,7 @@ export class DocuFile extends AggregateRoot {
         return {
             id: this._id.value,
             name: this._name,
+            folderParentId: this._folderParentId.map((id) => id.value).getOrNull(),
             mimeType: this._mimeType.value,
             sizeInBytes: this._sizeInBytes,
             extension: this._extension.getOrNull(),

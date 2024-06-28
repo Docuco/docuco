@@ -56,6 +56,7 @@ function mapErrors(code: ErrorCode): number {
         [ErrorCode.UserAlreadyExists]: 409,
         [ErrorCode.UserNotFound]: 404,
         [ErrorCode.WrongPassword]: 401,
+        [ErrorCode.FolderNotFound]: 404,
     }
 
     return map[code] || 500;

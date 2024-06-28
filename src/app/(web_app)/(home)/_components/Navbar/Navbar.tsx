@@ -11,10 +11,10 @@ const navLinks = (path: string) => [
         variant: path === '/home' ? 'filled' : 'subtle',
     },
     {
-        label: 'Documents',
+        label: 'My Docs',
         icon: <IconFiles stroke={1.3} />,
-        href: '/documents',
-        variant: path === '/documents' ? 'filled' : 'subtle',
+        href: '/folders',
+        variant: path === '/folders' ? 'filled' : 'subtle',
     },
     {
         label: 'Bin',

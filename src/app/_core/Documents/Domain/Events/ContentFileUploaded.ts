@@ -4,6 +4,7 @@ import { ContentFilePrimitive } from '../Primitives/ContentFilePrimitive';
 type Attributes = {
     contentFile: ContentFilePrimitive;
     url: string;
+    folderParentId: string | null;
 }
 
 type Params = CreateDomainEventParams & {

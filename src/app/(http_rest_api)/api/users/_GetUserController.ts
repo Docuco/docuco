@@ -21,7 +21,8 @@ export class GetUsersController implements BaseController, ProtectedController{
 
     async run(
         req: NextRequest,
-    ): Promise<NextResponse> {
+        pathParams: Record<string, string>
+     ): Promise<NextResponse> {
         const users = await this.getUsers.run()
 
         const usersResponse = this.mapResponse(users)

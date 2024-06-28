@@ -15,7 +15,7 @@ export class DeletePermanentlyDocuFile {
         const docuFile = await this.docuFileFinder.run(id)
         await this.docuFileRepository.delete(docuFile)
 
-        this.eventBus.publish([
+        await this.eventBus.publish([
             new DocuFileDeletedPermanently({
                 entityId: docuFile.id.value,
                 attributes: docuFile.toPrimitives(),

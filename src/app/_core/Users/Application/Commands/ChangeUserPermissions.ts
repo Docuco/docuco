@@ -17,6 +17,6 @@ export class ChangeUserPermissions {
         user.changePermissions(newPermissions)
 
         await this.userRepository.save(user),
-        this.eventBus.publish(user.pullDomainEvents());
+        await this.eventBus.publish(user.pullDomainEvents());
     }
 }

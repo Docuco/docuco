@@ -3,7 +3,8 @@ import { Mutable } from '../../../Shared/Domain/VOs/Mutable';
 import { InvalidMimeType } from '../Exceptions/InvalidMimeType';
 
 export type DocuMimeTypeType = (typeof DocuMimeType.ValidValues)[number];
-export type DocuExtensionType = 'csv' | 'txt' | 'doc' | 'xls' | 'ppt' | 'docx' | 'xlsx' | 'pptx' | 'odt' | 'ods' | 'odp' | 'pdf' | '7z' | 'gz' | 'rar' | 'tar' | 'zip' | 'azw' | 'epub' | 'avif' | 'bmp' | 'gif' | 'jpeg' | 'jpg' | 'png' | 'svg' | 'tif' | 'tiff' | 'webp';
+export const DocuExtensionValue = ['csv', 'txt', 'doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'pdf', '7z', 'gz', 'rar', 'tar', 'zip', 'azw', 'epub', 'avif', 'bmp', 'gif', 'jpeg', 'jpg', 'png', 'svg', 'tif', 'tiff', 'webp']
+export type DocuExtensionType = (typeof DocuExtensionValue)[number];
 
 export class DocuMimeType extends EnumValueObject<DocuMimeTypeType> {
     

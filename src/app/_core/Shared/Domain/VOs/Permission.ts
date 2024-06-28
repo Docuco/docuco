@@ -13,6 +13,12 @@ export class Permission extends EnumValueObject<PermissionType> {
         'documents:restore',
         'documents:share',
         
+        'folders:read',
+        'folders:create',
+        'folders:delete',
+        'folders:restore',
+        'folders:share',
+
         'users:read',
         'users:create',
         'users:delete',

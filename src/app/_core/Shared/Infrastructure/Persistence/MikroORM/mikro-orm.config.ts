@@ -9,6 +9,10 @@ import { UserSchema } from "../../../../Users/Infrastructure/Repositories/MikroO
 import { AuthSchema } from '../../../../Auth/Infrastructure/Repositories/MikroORM/schemas/AuthSchema';
 import { ApiKeySchema } from '../../../../Auth/Infrastructure/Repositories/MikroORM/schemas/ApiKeySchema';
 import { Migration20240615113942_InitialSchema } from '../../../../../../database/migrations/Migration20240615113942_InitialSchema';
+import { FolderSchema } from '../../../../Folders/Infrastructure/Repositories/MikroORM/schemas/FolderSchema';
+import { Migration20240619114525_AddFolderTable } from '../../../../../../database/migrations/Migration20240619114525_AddFolderTable';
+import { Migration20240619175507_AddParentFolderColumnToFolderTable } from '../../../../../../database/migrations/Migration20240619175507_AddParentFolderColumnToFolderTable';
+import { Migration20240620112258_AddParentFolderColumnToDocuFileTable } from '../../../../../../database/migrations/Migration20240620112258_AddParentFolderColumnToDocuFileTable';
 
 dotenv.config({
     path: process.env.NODE_ENV === 'development' ? '.env.local' : '',
@@ -34,6 +38,7 @@ const globalMikroORMConfig: Options = {
         UserSchema,
         AuthSchema,
         ApiKeySchema,
+        FolderSchema,
     ],
     migrations: {
         pathTs: './src/database/migrations',
@@ -41,6 +46,18 @@ const globalMikroORMConfig: Options = {
             {
                 name: 'InitialSchema',
                 class: Migration20240615113942_InitialSchema
+            },
+            {
+                name: 'AddFolderTable',
+                class: Migration20240619114525_AddFolderTable
+            },
+            {
+                name: 'AddParentFolderColumnToFolderTable',
+                class: Migration20240619175507_AddParentFolderColumnToFolderTable
+            },
+            {
+                name: 'AddParentFolderColumnToDocuFileTable',
+                class: Migration20240620112258_AddParentFolderColumnToDocuFileTable
             }
         ],
     },
