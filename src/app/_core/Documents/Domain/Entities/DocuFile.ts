@@ -17,7 +17,7 @@ export class DocuFile extends AggregateRoot {
     constructor(
         private _id: Id,
         private _name: string,
-        private _folderParentId: Option<Id>,
+        private _parentFolderId: Option<Id>,
         private _mimeType: DocuMimeType,
         private _sizeInBytes: number,
         private _extension: Option<string>,
@@ -38,8 +38,8 @@ export class DocuFile extends AggregateRoot {
         return this._name;
     }
 
-    get folderParentId(): Option<Id> {
-        return this._folderParentId;
+    get parentFolderId(): Option<Id> {
+        return this._parentFolderId;
     }
 
     get mimeType(): DocuMimeType {
@@ -70,11 +70,11 @@ export class DocuFile extends AggregateRoot {
         return this._updatedAt;
     }
     
-    static create({ file, url, folderParentId }: { file: ContentFile, url: string, folderParentId: string | null }) {
+    static create({ file, url, parentFolderId }: { file: ContentFile, url: string, parentFolderId: string | null }) {
         const primitive: DocuFilePrimitive = {
             id: file.id.value,
             name: file.name,
-            folderParentId,
+            parentFolderId,
             mimeType: file.mimeType as DocuMimeTypeType,
             sizeInBytes: file.sizeInBytes,
             extension: file.extension.getOrNull(),
@@ -96,7 +96,7 @@ export class DocuFile extends AggregateRoot {
     }
 
     unlinkFromParent(): void {
-        this._folderParentId = Option.none();
+        this._parentFolderId = Option.none();
 
         this.record(new DocuFileUnlinkedFromParent({
             entityId: this.id.value,
@@ -162,7 +162,7 @@ export class DocuFile extends AggregateRoot {
         return new DocuFile(
             new Id(primitives.id),
             primitives.name,
-            Option.fromValue(primitives.folderParentId).map(folderParentId => new Id(folderParentId)),
+            Option.fromValue(primitives.parentFolderId).map(parentFolderId => new Id(parentFolderId)),
             new DocuMimeType(primitives.mimeType),
             primitives.sizeInBytes,
             Option.fromValue(primitives.extension),
@@ -178,7 +178,7 @@ export class DocuFile extends AggregateRoot {
         return {
             id: this._id.value,
             name: this._name,
-            folderParentId: this._folderParentId.map((id) => id.value).getOrNull(),
+            parentFolderId: this._parentFolderId.map((id) => id.value).getOrNull(),
             mimeType: this._mimeType.value,
             sizeInBytes: this._sizeInBytes,
             extension: this._extension.getOrNull(),

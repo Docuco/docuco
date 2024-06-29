@@ -9,9 +9,9 @@ export class DocuFileFinder {
         private docuFileRepository: DocuFileRepository,
     ) {}
 
-    public async run(id: string): Promise<DocuFile> {
-        const docuFileOption = await this.docuFileRepository.findById(new Id(id))
-        const docuFile = docuFileOption.getOrThrow(new DocuFileNotFound(id))
+    public async run(id: Id): Promise<DocuFile> {
+        const docuFileOption = await this.docuFileRepository.findById(id)
+        const docuFile = docuFileOption.getOrThrow(new DocuFileNotFound(id.value))
 
         return docuFile
     }

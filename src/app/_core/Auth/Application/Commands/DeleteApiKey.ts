@@ -16,7 +16,6 @@ export class DeleteApiKey {
         apiKey.delete()
         
         await this.apiKeyRepository.delete(apiKey);
-
-        await this.eventBus.publish(apiKey.pullDomainEvents())
+        this.eventBus.publish(apiKey.pullDomainEvents())
     }
 }

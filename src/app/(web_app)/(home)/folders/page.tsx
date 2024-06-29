@@ -15,12 +15,12 @@ export default function Page() {
       <Breadcrumbs folderId={null} />
       <Space h="lg" />
       <Group gap={10}>
-        {canAddDocuments && <AddNewDocumentButton folderParentId={null} />}
-        <AddNewFolderButton folderParentId={null} />
+        {canAddDocuments && <AddNewDocumentButton parentFolderId={null} />}
+        <AddNewFolderButton parentFolderId={null} />
       </Group>
 
-      <ListFolders folderParentId={null} />
-      <ListDocuFiles folderParentId={null} />
+      <ListFolders parentFolderId={null} />
+      <ListDocuFiles parentFolderId={null} />
     </>
   );
 }

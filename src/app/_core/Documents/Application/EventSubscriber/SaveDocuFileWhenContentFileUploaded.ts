@@ -15,8 +15,8 @@ export class SaveDocuFileWhenContentFileUploaded implements EventSubscriber {
 
     async on(event: ContentFileUploaded): Promise<void> {
         const { attributes } = event;
-        const { contentFile, url, folderParentId } = attributes;
+        const { contentFile, url, parentFolderId } = attributes;
 
-        await this.documentSaver.run({ contentFile, url, folderParentId });
+        await this.documentSaver.run({ contentFile, url, parentFolderId });
     }
 }

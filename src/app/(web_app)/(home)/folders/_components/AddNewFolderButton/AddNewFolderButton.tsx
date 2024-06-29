@@ -18,9 +18,9 @@ import { useForm } from '@mantine/form';
 import { CreateFolderDTO } from '../../../../../_core/Folders/Application/DTOs/CreateFolderDTO';
 
 export function AddNewFolderButton({
-    folderParentId
+    parentFolderId
 }: {
-    folderParentId: string | null
+    parentFolderId: string | null
 }) {
     const [isOpened, { open, close }] = useDisclosure(false);
 
@@ -31,7 +31,7 @@ export function AddNewFolderButton({
         mode: 'uncontrolled',
         initialValues: {
             name: '',
-            folderParentId,
+            parentFolderId,
         },
     });
 
@@ -46,8 +46,8 @@ export function AddNewFolderButton({
             method: 'POST',
             body: JSON.stringify(data),
         })
-        if (folderParentId) {
-            await mutate(API_ROUTES.FOLDER(folderParentId));
+        if (parentFolderId) {
+            await mutate(API_ROUTES.FOLDER(parentFolderId));
         } else {
             await mutate(API_ROUTES.FOLDERS);
         }

@@ -9,7 +9,7 @@ import { DocuFile } from "../../../../../../_core/Documents/Domain/Entities/Docu
 import { z } from "zod";
 
 const schema = z.object({
-    folderParentId: z.string(),
+    parentFolderId: z.string(),
 })
 
 export class GetDeletedDocuFilesByParentController implements BaseController, ProtectedController {
@@ -28,9 +28,9 @@ export class GetDeletedDocuFilesByParentController implements BaseController, Pr
         req: NextRequest,
         pathParams: Record<string, string>
     ): Promise<NextResponse> {
-        const { folderParentId } = this.getParams(req, pathParams)
+        const { parentFolderId } = this.getParams(req, pathParams)
 
-        const docuFiles = await this.getDeletedDocuFiles.run(folderParentId)
+        const docuFiles = await this.getDeletedDocuFiles.run(parentFolderId)
 
         const files = this.mapResponse(docuFiles)
 
@@ -45,7 +45,7 @@ export class GetDeletedDocuFilesByParentController implements BaseController, Pr
 
     private getParams(req: NextRequest, pathParams: Record<string, string>) {
         return schema.parse({
-            folderParentId: pathParams.id,
+            parentFolderId: pathParams.id,
         })
     }
 }

@@ -6,6 +6,7 @@ import { z } from "zod";
 import { DeletePermanentlyDocuFile } from "../../../../../_core/Documents/Application/Commands/DeletePermanentlyDocuFile";
 import { ProtectedController } from "../../../_shared/ProtectedController";
 import { PermissionType } from "../../../../../_core/Shared/Domain/VOs/Permission";
+import { DocuFileDeleterPermanently } from "../../../../../_core/Documents/Domain/Services/DocuFileDeleterPermanently";
 
 const schema = z.object({
     id: z.string()
@@ -23,8 +24,7 @@ export class DeletePermanentlyDocuFileController implements BaseController, Prot
 
         this.deletePermanentlyDocuFile = new DeletePermanentlyDocuFile(
             new DocuFileFinder(docuFileRepository),
-            docuFileRepository,
-            eventBus
+            new DocuFileDeleterPermanently(docuFileRepository, eventBus),
         )
     }
 

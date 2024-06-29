@@ -12,16 +12,16 @@ export class GetFoldersInParent {
         private folderRespository: FolderRepository,
     ) { }
 
-    public async run(folderParentId: string | null): Promise<Folder[]> {
-        if (folderParentId) {
-            const folderParent = await this.folderFinder.run(folderParentId)
-            if (folderParent.isDeleted) {
-                throw new FolderNotFound(folderParentId)
+    public async run(parentFolderId: string | null): Promise<Folder[]> {
+        if (parentFolderId) {
+            const parentFolder = await this.folderFinder.run(new Id(parentFolderId))
+            if (parentFolder.isDeleted) {
+                throw new FolderNotFound(parentFolderId)
             }
         }
 
         return this.folderRespository.getAll({
-            folderParentId: Option.fromValue(folderParentId).map(id => new Id(id))
+            parentFolderId: Option.fromValue(parentFolderId).map(id => new Id(id))
         })
     }
 }

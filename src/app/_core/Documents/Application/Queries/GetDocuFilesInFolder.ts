@@ -15,22 +15,29 @@ export class GetDocuFilesInFolder {
     ) {}
 
     public async run({
-        folderParentId,
+        parentFolderId,
         filters
     }: {
-        folderParentId: string | null,
+        parentFolderId: string | null,
         filters?: DocuFileFiltersPrimitives
     }): Promise<DocuFile[]> {
-        if (folderParentId) {
-            const folderParent = await this.folderFinder.run(folderParentId)
-            if (folderParent.isDeleted) {
-                throw new FolderNotFound(folderParentId)
-            }
+        const docuFileFilters = Option.fromValue(filters).map(f => DocuFileFilters.fromPrimitives(f))
+        
+        if (!parentFolderId) {
+            return this.docuFileRepository.getAll({
+                parentFolderId: Option.none(),
+                filters: docuFileFilters
+            })
+        }
+
+        const parentFolder = await this.folderFinder.run(new Id(parentFolderId))
+        if (parentFolder.isDeleted) {
+            throw new FolderNotFound(parentFolderId)
         }
 
         return this.docuFileRepository.getAll({
-            folderParentId: Option.fromValue(folderParentId).map(value => new Id(value)),
-            filters: Option.fromValue(filters).map(f => DocuFileFilters.fromPrimitives(f))
+            parentFolderId: Option.some(parentFolder.id),
+            filters: docuFileFilters
         })
     }
 }

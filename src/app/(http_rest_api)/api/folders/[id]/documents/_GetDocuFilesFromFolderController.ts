@@ -12,7 +12,7 @@ import { DocuFileFiltersPrimitives } from "../../../../../_core/Documents/Domain
 import { DocuExtensionValue } from '../../../../../_core/Documents/Domain/VOs/DocuMimeType'
 
 const schema = z.object({
-    folderParentId: z.string(),
+    parentFolderId: z.string(),
     filters: z.object({
         mimeType: z.enum(DocuExtensionValue as [string, ...string[]]).optional()
     })
@@ -39,9 +39,9 @@ export class GetDocuFilesFromFolderController implements BaseController, Protect
         req: NextRequest,
         pathParams: Record<string, string>
     ): Promise<NextResponse> {
-        const { folderParentId, filters } = this.getParams(req, pathParams)
+        const { parentFolderId, filters } = this.getParams(req, pathParams)
 
-        const files = await this.getDocuFilesInFolder.run({ folderParentId, filters })
+        const files = await this.getDocuFilesInFolder.run({ parentFolderId, filters })
         const filesResponse = this.mapResponse(files)
 
         return NextResponse.json({ files: filesResponse }, { status: 200 });
@@ -55,12 +55,12 @@ export class GetDocuFilesFromFolderController implements BaseController, Protect
         const { searchParams } = new URL(req.url);
 
         return schema.parse({
-            folderParentId: pathParams.id,
+            parentFolderId: pathParams.id,
             filters: {
                 mimeType: searchParams.has('mimeType') ? searchParams.get('mimeType') : undefined,
             }
         }) as {
-            folderParentId: string,
+            parentFolderId: string,
             filters: DocuFileFiltersPrimitives
         }
     }

@@ -9,9 +9,9 @@ export class GetDeletedFolders {
         private folderRepository: FolderRepository,
     ) {}
 
-    public async run(folderParentId: string | null): Promise<Folder[]> {
+    public async run(parentFolderId: string | null): Promise<Folder[]> {
         return this.folderRepository.getDeleted({
-            folderParentId: Option.fromValue(folderParentId).map(id => new Id(id))
+            parentFolderId: Option.fromValue(parentFolderId).map(id => new Id(id))
         })
     }
 }

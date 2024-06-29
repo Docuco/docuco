@@ -6,6 +6,7 @@ import { DocuFileFinder } from "../../../../_core/Documents/Domain/Services/Docu
 import { z } from "zod";
 import { PermissionType } from "../../../../_core/Shared/Domain/VOs/Permission";
 import { ProtectedController } from "../../_shared/ProtectedController";
+import { DocuFileDeleter } from "../../../../_core/Documents/Domain/Services/DocuFileDeleter";
 
 const schema = z.object({
     id: z.string()
@@ -23,8 +24,7 @@ export class DeleteDocuFileController implements BaseController, ProtectedContro
 
         this.deleteDocuFile = new DeleteDocuFile(
             new DocuFileFinder(docuFileRepository),
-            docuFileRepository,
-            eventBus
+            new DocuFileDeleter(docuFileRepository, eventBus),
         )
     }
 

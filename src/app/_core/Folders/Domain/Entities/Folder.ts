@@ -14,7 +14,7 @@ export class Folder extends AggregateRoot {
     constructor(
         private _id: Id,
         private _name: string,
-        private _folderParentId: Option<Id>,
+        private _parentFolderId: Option<Id>,
         private _isDeleted: boolean,
         private _createdAt: Date,
         private _updatedAt: Date
@@ -30,8 +30,8 @@ export class Folder extends AggregateRoot {
         return this._name;
     }
 
-    get folderParentId(): Option<Id> {
-        return this._folderParentId;
+    get parentFolderId(): Option<Id> {
+        return this._parentFolderId;
     }
 
     get isDeleted(): boolean {
@@ -50,7 +50,7 @@ export class Folder extends AggregateRoot {
         const primitive: FolderPrimitive = {
             id: Id.generate().value,
             name: folderDTO.name,
-            folderParentId: folderDTO.folderParentId,
+            parentFolderId: folderDTO.parentFolderId,
             isDeleted: false,
             createdAt: Date.now(),
             updatedAt: Date.now(),
@@ -93,7 +93,7 @@ export class Folder extends AggregateRoot {
     }
 
     unlinkFromParent(): void {
-        this._folderParentId = Option.none();
+        this._parentFolderId = Option.none();
 
         this.record(new FolderUnlinkedFromParent({
             entityId: this.id.value,
@@ -105,7 +105,7 @@ export class Folder extends AggregateRoot {
         return new Folder(
             new Id(primitives.id),
             primitives.name,
-            Option.fromValue(primitives.folderParentId).map((id) => new Id(id)),
+            Option.fromValue(primitives.parentFolderId).map((id) => new Id(id)),
             primitives.isDeleted,
             new Date(primitives.createdAt),
             new Date(primitives.updatedAt),
@@ -116,7 +116,7 @@ export class Folder extends AggregateRoot {
         return {
             id: this._id.value,
             name: this._name,
-            folderParentId: this._folderParentId.map((id) => id.value).getOrNull(),
+            parentFolderId: this._parentFolderId.map((id) => id.value).getOrNull(),
             isDeleted: this._isDeleted,
             createdAt: this._createdAt.getTime(),
             updatedAt: this._updatedAt.getTime(),

@@ -6,6 +6,7 @@ import { z } from "zod";
 import { RestoreDocuFile } from "../../../../../_core/Documents/Application/Commands/RestoreDocuFile";
 import { ProtectedController } from "../../../_shared/ProtectedController";
 import { PermissionType } from "../../../../../_core/Shared/Domain/VOs/Permission";
+import { DocuFileRestorer } from "../../../../../_core/Documents/Domain/Services/DocuFileRestorer";
 
 const schema = z.object({
     id: z.string()
@@ -23,8 +24,7 @@ export class RestoreDocuFileController implements BaseController, ProtectedContr
 
         this.restoreDocuFile = new RestoreDocuFile(
             new DocuFileFinder(docuFileRepository),
-            docuFileRepository,
-            eventBus
+            new DocuFileRestorer(docuFileRepository, eventBus),
         )
     }
 

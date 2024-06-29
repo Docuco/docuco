@@ -9,9 +9,9 @@ export class FolderFinder {
         private folderRepository: FolderRepository,
     ) {}
 
-    public async run(id: string): Promise<Folder> {
-        const folderOption = await this.folderRepository.findById(new Id(id))
-        const folder = folderOption.getOrThrow(new FolderNotFound(id))
+    public async run(id: Id): Promise<Folder> {
+        const folderOption = await this.folderRepository.findById(id)
+        const folder = folderOption.getOrThrow(new FolderNotFound(id.value))
 
         return folder
     }

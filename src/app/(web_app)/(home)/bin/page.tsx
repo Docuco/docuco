@@ -10,8 +10,8 @@ export default function Page() {
       <BinBreadcrumbs folderId={null} />
       <Space h="lg" />
 
-      <ListDeletedFolders folderParentId={null} />
-      <ListDeletedDocuFiles folderParentId={null} />
+      <ListDeletedFolders parentFolderId={null} />
+      <ListDeletedDocuFiles parentFolderId={null} />
     </>
   );
 }

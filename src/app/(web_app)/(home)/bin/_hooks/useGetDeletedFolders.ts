@@ -5,7 +5,7 @@ import { FolderPrimitive } from "../../../../_core/Folders/Domain/Primitives/Fol
 
 export const useGetDeletedFolders = (folderId: string | null) => {
     const { data, error, isValidating } = useSWR(
-        folderId ? API_ROUTES.FOLDER_DELETED_BY_FOLDER_PARENT(folderId) : API_ROUTES.FOLDERS_DELETED,
+        folderId ? API_ROUTES.FOLDER_DELETED_BY_PARENT_FOLDER(folderId) : API_ROUTES.FOLDERS_DELETED,
         (url: string) => fetcher<{folders: FolderPrimitive[]}>(url)
     );
     const deletedFolders = data?.folders ?? [];

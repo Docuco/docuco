@@ -6,11 +6,11 @@ import { DeletedDocuFileSkeleton } from '../DeletedDocuFile/DeletedDocuFileSkele
 import { DeletedDocuFile } from '../DeletedDocuFile/DeletedDocuFile';
 
 export function ListDeletedDocuFiles({
-    folderParentId
+    parentFolderId
 }: {
-    folderParentId: string | null;
+    parentFolderId: string | null;
 }) {
-    const { deletedDocuFiles, isLoading } = useGetDeletedDocuFiles(folderParentId);
+    const { deletedDocuFiles, isLoading } = useGetDeletedDocuFiles(parentFolderId);
 
     if (isLoading) {
         return (

@@ -6,6 +6,7 @@ import { ProtectedController } from "../../../_shared/ProtectedController";
 import { PermissionType } from "../../../../../_core/Shared/Domain/VOs/Permission";
 import { DeletePermanentlyFolder } from "../../../../../_core/Folders/Application/Commands/DeletePermanentlyFolder";
 import { FolderFinder } from "../../../../../_core/Folders/Domain/Services/FolderFinder";
+import { FolderDeleterPermanently } from "../../../../../_core/Folders/Domain/Services/FolderDeleterPermanently";
 
 const schema = z.object({
     id: z.string()
@@ -23,8 +24,7 @@ export class DeletePermanentlyFolderController implements BaseController, Protec
 
         this.deletePermanentlyFolder = new DeletePermanentlyFolder(
             new FolderFinder(folderRepository),
-            folderRepository,
-            eventBus
+            new FolderDeleterPermanently(folderRepository, eventBus),
         )
     }
 

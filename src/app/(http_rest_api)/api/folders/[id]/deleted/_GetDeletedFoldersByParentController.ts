@@ -9,7 +9,7 @@ import { GetDeletedFolders } from "../../../../../_core/Folders/Application/Quer
 import { z } from "zod";
 
 const schema = z.object({
-    folderParentId: z.string(),
+    parentFolderId: z.string(),
 })
 
 export class GetDeletedFoldersByParentController implements BaseController, ProtectedController {
@@ -28,9 +28,9 @@ export class GetDeletedFoldersByParentController implements BaseController, Prot
         req: NextRequest,
         pathParams: Record<string, string>
     ): Promise<NextResponse> {
-        const { folderParentId } = this.getParams(req, pathParams)
+        const { parentFolderId } = this.getParams(req, pathParams)
 
-        const folders = await this.getDeletedFolders.run(folderParentId)
+        const folders = await this.getDeletedFolders.run(parentFolderId)
 
         const foldersResponse = this.mapResponse(folders)
 
@@ -45,7 +45,7 @@ export class GetDeletedFoldersByParentController implements BaseController, Prot
 
     private getParams(req: NextRequest, pathParams: Record<string, string>) {
         return schema.parse({
-            folderParentId: pathParams.id,
+            parentFolderId: pathParams.id,
         })
     }
 }

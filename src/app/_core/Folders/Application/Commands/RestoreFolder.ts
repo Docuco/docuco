@@ -1,22 +1,19 @@
-import { EventBus } from "../../../Shared/Domain/Events/EventBus"
-import { FolderRepository } from "../../Domain/Repositories/FolderRepository"
+import { Id } from "../../../Shared/Domain/VOs/Id";
 import { FolderFinder } from "../../Domain/Services/FolderFinder"
+import { FolderRestorer } from "../../Domain/Services/FolderRestorer";
 
 export class RestoreFolder {
 
     constructor(
         private folderFinder: FolderFinder,
-        private folderRepository: FolderRepository,
-        private eventBus: EventBus,
+        private folderRestorer: FolderRestorer,
     ) {}
 
     public async run({ id }: { id: string }): Promise<void> {
-        const folder = await this.folderFinder.run(id)
+        const folder = await this.folderFinder.run(new Id(id))
 
         folder.unlinkFromParent()
-        folder.restore()
-        await this.folderRepository.save(folder)
-
-        await this.eventBus.publish(folder.pullDomainEvents());
+        
+        await this.folderRestorer.run(folder)
     }
 }

@@ -1,25 +1,17 @@
-import { EventBus } from "../../../Shared/Domain/Events/EventBus";
-import { DocuFileRepository } from "../../Domain/Repositories/DocuFileRepository"
-import { DocuFileDeletedPermanently } from "../../Domain/Events/DocuFileDeletedPermanently";
 import { DocuFileFinder } from "../../Domain/Services/DocuFileFinder"
+import { Id } from "../../../Shared/Domain/VOs/Id";
+import { DocuFileDeleterPermanently } from "../../Domain/Services/DocuFileDeleterPermanently";
 
 export class DeletePermanentlyDocuFile {
 
     constructor(
         private docuFileFinder: DocuFileFinder,
-        private docuFileRepository: DocuFileRepository,
-        private eventBus: EventBus,
+        private docuFileDeleterPermanently: DocuFileDeleterPermanently,
     ) {}
 
     public async run({ id }: { id: string }): Promise<void> {
-        const docuFile = await this.docuFileFinder.run(id)
-        await this.docuFileRepository.delete(docuFile)
-
-        await this.eventBus.publish([
-            new DocuFileDeletedPermanently({
-                entityId: docuFile.id.value,
-                attributes: docuFile.toPrimitives(),
-            })
-        ]);
+        const docuFile = await this.docuFileFinder.run(new Id(id))
+        
+        await this.docuFileDeleterPermanently.run(docuFile)
     }
 }

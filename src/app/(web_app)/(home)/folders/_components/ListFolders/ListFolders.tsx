@@ -9,11 +9,11 @@ import { useRouter } from 'next/navigation';
 import { Title } from '@mantine/core';
 
 export function ListFolders({
-    folderParentId
+    parentFolderId
 }: {
-    folderParentId: string | null
+    parentFolderId: string | null
 }) {
-    const { folders, isLoading } = useGetFolders(folderParentId);
+    const { folders, isLoading } = useGetFolders(parentFolderId);
 
     async function goToFolder(folder: FolderPrimitive) {
         
@@ -47,7 +47,7 @@ export function ListFolders({
                     <Folder
                         key={folder.id}
                         folder={folder}
-                        folderParentId={folderParentId}
+                        parentFolderId={parentFolderId}
                         onClick={goToFolder}
                     />
                 ))}

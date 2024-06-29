@@ -4,8 +4,8 @@ import { DocuFilePrimitive } from "../../../../_core/Documents/Domain/Primitives
 import { DocuFileFiltersPrimitives } from "../../../../_core/Documents/Domain/Primitives/DocuFileFiltersPrimitives";
 import { fetcher } from "../../../_utils/fetch";
 
-export const useGetDocuFiles = ({ filters, folderParentId }: { filters: DocuFileFiltersPrimitives, folderParentId: string | null}) => {
-    const url = getURL({ filters, folderParentId });
+export const useGetDocuFiles = ({ filters, parentFolderId }: { filters: DocuFileFiltersPrimitives, parentFolderId: string | null}) => {
+    const url = getURL({ filters, parentFolderId });
     const { data, error, isValidating } = useSWR(
         url,
         (url: string) => fetcher<{ files: DocuFilePrimitive[] }>(url)
@@ -22,10 +22,10 @@ export const useGetDocuFiles = ({ filters, folderParentId }: { filters: DocuFile
 
 function getURL({
     filters,
-    folderParentId
+    parentFolderId
 }: {
     filters: DocuFileFiltersPrimitives,
-    folderParentId: string | null
+    parentFolderId: string | null
 }): string {
     const queryParams = new URLSearchParams();
     for (const key in filters) {
@@ -35,10 +35,10 @@ function getURL({
     }
     const hasParams = queryParams.size > 0;
     
-    if (folderParentId) {
+    if (parentFolderId) {
         return hasParams
-            ? `${API_ROUTES.DOCUMENTS_BY_FOLDER(folderParentId)}?${queryParams.toString()}`
-            : `${API_ROUTES.DOCUMENTS_BY_FOLDER(folderParentId)}`;
+            ? `${API_ROUTES.DOCUMENTS_BY_FOLDER(parentFolderId)}?${queryParams.toString()}`
+            : `${API_ROUTES.DOCUMENTS_BY_FOLDER(parentFolderId)}`;
     }
     
     return hasParams

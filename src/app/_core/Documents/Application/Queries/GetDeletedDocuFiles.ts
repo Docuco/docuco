@@ -9,9 +9,9 @@ export class GetDeletedDocuFiles {
         private docuFileRepository: DocuFileRepository,
     ) {}
 
-    public async run(folderParentId: string | null): Promise<DocuFile[]> {
+    public async run(parentFolderId: string | null): Promise<DocuFile[]> {
         return this.docuFileRepository.getDeleted({
-            folderParentId: Option.fromValue(folderParentId).map(id => new Id(id))
+            parentFolderId: Option.fromValue(parentFolderId).map(id => new Id(id))
         })
     }
 }
