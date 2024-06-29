@@ -8,7 +8,7 @@ import { CreateFolder } from "../../../_core/Folders/Application/Commands/Create
 
 const schema = z.object({
     name: z.string(),
-    folderParentId: z.string().nullable(),
+    parentFolderId: z.string().nullable(),
 })
 
 export class CreateFolderController implements BaseController, ProtectedController {
@@ -28,11 +28,11 @@ export class CreateFolderController implements BaseController, ProtectedControll
         req: NextRequest,
         pathParams: Record<string, string>
     ): Promise<NextResponse> {
-        const { name, folderParentId } = await this.getParams(req);
+        const { name, parentFolderId } = await this.getParams(req);
 
         await this.createFolder.run({
             name,
-            folderParentId
+            parentFolderId
         })
 
         return NextResponse.json({}, { status: 201 });
@@ -43,7 +43,7 @@ export class CreateFolderController implements BaseController, ProtectedControll
 
         return schema.parse({
             name: body.name,
-            folderParentId: body.folderParentId,
+            parentFolderId: body.parentFolderId,
         })
     }
 }

@@ -14,8 +14,8 @@ export default function Page({
       <BinBreadcrumbs folderId={params.folderId} />
       <Space h="lg" />
 
-      <ListDeletedFolders folderParentId={params.folderId} />
-      <ListDeletedDocuFiles folderParentId={params.folderId} />
+      <ListDeletedFolders parentFolderId={params.folderId} />
+      <ListDeletedDocuFiles parentFolderId={params.folderId} />
     </>
   );
 }

@@ -4,11 +4,11 @@ import { FolderAncestorsDTO } from "../../Application/DTOs/FolderAncestorsDTO";
 import { Folder } from "../Entities/Folder";
 
 export interface FolderRepository {
-    getAll({ folderParentId }: { folderParentId: Option<Id> }): Promise<Folder[]>;
-    getDeleted({ folderParentId }: { folderParentId: Option<Id> }): Promise<Folder[]>
+    getAll({ parentFolderId }: { parentFolderId: Option<Id> }): Promise<Folder[]>;
+    getDeleted({ parentFolderId }: { parentFolderId: Option<Id> }): Promise<Folder[]>
     save(folder: Folder): Promise<void>;
     findById(id: Id): Promise<Option<Folder>>;
-    findByParentId(id: Id): Promise<Folder[]>;
+    findByParent(parentFolder: Folder): Promise<Folder[]>;
     getAncestors(id: Id): Promise<Option<FolderAncestorsDTO>>;
     delete(folder: Folder): Promise<void>;
 }

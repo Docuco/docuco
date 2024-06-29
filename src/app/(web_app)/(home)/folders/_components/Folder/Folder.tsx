@@ -9,11 +9,11 @@ import { useRouter } from "next/navigation";
 
 export function Folder({
     folder,
-    folderParentId,
+    parentFolderId,
     onClick,
 }: {
     folder: FolderPrimitive,
-    folderParentId: string | null,
+    parentFolderId: string | null,
     onClick: (folder: FolderPrimitive) => void
 }) {
     const router = useRouter();
@@ -74,7 +74,7 @@ export function Folder({
                 </CardSection>
             </Card>
 
-            <DeleteFolderModal folder={folder} folderParentId={folderParentId} onClose={closeDeleteModal} opened={isOpenedDeleteModal} />            
+            <DeleteFolderModal folder={folder} parentFolderId={parentFolderId} onClose={closeDeleteModal} opened={isOpenedDeleteModal} />            
         </>
     );
 }

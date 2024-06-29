@@ -6,7 +6,7 @@ export const DocuFileSchema = new EntitySchema<DocuFilePrimitive>({
     properties: {
         id: { type: types.string, primary: true },
         name: { type: types.string },
-        folderParentId: { type: types.string, nullable: true },
+        parentFolderId: { type: types.string, nullable: true },
         mimeType: { type: types.string },
         sizeInBytes: { type: types.integer },
         extension: { type: types.string, nullable: true },

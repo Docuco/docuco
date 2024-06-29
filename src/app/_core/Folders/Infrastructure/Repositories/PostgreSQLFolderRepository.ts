@@ -26,18 +26,18 @@ export class PostgreSQLFolderRepository implements FolderRepository {
         this.getRepository(this.em).upsert(folder.toPrimitives());
     }
 
-    async getAll({ folderParentId }: { folderParentId: Option<Id> }): Promise<Folder[]> {
+    async getAll({ parentFolderId }: { parentFolderId: Option<Id> }): Promise<Folder[]> {
         const results = await this.getRepository(this.em).find({
-            folderParentId: folderParentId.map(id => id.value).getOrNull(),
+            parentFolderId: parentFolderId.map(id => id.value).getOrNull(),
             isDeleted: false,
         });
         
         return results.map((result) => Folder.fromPrimitives(result));
     }
 
-    async getDeleted({ folderParentId }: { folderParentId: Option<Id> }): Promise<Folder[]> {
+    async getDeleted({ parentFolderId }: { parentFolderId: Option<Id> }): Promise<Folder[]> {
         const results = await this.getRepository(this.em).find({
-            folderParentId: folderParentId.map(id => id.value).getOrNull(),
+            parentFolderId: parentFolderId.map(id => id.value).getOrNull(),
             isDeleted: true,
         });
         return results.map((result) => Folder.fromPrimitives(result));
@@ -53,9 +53,9 @@ export class PostgreSQLFolderRepository implements FolderRepository {
         return Option.some(Folder.fromPrimitives(result));
     }
 
-    async findByParentId(id: Id): Promise<Folder[]> {
+    async findByParent(parentFolder: Folder): Promise<Folder[]> {
         const results = await this.getRepository(this.em).find({
-            folderParentId: id.value,
+            parentFolderId: parentFolder.id.value,
         });
 
         return results.map((result) => Folder.fromPrimitives(result));
@@ -69,7 +69,7 @@ export class PostgreSQLFolderRepository implements FolderRepository {
         
         let allHierarchy = [folder.get()]
         
-        const hasParent = folder.get().folderParentId.isSome();
+        const hasParent = folder.get().parentFolderId.isSome();
         if (!hasParent) {
             return Option.some(this.mapFoldersToAncestorsDTO(allHierarchy)!);
         }
@@ -88,17 +88,17 @@ export class PostgreSQLFolderRepository implements FolderRepository {
     }
 
     private async getParentFolder(folder: Folder): Promise<Option<Folder>> {
-        if (folder.folderParentId.isNone()) {
+        if (folder.parentFolderId.isNone()) {
             return Option.none();
         }
 
-        return this.findById(folder.folderParentId.get());
+        return this.findById(folder.parentFolderId.get());
     }
 
     private mapFoldersToAncestorsDTO(folders: Folder[], parent: Option<Folder> = Option.none()): FolderAncestorsDTO | null {
         const childrenFolder = folders.find(folder => {
-            return (parent.isSome() && folder.folderParentId.isSome() && folder.folderParentId.get().equals(parent.get().id))
-                || (parent.isNone() && folder.folderParentId.isNone())
+            return (parent.isSome() && folder.parentFolderId.isSome() && folder.parentFolderId.get().equals(parent.get().id))
+                || (parent.isNone() && folder.parentFolderId.isNone())
         });
 
         if (childrenFolder === undefined) {

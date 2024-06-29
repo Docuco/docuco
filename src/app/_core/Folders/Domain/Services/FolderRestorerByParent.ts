@@ -1,23 +1,17 @@
-import { EventBus } from "../../../Shared/Domain/Events/EventBus";
-import { Id } from "../../../Shared/Domain/VOs/Id"
-import { FolderPrimitive } from "../Primitives/FolderPrimitive";
+import { FolderRestorer } from "../Services/FolderRestorer";
 import { FolderRepository } from "../Repositories/FolderRepository";
+import { Folder } from "../Entities/Folder";
 
 export class FolderRestorerByParent {
 
     constructor(
         private folderRepository: FolderRepository,
-        private eventBus: EventBus,
+        private folderRestorer: FolderRestorer,
     ) {}
 
-    public async run(parentFolder: FolderPrimitive): Promise<void> {
-        const folders = await this.folderRepository.findByParentId(new Id(parentFolder.id))
+    public async run(parentFolder: Folder): Promise<void> {
+        const folders = await this.folderRepository.findByParent(parentFolder)
         
-        folders.forEach(folder => folder.restore())
-
-        folders.forEach(async folder => {
-            await this.folderRepository.save(folder)
-            await this.eventBus.publish(folder.pullDomainEvents())
-        })
+        await Promise.all(folders.map(folder => this.folderRestorer.run(folder)))
     }
 }

@@ -6,6 +6,7 @@ import { PermissionType } from "../../../../_core/Shared/Domain/VOs/Permission";
 import { ProtectedController } from "../../_shared/ProtectedController";
 import { FolderFinder } from "../../../../_core/Folders/Domain/Services/FolderFinder";
 import { DeleteFolder } from "../../../../_core/Folders/Application/Commands/DeleteFolder";
+import { FolderDeleter } from "../../../../_core/Folders/Domain/Services/FolderDeleter";
 
 const schema = z.object({
     id: z.string()
@@ -23,8 +24,7 @@ export class DeleteFolderController implements BaseController, ProtectedControll
 
         this.deleteFolder = new DeleteFolder(
             new FolderFinder(folderRepository),
-            folderRepository,
-            eventBus
+            new FolderDeleter(folderRepository, eventBus),
         )
     }
 

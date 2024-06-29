@@ -10,17 +10,17 @@ export class ContentFileUploader {
         private eventBus: EventBus,
     ) {}
 
-    public async run({ file, folderParentId }: { file: File, folderParentId: string | null}): Promise<void> {
+    public async run({ file, parentFolderId }: { file: File, parentFolderId: string | null}): Promise<void> {
         const contentFile = ContentFile.create(file)
         const { url } = await this.contentFileStore.upload(contentFile)
         
-        await this.eventBus.publish([
+        this.eventBus.publish([
             new ContentFileUploaded({
                 entityId: contentFile.id.value,
                 attributes: {
                     contentFile: contentFile.toPrimitives(),
                     url,
-                    folderParentId
+                    parentFolderId
                 },
             })
         ]);

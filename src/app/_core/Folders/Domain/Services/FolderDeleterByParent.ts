@@ -1,23 +1,17 @@
-import { EventBus } from "../../../Shared/Domain/Events/EventBus";
-import { Id } from "../../../Shared/Domain/VOs/Id"
-import { FolderPrimitive } from "../Primitives/FolderPrimitive";
+import { Folder } from "../Entities/Folder";
 import { FolderRepository } from "../Repositories/FolderRepository";
+import { FolderDeleter } from "../Services/FolderDeleter";
 
 export class FolderDeleterByParent {
 
     constructor(
         private folderRepository: FolderRepository,
-        private eventBus: EventBus,
+        private folderDeleter: FolderDeleter,
     ) {}
 
-    public async run(parentFolder: FolderPrimitive): Promise<void> {
-        const folders = await this.folderRepository.findByParentId(new Id(parentFolder.id))
+    public async run(parentFolder: Folder): Promise<void> {
+        const folders = await this.folderRepository.findByParent(parentFolder)
         
-        folders.forEach(folder => folder.delete())
-
-        folders.forEach(async folder => {
-            await this.folderRepository.save(folder)
-            await this.eventBus.publish(folder.pullDomainEvents())
-        })
+        await Promise.all(folders.map(folder => this.folderDeleter.run(folder)))
     }
 }

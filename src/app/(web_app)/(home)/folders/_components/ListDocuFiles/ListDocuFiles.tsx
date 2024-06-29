@@ -18,13 +18,13 @@ import { PDFVisualizer } from "../Visualizers/PDFVisualizer/PDFVisualizer";
 import { ImageVisualizer } from "../Visualizers/ImageVisualizer/ImageVisualizer";
 
 export function ListDocuFiles({
-    folderParentId
+    parentFolderId
 }: {
-    folderParentId: string | null
+    parentFolderId: string | null
 }) {
     const { isDesktop, isTablet, isMobile } = useScreenSize()
     const [ filters, setFilters ] = useFiltersFromURL();
-    const { docuFiles, isLoading } = useGetDocuFiles({ filters, folderParentId });
+    const { docuFiles, isLoading } = useGetDocuFiles({ filters, parentFolderId });
     const [ docuFileToPreview, setDocuFileToPreview ] = useState<null | DocuFilePrimitive>(null);
     const [isPDFViewerOpen, { open: openPDFViewer, close: closePDFViewer }] = useDisclosure(false);
 

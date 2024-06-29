@@ -7,12 +7,12 @@ import { FolderPrimitive } from "../../../../../_core/Folders/Domain/Primitives/
 
 export function DeleteFolderModal({
     folder,
-    folderParentId,
+    parentFolderId,
     opened,
     onClose
 }: {
     folder: FolderPrimitive,
-    folderParentId: string | null,
+    parentFolderId: string | null,
     opened: boolean,
     onClose: () => void
 }) {
@@ -24,8 +24,8 @@ export function DeleteFolderModal({
         await clientCustomFetch(`${API_ROUTES.FOLDER(folder.id)}`, {
             method: 'DELETE',
         })
-        if (folderParentId) {
-            await mutate(API_ROUTES.FOLDER(folderParentId));
+        if (parentFolderId) {
+            await mutate(API_ROUTES.FOLDER(parentFolderId));
         } else {
             await mutate(API_ROUTES.FOLDERS);
         }

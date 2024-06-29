@@ -39,7 +39,7 @@ export class GetDocumentsFromRootFolderController implements BaseController, Pro
      ): Promise<NextResponse> {
         const { filters } = this.getParams(req)
 
-        const files = await this.getDocuFilesInFolder.run({ folderParentId: null, filters })
+        const files = await this.getDocuFilesInFolder.run({ parentFolderId: null, filters })
         const filesResponse = this.mapResponse(files)
 
         return NextResponse.json({ files: filesResponse }, { status: 200 });

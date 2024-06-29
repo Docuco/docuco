@@ -17,7 +17,6 @@ export class UpdateApiKey {
         apiKey.update(apiKeyData)
         
         await this.apiKeyRepository.save(apiKey);
-
-        await this.eventBus.publish(apiKey.pullDomainEvents())
+        this.eventBus.publish(apiKey.pullDomainEvents())
     }
 }

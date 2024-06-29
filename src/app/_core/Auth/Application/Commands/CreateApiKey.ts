@@ -14,7 +14,6 @@ export class CreateApiKey {
         const apiKey = ApiKey.create(apiKeyToCreate)
 
         await this.apiKeyRepository.save(apiKey)
-
-        await this.eventBus.publish(apiKey.pullDomainEvents())
+        this.eventBus.publish(apiKey.pullDomainEvents())
     }
 }

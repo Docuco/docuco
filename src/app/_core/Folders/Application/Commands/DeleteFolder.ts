@@ -1,22 +1,19 @@
-import { EventBus } from "../../../Shared/Domain/Events/EventBus"
-import { FolderRepository } from "../../Domain/Repositories/FolderRepository"
+import { Id } from "../../../Shared/Domain/VOs/Id";
+import { FolderDeleter } from "../../Domain/Services/FolderDeleter";
 import { FolderFinder } from "../../Domain/Services/FolderFinder"
 
 export class DeleteFolder {
 
     constructor(
         private folderFinder: FolderFinder,
-        private folderRepository: FolderRepository,
-        private eventBus: EventBus,
+        private folderDeleter: FolderDeleter,
     ) {}
 
     public async run({ id }: { id: string}): Promise<void> {
-        const folder = await this.folderFinder.run(id)
+        const folder = await this.folderFinder.run(new Id(id))
         
         folder.unlinkFromParent()
-        folder.delete()
-        await this.folderRepository.save(folder)
-
-        await this.eventBus.publish(folder.pullDomainEvents());
+        
+        await this.folderDeleter.run(folder)
     }
 }

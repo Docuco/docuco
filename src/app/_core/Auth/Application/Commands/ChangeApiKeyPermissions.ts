@@ -17,7 +17,6 @@ export class ChangeApiKeyPermissions {
         apiKey.changePermissions(newPermissions)
         
         await this.apiKeyRepository.save(apiKey);
-
-        await this.eventBus.publish(apiKey.pullDomainEvents())
+        this.eventBus.publish(apiKey.pullDomainEvents())
     }
 }

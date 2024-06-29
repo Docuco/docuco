@@ -16,7 +16,6 @@ export class RegenerateApiKey {
         apiKey.regenerate()
         
         await this.apiKeyRepository.save(apiKey);
-
-        await this.eventBus.publish(apiKey.pullDomainEvents())
+        this.eventBus.publish(apiKey.pullDomainEvents())
     }
 }

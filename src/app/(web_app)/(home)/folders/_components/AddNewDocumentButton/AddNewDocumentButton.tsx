@@ -19,9 +19,9 @@ import { clientCustomFetch } from '../../../../_utils/fetch';
 import { DocuMimeType } from '../../../../../_core/Documents/Domain/VOs/DocuMimeType';
 
 export function AddNewDocumentButton({
-    folderParentId,
+    parentFolderId,
 }: {
-    folderParentId: string | null
+    parentFolderId: string | null
 }) {
     const [isOpened, { open, close }] = useDisclosure(false);
     const [fileErrors, setFileErrors] = useState<FileRejection[]>([]);
@@ -45,8 +45,8 @@ export function AddNewDocumentButton({
         for (const document of documents) {
             data.append(`documents[]`, document, document.name);
         }
-        if (folderParentId) {
-            data.append(`folderParentId`, folderParentId);
+        if (parentFolderId) {
+            data.append(`parentFolderId`, parentFolderId);
         }
         
         await clientCustomFetch(`${API_ROUTES.DOCUMENTS}`, {

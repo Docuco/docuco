@@ -6,6 +6,7 @@ import { ProtectedController } from "../../../_shared/ProtectedController";
 import { PermissionType } from "../../../../../_core/Shared/Domain/VOs/Permission";
 import { RestoreFolder } from "../../../../../_core/Folders/Application/Commands/RestoreFolder";
 import { FolderFinder } from "../../../../../_core/Folders/Domain/Services/FolderFinder";
+import { FolderRestorer } from "../../../../../_core/Folders/Domain/Services/FolderRestorer";
 
 const schema = z.object({
     id: z.string()
@@ -23,8 +24,7 @@ export class RestoreFolderController implements BaseController, ProtectedControl
 
         this.restoreFolder = new RestoreFolder(
             new FolderFinder(folderRepository),
-            folderRepository,
-            eventBus
+            new FolderRestorer(folderRepository, eventBus),
         )
     }
 

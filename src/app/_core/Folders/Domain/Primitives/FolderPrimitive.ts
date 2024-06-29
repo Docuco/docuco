@@ -1,7 +1,7 @@
 export interface FolderPrimitive {
     id: string;
     name: string;
-    folderParentId: string | null;
+    parentFolderId: string | null;
     isDeleted: boolean;
     createdAt: number;
     updatedAt: number;

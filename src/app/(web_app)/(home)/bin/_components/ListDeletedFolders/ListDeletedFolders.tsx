@@ -6,11 +6,11 @@ import { DeletedFolderSkeleton } from '../DeletedFolder/DeletedFolderSkeleton';
 import classes from './ListDeletedFolders.module.css';
 
 export function ListDeletedFolders({
-    folderParentId
+    parentFolderId
 }: {
-    folderParentId: string | null
+    parentFolderId: string | null
 }) {
-    const { deletedFolders, isLoading } = useGetDeletedFolders(folderParentId);
+    const { deletedFolders, isLoading } = useGetDeletedFolders(parentFolderId);
 
     if (isLoading) {
         return (

@@ -31,10 +31,8 @@ export class CreateUser {
             this.authRepository.save(auth)
         ])
 
-        await Promise.all([
-            this.eventBus.publish(user.pullDomainEvents()),
-            this.eventBus.publish(auth.pullDomainEvents())
-        ])
+        this.eventBus.publish(user.pullDomainEvents()),
+        this.eventBus.publish(auth.pullDomainEvents())
 
         return user.toPrimitives();
     }

@@ -19,12 +19,12 @@ export default function Page({
       <Breadcrumbs folderId={params.folderId} />
       <Space h="lg" />
       <Group gap={10}>
-        {canAddDocuments && <AddNewDocumentButton folderParentId={params.folderId} />}
-        <AddNewFolderButton folderParentId={params.folderId}/>
+        {canAddDocuments && <AddNewDocumentButton parentFolderId={params.folderId} />}
+        <AddNewFolderButton parentFolderId={params.folderId}/>
       </Group>
 
-      <ListFolders folderParentId={params.folderId} />
-      <ListDocuFiles folderParentId={params.folderId} />
+      <ListFolders parentFolderId={params.folderId} />
+      <ListDocuFiles parentFolderId={params.folderId} />
     </>
   );
 }

@@ -21,7 +21,6 @@ export class ChangeUserPassword {
         passwordAuth.changePassword(newPassword)
         
         await this.authRepository.save(passwordAuth);
-
-        await this.eventBus.publish(passwordAuth.pullDomainEvents())
+        this.eventBus.publish(passwordAuth.pullDomainEvents())
     }
 }

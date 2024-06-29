@@ -7,6 +7,7 @@ import { DocuFileFilters } from "../../Domain/VOs/DocuFileFilters";
 import { Option } from "../../../Shared/Domain/VOs/Option";
 import { SharedToken } from "../../../Shared/Domain/VOs/ShareToken";
 import { EntityManager } from "@mikro-orm/core";
+import { Folder } from "../../../Folders/Domain/Entities/Folder";
 
 export class PostgreSQLDocuFileRepository implements DocuFileRepository {
 
@@ -27,21 +28,21 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
         this.getRepository(this.em).upsert(docuFile.toPrimitives());
     }
 
-    async getAll({ folderParentId, filters }: { folderParentId: Option<Id>, filters: Option<DocuFileFilters>}): Promise<DocuFile[]> {
+    async getAll({ parentFolderId, filters }: { parentFolderId: Option<Id>, filters: Option<DocuFileFilters>}): Promise<DocuFile[]> {
         const filterQuery = this.mapFilterToMikroORM(filters);
 
         const results = await this.getRepository(this.em).find(
             Object.assign({
                 isDeleted: false,
-                folderParentId: folderParentId.map((id) => id.value).getOrNull(),
+                parentFolderId: parentFolderId.map((id) => id.value).getOrNull(),
             }, filterQuery) as FilterQuery<DocuFilePrimitive>
         );
         return results.map((result) => DocuFile.fromPrimitives(result));
     }
 
-    async getDeleted({ folderParentId }: { folderParentId: Option<Id> }): Promise<DocuFile[]> {
+    async getDeleted({ parentFolderId }: { parentFolderId: Option<Id> }): Promise<DocuFile[]> {
         const results = await this.getRepository(this.em).find({
-            folderParentId: folderParentId.map((id) => id.value).getOrNull(),
+            parentFolderId: parentFolderId.map((id) => id.value).getOrNull(),
             isDeleted: true,
         });
         return results.map((result) => DocuFile.fromPrimitives(result));
@@ -57,9 +58,9 @@ export class PostgreSQLDocuFileRepository implements DocuFileRepository {
         return Option.some(DocuFile.fromPrimitives(result));
     }
 
-    async findByParentId(id: Id): Promise<DocuFile[]> {
+    async findByParent(parentFolder: Folder): Promise<DocuFile[]> {
         const results = await this.getRepository(this.em).find({
-            folderParentId: id.value,
+            parentFolderId: parentFolder.id.value,
         });
 
         return results.map((result) => DocuFile.fromPrimitives(result));
