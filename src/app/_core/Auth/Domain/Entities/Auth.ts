@@ -44,7 +44,7 @@ export class Auth extends AggregateRoot {
     }
 
     public isPasswordAuth() {
-        return this._password ? true : false;
+        return this._password.isSome();
     }
 
     public changePassword(newPassword: string) {

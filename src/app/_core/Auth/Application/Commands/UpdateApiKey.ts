@@ -11,7 +11,7 @@ export class UpdateApiKey {
         private eventBus: EventBus,
     ) {}
 
-    public async run({ apiKeyValue, apiKeyData }: {apiKeyValue: string, apiKeyData: UpdateApiKeyDTO}): Promise<void> {
+    public async run({ apiKeyValue, apiKeyData }: { apiKeyValue: string, apiKeyData: UpdateApiKeyDTO }): Promise<void> {
         const apiKey = await this.apiKeyFinder.run(apiKeyValue);
 
         apiKey.update(apiKeyData)

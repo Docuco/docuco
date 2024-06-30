@@ -111,6 +111,7 @@ export class ApiKey extends AggregateRoot {
     regenerate(): void {
         this._apiKeyValue = ApiKeyValue.generate();
         this._updatedAt = new Date();
+        
         this.record(new ApiKeyRegenerated({
             entityId: this._apiKeyValue.value,
             attributes: this.toPrimitives(),

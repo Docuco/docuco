@@ -7,6 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "back:test:unit": "vitest run -c vitest.back.unit.config.ts",
+    "back:test:unit:watch": "vitest watch -c vitest.back.unit.config.ts",
+    "back:test:unit:coverage": "vitest run --coverage -c vitest.back.unit.config.ts",
+    "back:test:unit:watch:coverage": "vitest watch --coverage -c vitest.back.unit.config.ts",
     "db:migration:create": "npx mikro-orm migration:create",
     "db:migration:up": "npx mikro-orm migration:up",
     "db:migration:down": "npx mikro-orm migration:down",
@@ -57,17 +61,21 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/bcryptjs": "2.4.6",
     "@types/express": "4.17.21",
+    "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "9.0.6",
     "@types/node": "20",
     "@types/pdfobject": "2.2.5",
     "@types/react": "18",
     "@types/react-dom": "18",
+    "@vitest/coverage-istanbul": "^1.6.0",
     "eslint": "8",
     "eslint-config-next": "14.2.1",
+    "ts-mockito": "^2.6.1",
     "ts-node": "10.9.2",
     "typescript": "5",
-    "vitest": "1.4.0"
+    "vitest": "1.6.0"
   }
 }

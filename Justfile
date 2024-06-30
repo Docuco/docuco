@@ -28,6 +28,18 @@ start:
 dev:
 	@docker compose run --rm --service-ports {{SERVICE}} npm run dev
 
+back_test_unit:
+	@docker compose run --rm {{SERVICE}} npm run back:test:unit
+
+back_test_unit_watch:
+	@docker compose run --rm {{SERVICE}} npm run back:test:unit:watch
+
+back_test_unit_coverage:
+	@docker compose run --rm {{SERVICE}} npm run back:test:unit:coverage
+
+back_test_unit_watch_coverage:
+	@docker compose run --rm {{SERVICE}} npm run back:test:unit:watch:coverage
+
 db_migration_create params:
 	@docker compose run --rm {{SERVICE}} npm run db:migration:create -- {{params}}
 	@docker compose run --rm {{SERVICE}} chown -R node:node .
