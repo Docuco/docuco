@@ -12,7 +12,7 @@ export class ApiKeyFinder {
     public async run(apiKeyValue: string): Promise<ApiKey> {
         const apiKey = await this.apiKeyRepository.findByApiKeyValue(new ApiKeyValue(apiKeyValue))
 
-        if (!apiKey) {
+        if (apiKey.isNone()) {
             throw new ApiKeyNotFound(apiKeyValue);
         }
 

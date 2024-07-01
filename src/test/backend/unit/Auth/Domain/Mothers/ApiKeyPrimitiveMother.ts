@@ -1,6 +1,7 @@
-import { ApiKeyPrimitive } from "../../../../../app/_core/Auth/Domain/Primitives/ApiKeyPrimitive";
-import { Permission } from "../../../../../app/_core/Shared/Domain/VOs/Permission";
-import { DeepPartial } from "../../Shared/Infrastructure/DeepPartial";
+import { ApiKeyPrimitive } from "../../../../../../app/_core/Auth/Domain/Primitives/ApiKeyPrimitive";
+import { Permission } from "../../../../../../app/_core/Shared/Domain/VOs/Permission";
+import { getRandomNumber } from "../../../Shared/Domain/GetRandomNumber";
+import { DeepPartial } from "../../../Shared/Infrastructure/DeepPartial";
 import { faker } from '@faker-js/faker';
 
 export class ApiKeyPrimitiveMother {
@@ -31,5 +32,9 @@ export class ApiKeyPrimitiveMother {
             createdAt,
             updatedAt,
         }
+    }
+
+    public static generate(amount = getRandomNumber(1, 5)): ApiKeyPrimitive[] {
+        return Array.from(Array(amount)).map(ApiKeyPrimitiveMother.random);
     }
 }

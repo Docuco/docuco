@@ -30,7 +30,7 @@ export abstract class BaseEvent {
   constructor(params: CreateNamedEventParams) {
       const { eventName, eventId, occurredOn } = params;
       this.eventName = eventName;
-      this.eventId = eventId || Id.generate().value;
+      this.eventId = eventId || Id.new().value;
       this.occurredOn = occurredOn || new Date();
   }
 

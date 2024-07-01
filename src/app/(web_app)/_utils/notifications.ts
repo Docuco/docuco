@@ -18,7 +18,7 @@ export async function generalLoadingNotification({
     messageOnError?: string;
     actionToNotify: () => Promise<void>;
 }): Promise<void> {
-    const randomIdOperation = Id.generate().value;
+    const randomIdOperation = Id.new().value;
 
     generalNotification({
         title: titleOnStart,
@@ -54,7 +54,7 @@ export async function generalLoadingNotification({
 }
 
 export async function generalNotification({
-    id = Id.generate().value,
+    id = Id.new().value,
     title,
     message = '',
     loading = false,
@@ -80,7 +80,7 @@ export async function generalNotification({
 }
 
 export async function errorNotification({
-    id = Id.generate().value,
+    id = Id.new().value,
     title,
     message = '',
 }: {

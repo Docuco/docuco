@@ -67,7 +67,7 @@ export class ApiKey extends AggregateRoot {
 
     static create(dto: CreateApiKeyDTO): ApiKey {
         const primitive: ApiKeyPrimitive = {
-            id: Id.generate().value,
+            id: Id.new().value,
             creatorId: dto.creatorId,
             name: dto.name,
             description: dto.description,

@@ -53,7 +53,7 @@ export class User extends AggregateRoot {
 
     static create({ email, permissions }: CreateUserDTO) {
         const primitive: UserPrimitive = {
-            id: Id.generate().value,
+            id: Id.new().value,
             email,
             permissions,
             createdAt: Date.now(),

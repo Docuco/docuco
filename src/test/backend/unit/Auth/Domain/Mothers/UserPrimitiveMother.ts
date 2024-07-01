@@ -1,6 +1,6 @@
-import { Permission } from "../../../../../app/_core/Shared/Domain/VOs/Permission";
-import { UserPrimitive } from "../../../../../app/_core/Users/Domain/Primitives/UserPrimitive";
-import { DeepPartial } from "../../Shared/Infrastructure/DeepPartial";
+import { Permission } from "../../../../../../app/_core/Shared/Domain/VOs/Permission";
+import { UserPrimitive } from "../../../../../../app/_core/Users/Domain/Primitives/UserPrimitive";
+import { DeepPartial } from "../../../Shared/Infrastructure/DeepPartial";
 import { faker } from '@faker-js/faker';
 
 export class UserPrimitiveMother {

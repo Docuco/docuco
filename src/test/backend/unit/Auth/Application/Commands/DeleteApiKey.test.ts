@@ -4,7 +4,7 @@ import { EventBusMock } from "../../../Shared/Infrastructure/EventBusMock";
 import { InterfaceMock } from "../../../Shared/Infrastructure/InterfaceMock";
 import { DeleteApiKey } from "../../../../../../app/_core/Auth/Application/Commands/DeleteApiKey";
 import { ApiKeyFinder } from "../../../../../../app/_core/Auth/Domain/Services/ApiKeyFinder";
-import { ApiKeyPrimitiveMother } from "../../Domain/ApiKeyPrimitiveMother";
+import { ApiKeyPrimitiveMother } from "../../Domain/Mothers/ApiKeyPrimitiveMother";
 import { ApiKey } from "../../../../../../app/_core/Auth/Domain/Entities/ApiKey";
 import { ApiKeyDeleted } from "../../../../../../app/_core/Auth/Domain/Events/ApiKeyDeleted";
 

@@ -1,5 +1,5 @@
-import { AuthPrimitive } from "../../../../../app/_core/Auth/Domain/Primitives/AuthPrimitive";
-import { DeepPartial } from "../../Shared/Infrastructure/DeepPartial";
+import { AuthPrimitive } from "../../../../../../app/_core/Auth/Domain/Primitives/AuthPrimitive";
+import { DeepPartial } from "../../../Shared/Infrastructure/DeepPartial";
 import { faker } from '@faker-js/faker';
 
 export class AuthPrimitiveMother {

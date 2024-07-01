@@ -9,7 +9,7 @@ export class Id extends ValueObject<string> {
         this.ensureIsValid(value);
     }
 
-    static generate(): Id {
+    static new(): Id {
         return new Id(uuidv7());
     }
 

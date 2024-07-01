@@ -48,7 +48,7 @@ export class Folder extends AggregateRoot {
 
     static create(folderDTO: CreateFolderDTO) {
         const primitive: FolderPrimitive = {
-            id: Id.generate().value,
+            id: Id.new().value,
             name: folderDTO.name,
             parentFolderId: folderDTO.parentFolderId,
             isDeleted: false,

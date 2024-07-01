@@ -45,7 +45,7 @@ export class ContentFile extends AggregateRoot {
     }
     
     static create(file: File) {
-        const id = Id.generate();
+        const id = Id.new();
         const fileParts = file.name.split('.');
         const fileName = fileParts[0] ?? '';
         const fileExtension = fileParts[1] ?? null;

@@ -66,7 +66,7 @@ export class Auth extends AggregateRoot {
 
     public static create({ userId, password }: { userId: Id, password: string }) {
         const primitive: AuthPrimitive = {
-            id: Id.generate().value,
+            id: Id.new().value,
             userId: userId.value,
             password: Password.fromRaw(password).hash,
             createdAt: Date.now(),
