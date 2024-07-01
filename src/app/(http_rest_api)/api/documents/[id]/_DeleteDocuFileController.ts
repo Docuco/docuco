@@ -25,6 +25,7 @@ export class DeleteDocuFileController implements BaseController, ProtectedContro
         this.deleteDocuFile = new DeleteDocuFile(
             new DocuFileFinder(docuFileRepository),
             new DocuFileDeleter(docuFileRepository, eventBus),
+            eventBus
         )
     }
 
