@@ -96,6 +96,10 @@ export class DocuFile extends AggregateRoot {
     }
 
     unlinkFromParent(): void {
+        if (this._parentFolderId.isNone()) {
+            return;
+        }
+        
         this._parentFolderId = Option.none();
 
         this.record(new DocuFileUnlinkedFromParent({

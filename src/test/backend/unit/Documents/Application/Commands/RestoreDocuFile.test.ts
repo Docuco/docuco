@@ -1,29 +1,29 @@
 import { anything, deepEqual, instance, mock, reset, verify, when } from "ts-mockito";
 import { DocuFileFinder } from "../../../../../../app/_core/Documents/Domain/Services/DocuFileFinder";
-import { DocuFileDeleter } from "../../../../../../app/_core/Documents/Domain/Services/DocuFileDeleter";
 import { Id } from "../../../../../../app/_core/Shared/Domain/VOs/Id";
 import { DocuFile } from "../../../../../../app/_core/Documents/Domain/Entities/DocuFile";
 import { DocuFilePrimitiveMother } from "../../Domain/Mothers/DocuFilePrimitiveMother";
-import { DeleteDocuFile } from "../../../../../../app/_core/Documents/Application/Commands/DeleteDocuFile";
 import { EventBusMock } from "../../../Shared/Infrastructure/EventBusMock";
 import { DocuFileUnlinkedFromParent } from "../../../../../../app/_core/Documents/Domain/Events/DocuFileUnlinkedFromParent";
+import { RestoreDocuFile } from "../../../../../../app/_core/Documents/Application/Commands/RestoreDocuFile";
+import { DocuFileRestorer } from "../../../../../../app/_core/Documents/Domain/Services/DocuFileRestorer";
 
-describe('DeleteDocuFile', () => {
+describe('RestoreDocuFile', () => {
 
     const docuFileFinderMock = mock(DocuFileFinder);
-    const docuFileDeleterMock = mock(DocuFileDeleter);
+    const docuFileRestorerMock = mock(DocuFileRestorer);
     const eventBusMock = new EventBusMock();
 
     afterEach(() => {
         reset(docuFileFinderMock);
-        reset(docuFileDeleterMock);
+        reset(docuFileRestorerMock);
         eventBusMock.reset();
     });
    
     test(`
-        GIVEN an existing docuFile with a parent
-        WHEN I delete the docuFile
-        THEN call to deleter with the docuFile
+        GIVEN a delete docuFile with a parent
+        WHEN I restore the docuFile
+        THEN call to restorer with the docuFile
         AND send "DocuFileUnlinkedFromParent" event
     `, async () => {
         const docuFilePrimitive = DocuFilePrimitiveMother.from({
@@ -32,16 +32,16 @@ describe('DeleteDocuFile', () => {
 
         when(docuFileFinderMock.run(deepEqual(new Id(docuFilePrimitive.id)))).thenResolve(DocuFile.fromPrimitives(docuFilePrimitive));
 
-        const deleteDocuFile = new DeleteDocuFile(
+        const restoreDocuFile = new RestoreDocuFile(
             instance(docuFileFinderMock),
-            instance(docuFileDeleterMock),
+            instance(docuFileRestorerMock),
             eventBusMock.instance(),
         );
-        await deleteDocuFile.run({
+        await restoreDocuFile.run({
             id: docuFilePrimitive.id,
         });
 
-        verify(docuFileDeleterMock.run(anything())).once();
+        verify(docuFileRestorerMock.run(anything())).once();
         eventBusMock.expectEventToHaveBeenPublishedWithAttributes(DocuFileUnlinkedFromParent, {
             id: docuFilePrimitive.id,
             parentFolderId: null,
@@ -49,9 +49,9 @@ describe('DeleteDocuFile', () => {
     });
 
     test(`
-        GIVEN an existing docuFile without parent
-        WHEN I delete the docuFile
-        THEN call to deleter with the docuFile
+        GIVEN a delete docuFile without parent
+        WHEN I restore the docuFile
+        THEN call to restorer with the docuFile
         AND not send any event
     `, async () => {
         const docuFilePrimitive = DocuFilePrimitiveMother.from({
@@ -60,16 +60,16 @@ describe('DeleteDocuFile', () => {
 
         when(docuFileFinderMock.run(deepEqual(new Id(docuFilePrimitive.id)))).thenResolve(DocuFile.fromPrimitives(docuFilePrimitive));
 
-        const deleteDocuFile = new DeleteDocuFile(
+        const restoreDocuFile = new RestoreDocuFile(
             instance(docuFileFinderMock),
-            instance(docuFileDeleterMock),
+            instance(docuFileRestorerMock),
             eventBusMock.instance(),
         );
-        await deleteDocuFile.run({
+        await restoreDocuFile.run({
             id: docuFilePrimitive.id,
         });
 
-        verify(docuFileDeleterMock.run(anything())).once();
+        verify(docuFileRestorerMock.run(anything())).once();
         eventBusMock.expectZeroEventsPublished();
     });
 })

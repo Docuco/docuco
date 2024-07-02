@@ -25,6 +25,7 @@ export class RestoreDocuFileController implements BaseController, ProtectedContr
         this.restoreDocuFile = new RestoreDocuFile(
             new DocuFileFinder(docuFileRepository),
             new DocuFileRestorer(docuFileRepository, eventBus),
+            eventBus
         )
     }
 
