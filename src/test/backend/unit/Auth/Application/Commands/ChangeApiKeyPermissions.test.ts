@@ -4,7 +4,7 @@ import { ApiKeyFinder } from "../../../../../../app/_core/Auth/Domain/Services/A
 import { EventBusMock } from "../../../Shared/Infrastructure/EventBusMock";
 import { InterfaceMock } from "../../../Shared/Infrastructure/InterfaceMock";
 import { ChangeApiKeyPermissions } from "../../../../../../app/_core/Auth/Application/Commands/ChangeApiKeyPermissions";
-import { ApiKeyPrimitiveMother } from "../../Domain/Mothers/ApiKeyPrimitiveMother";
+import { ApiKeyPrimitiveMother } from "../../Domain/Primitives/ApiKeyPrimitiveMother";
 import { PermissionType } from "../../../../../../app/_core/Shared/Domain/VOs/Permission";
 import { ApiKey } from "../../../../../../app/_core/Auth/Domain/Entities/ApiKey";
 import { ApiKeyPermissionsChanged } from "../../../../../../app/_core/Auth/Domain/Events/ApiKeyPermissionsChanged";

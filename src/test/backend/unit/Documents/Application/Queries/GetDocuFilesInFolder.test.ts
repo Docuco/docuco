@@ -1,7 +1,7 @@
 import { deepEqual, instance, mock, reset, when } from "ts-mockito";
 import { Id } from "../../../../../../app/_core/Shared/Domain/VOs/Id";
 import { DocuFile } from "../../../../../../app/_core/Documents/Domain/Entities/DocuFile";
-import { DocuFilePrimitiveMother } from "../../Domain/Mothers/DocuFilePrimitiveMother";
+import { DocuFilePrimitiveMother } from "../../Domain/Primitives/DocuFilePrimitiveMother";
 import { InterfaceMock } from "../../../Shared/Infrastructure/InterfaceMock";
 import { DocuFileRepository } from "../../../../../../app/_core/Documents/Domain/Repositories/DocuFileRepository";
 import { SharedToken } from "../../../../../../app/_core/Shared/Domain/VOs/ShareToken";
@@ -9,7 +9,7 @@ import { Option } from "../../../../../../app/_core/Shared/Domain/VOs/Option";
 import { GetDocuFilesInFolder } from "../../../../../../app/_core/Documents/Application/Queries/GetDocuFilesInFolder";
 import { FolderFinder } from "../../../../../../app/_core/Folders/Domain/Services/FolderFinder";
 import { Folder } from "../../../../../../app/_core/Folders/Domain/Entities/Folder";
-import { FolderPrimitiveMother } from "../../../Folders/Domain/Mothers/FolderPrimitiveMother";
+import { FolderPrimitiveMother } from "../../../Folders/Domain/Primitives/FolderPrimitiveMother";
 import { expectToThrow } from "../../../Shared/Infrastructure/ExpectoToThrow";
 import { FolderNotFound } from "../../../../../../app/_core/Folders/Domain/Exceptions/FolderNotFound";
 import { DocuFileFilters } from "../../../../../../app/_core/Documents/Domain/VOs/DocuFileFilters";

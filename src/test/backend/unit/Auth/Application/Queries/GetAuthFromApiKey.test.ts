@@ -1,6 +1,6 @@
 import { instance, mock, reset, when } from "ts-mockito";
 import { ApiKey } from "../../../../../../app/_core/Auth/Domain/Entities/ApiKey";
-import { ApiKeyPrimitiveMother } from "../../Domain/Mothers/ApiKeyPrimitiveMother";
+import { ApiKeyPrimitiveMother } from "../../Domain/Primitives/ApiKeyPrimitiveMother";
 import { GetAuthFromApiKey } from "../../../../../../app/_core/Auth/Application/Queries/GetAuthFromApiKey";
 import { ApiKeyFinder } from "../../../../../../app/_core/Auth/Domain/Services/ApiKeyFinder";
 

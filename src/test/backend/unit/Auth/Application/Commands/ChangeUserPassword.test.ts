@@ -6,8 +6,8 @@ import { ChangeUserPassword } from "../../../../../../app/_core/Auth/Application
 import { Id } from "../../../../../../app/_core/Shared/Domain/VOs/Id";
 import { Auth } from "../../../../../../app/_core/Auth/Domain/Entities/Auth";
 import { AuthPasswordChanged } from "../../../../../../app/_core/Auth/Domain/Events/AuthPasswordChanged";
-import { UserPrimitiveMother } from "../../Domain/Mothers/UserPrimitiveMother";
-import { AuthPrimitiveMother } from "../../Domain/Mothers/AuthPrimitiveMother";
+import { UserPrimitiveMother } from "../../Domain/Primitives/UserPrimitiveMother";
+import { AuthPrimitiveMother } from "../../Domain/Primitives/AuthPrimitiveMother";
 import { Password } from "../../../../../../app/_core/Auth/Domain/VOs/Password";
 import { WrongPassword } from "../../../../../../app/_core/Auth/Domain/Exceptions/WrongPassword";
 import { expectToThrow } from "../../../Shared/Infrastructure/ExpectoToThrow";

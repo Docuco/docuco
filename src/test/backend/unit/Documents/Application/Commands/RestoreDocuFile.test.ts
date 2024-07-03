@@ -2,7 +2,7 @@ import { anything, deepEqual, instance, mock, reset, verify, when } from "ts-moc
 import { DocuFileFinder } from "../../../../../../app/_core/Documents/Domain/Services/DocuFileFinder";
 import { Id } from "../../../../../../app/_core/Shared/Domain/VOs/Id";
 import { DocuFile } from "../../../../../../app/_core/Documents/Domain/Entities/DocuFile";
-import { DocuFilePrimitiveMother } from "../../Domain/Mothers/DocuFilePrimitiveMother";
+import { DocuFilePrimitiveMother } from "../../Domain/Primitives/DocuFilePrimitiveMother";
 import { EventBusMock } from "../../../Shared/Infrastructure/EventBusMock";
 import { DocuFileUnlinkedFromParent } from "../../../../../../app/_core/Documents/Domain/Events/DocuFileUnlinkedFromParent";
 import { RestoreDocuFile } from "../../../../../../app/_core/Documents/Application/Commands/RestoreDocuFile";

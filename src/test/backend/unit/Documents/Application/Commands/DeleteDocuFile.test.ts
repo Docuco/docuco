@@ -3,7 +3,7 @@ import { DocuFileFinder } from "../../../../../../app/_core/Documents/Domain/Ser
 import { DocuFileDeleter } from "../../../../../../app/_core/Documents/Domain/Services/DocuFileDeleter";
 import { Id } from "../../../../../../app/_core/Shared/Domain/VOs/Id";
 import { DocuFile } from "../../../../../../app/_core/Documents/Domain/Entities/DocuFile";
-import { DocuFilePrimitiveMother } from "../../Domain/Mothers/DocuFilePrimitiveMother";
+import { DocuFilePrimitiveMother } from "../../Domain/Primitives/DocuFilePrimitiveMother";
 import { DeleteDocuFile } from "../../../../../../app/_core/Documents/Application/Commands/DeleteDocuFile";
 import { EventBusMock } from "../../../Shared/Infrastructure/EventBusMock";
 import { DocuFileUnlinkedFromParent } from "../../../../../../app/_core/Documents/Domain/Events/DocuFileUnlinkedFromParent";

@@ -2,7 +2,7 @@ import { deepEqual, when } from "ts-mockito";
 import { ApiKeyRepository } from "../../../../../../app/_core/Auth/Domain/Repositories/ApiKeyRepository";
 import { ApiKeyFinder } from "../../../../../../app/_core/Auth/Domain/Services/ApiKeyFinder";
 import { InterfaceMock } from "../../../Shared/Infrastructure/InterfaceMock";
-import { ApiKeyPrimitiveMother } from "../Mothers/ApiKeyPrimitiveMother";
+import { ApiKeyPrimitiveMother } from "../Primitives/ApiKeyPrimitiveMother";
 import { ApiKeyValue } from "../../../../../../app/_core/Auth/Domain/VOs/ApiKeyValue";
 import { ApiKey } from "../../../../../../app/_core/Auth/Domain/Entities/ApiKey";
 import { Option } from "../../../../../../app/_core/Shared/Domain/VOs/Option";

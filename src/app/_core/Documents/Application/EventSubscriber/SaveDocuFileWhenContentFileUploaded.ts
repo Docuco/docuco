@@ -6,7 +6,7 @@ import { BaseEventClass } from "../../../Shared/Domain/Events/BaseEvent";
 export class SaveDocuFileWhenContentFileUploaded implements EventSubscriber {
 
     constructor(
-        private readonly documentSaver: DocuFileSaver,
+        private readonly docuFileSaver: DocuFileSaver,
     ) { }
 
     get subscribedTo(): BaseEventClass[] {
@@ -17,6 +17,6 @@ export class SaveDocuFileWhenContentFileUploaded implements EventSubscriber {
         const { attributes } = event;
         const { contentFile, url, parentFolderId } = attributes;
 
-        await this.documentSaver.run({ contentFile, url, parentFolderId });
+        await this.docuFileSaver.run({ contentFile, url, parentFolderId });
     }
 }

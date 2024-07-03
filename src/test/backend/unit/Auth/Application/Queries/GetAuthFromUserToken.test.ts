@@ -3,8 +3,8 @@ import { GetAuthFromLogin } from "../../../../../../app/_core/Auth/Application/Q
 import { InterfaceMock } from "../../../Shared/Infrastructure/InterfaceMock";
 import { UserRepository } from "../../../../../../app/_core/Users/Domain/Repositories/UserRepository";
 import { AuthRepository } from "../../../../../../app/_core/Auth/Domain/Repositories/AuthRepository";
-import { AuthPrimitiveMother } from "../../Domain/Mothers/AuthPrimitiveMother";
-import { UserPrimitiveMother } from "../../Domain/Mothers/UserPrimitiveMother";
+import { AuthPrimitiveMother } from "../../Domain/Primitives/AuthPrimitiveMother";
+import { UserPrimitiveMother } from "../../Domain/Primitives/UserPrimitiveMother";
 import { Email } from "../../../../../../app/_core/Users/Domain/VOs/Email";
 import { Option } from "../../../../../../app/_core/Shared/Domain/VOs/Option";
 import { User } from "../../../../../../app/_core/Users/Domain/Entities/User";

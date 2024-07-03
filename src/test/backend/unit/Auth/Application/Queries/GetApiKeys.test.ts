@@ -3,7 +3,7 @@ import { ApiKeyRepository } from "../../../../../../app/_core/Auth/Domain/Reposi
 import { InterfaceMock } from "../../../Shared/Infrastructure/InterfaceMock";
 import { ApiKey } from "../../../../../../app/_core/Auth/Domain/Entities/ApiKey";
 import { GetApiKeys } from "../../../../../../app/_core/Auth/Application/Queries/GetApiKeys";
-import { ApiKeyPrimitiveMother } from "../../Domain/Mothers/ApiKeyPrimitiveMother";
+import { ApiKeyPrimitiveMother } from "../../Domain/Primitives/ApiKeyPrimitiveMother";
 
 describe('GetApiKeys', () => {
 

@@ -1,7 +1,7 @@
 import { deepEqual, when } from "ts-mockito";
 import { Id } from "../../../../../../app/_core/Shared/Domain/VOs/Id";
 import { DocuFile } from "../../../../../../app/_core/Documents/Domain/Entities/DocuFile";
-import { DocuFilePrimitiveMother } from "../../Domain/Mothers/DocuFilePrimitiveMother";
+import { DocuFilePrimitiveMother } from "../../Domain/Primitives/DocuFilePrimitiveMother";
 import { GetDeletedDocuFiles } from "../../../../../../app/_core/Documents/Application/Queries/GetDeletedDocuFiles";
 import { InterfaceMock } from "../../../Shared/Infrastructure/InterfaceMock";
 import { DocuFileRepository } from "../../../../../../app/_core/Documents/Domain/Repositories/DocuFileRepository";

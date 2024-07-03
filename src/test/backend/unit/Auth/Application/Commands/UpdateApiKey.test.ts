@@ -3,7 +3,7 @@ import { ApiKeyRepository } from "../../../../../../app/_core/Auth/Domain/Reposi
 import { EventBusMock } from "../../../Shared/Infrastructure/EventBusMock";
 import { InterfaceMock } from "../../../Shared/Infrastructure/InterfaceMock";
 import { ApiKeyFinder } from "../../../../../../app/_core/Auth/Domain/Services/ApiKeyFinder";
-import { ApiKeyPrimitiveMother } from "../../Domain/Mothers/ApiKeyPrimitiveMother";
+import { ApiKeyPrimitiveMother } from "../../Domain/Primitives/ApiKeyPrimitiveMother";
 import { ApiKey } from "../../../../../../app/_core/Auth/Domain/Entities/ApiKey";
 import { UpdateApiKey } from "../../../../../../app/_core/Auth/Application/Commands/UpdateApiKey";
 import { ApiKeyUpdated } from "../../../../../../app/_core/Auth/Domain/Events/ApiKeyUpdated";

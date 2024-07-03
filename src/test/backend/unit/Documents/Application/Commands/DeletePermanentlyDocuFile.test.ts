@@ -2,7 +2,7 @@ import { deepEqual, instance, mock, reset, verify, when } from "ts-mockito";
 import { DocuFileFinder } from "../../../../../../app/_core/Documents/Domain/Services/DocuFileFinder";
 import { Id } from "../../../../../../app/_core/Shared/Domain/VOs/Id";
 import { DocuFile } from "../../../../../../app/_core/Documents/Domain/Entities/DocuFile";
-import { DocuFilePrimitiveMother } from "../../Domain/Mothers/DocuFilePrimitiveMother";
+import { DocuFilePrimitiveMother } from "../../Domain/Primitives/DocuFilePrimitiveMother";
 import { DeletePermanentlyDocuFile } from "../../../../../../app/_core/Documents/Application/Commands/DeletePermanentlyDocuFile";
 import { DocuFileDeleterPermanently } from "../../../../../../app/_core/Documents/Domain/Services/DocuFileDeleterPermanently";
 

@@ -2,7 +2,7 @@ import { anything, verify, instance, mock, reset, when } from "ts-mockito";
 import { DocuFileFinder } from "../../../../../../app/_core/Documents/Domain/Services/DocuFileFinder";
 import { Id } from "../../../../../../app/_core/Shared/Domain/VOs/Id";
 import { DocuFile } from "../../../../../../app/_core/Documents/Domain/Entities/DocuFile";
-import { DocuFilePrimitiveMother } from "../../Domain/Mothers/DocuFilePrimitiveMother";
+import { DocuFilePrimitiveMother } from "../../Domain/Primitives/DocuFilePrimitiveMother";
 import { EventBusMock } from "../../../Shared/Infrastructure/EventBusMock";
 import { InterfaceMock } from "../../../Shared/Infrastructure/InterfaceMock";
 import { DocuFileRepository } from "../../../../../../app/_core/Documents/Domain/Repositories/DocuFileRepository";
