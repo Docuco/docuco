@@ -1,5 +1,6 @@
 import { DocuFilePrimitive } from "../../../../../../app/_core/Documents/Domain/Primitives/DocuFilePrimitive";
 import { DocuMimeType } from "../../../../../../app/_core/Documents/Domain/VOs/DocuMimeType";
+import { getRandomNumber } from "../../../Shared/Domain/GetRandomNumber";
 import { DeepPartial } from "../../../Shared/Infrastructure/DeepPartial";
 import { faker } from '@faker-js/faker';
 
@@ -43,5 +44,13 @@ export class DocuFilePrimitiveMother {
             createdAt,
             updatedAt,
         }
+    }
+
+    public static generate(amount = getRandomNumber(1, 5)): DocuFilePrimitive[] {
+        return Array.from(Array(amount)).map(DocuFilePrimitiveMother.random);
+    }
+
+    public static generateWith(data: DeepPartial<DocuFilePrimitive>, amount = getRandomNumber(1, 5)): DocuFilePrimitive[] {
+        return Array.from(Array(amount)).map(() => DocuFilePrimitiveMother.from(data));
     }
 }
