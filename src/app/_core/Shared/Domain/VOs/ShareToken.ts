@@ -13,7 +13,7 @@ export class SharedToken {
         return this._value;
     }
 
-    public static generate(): SharedToken {
+    public static new(): SharedToken {
         return new SharedToken(uuidv7())
     }
 

@@ -141,7 +141,7 @@ export class DocuFile extends AggregateRoot {
             return;
         }
 
-        this._sharedToken = Option.some(SharedToken.generate());
+        this._sharedToken = Option.some(SharedToken.new());
 
         this.record(new DocuFileHasStartedToBeShared({
             entityId: this.id.value,

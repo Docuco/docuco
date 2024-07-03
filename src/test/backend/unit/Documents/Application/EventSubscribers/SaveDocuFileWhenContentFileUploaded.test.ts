@@ -1,14 +1,7 @@
 import { deepEqual, instance, mock, reset, verify, when } from "ts-mockito";
-import { FolderFinder } from "../../../../../../app/_core/Folders/Domain/Services/FolderFinder";
-import { Folder } from "../../../../../../app/_core/Folders/Domain/Entities/Folder";
-import { FolderPrimitiveMother } from "../../../Folders/Domain/Primitives/FolderPrimitiveMother";
-import { RestoreDocuFileWhenParentIsRestored } from "../../../../../../app/_core/Documents/Application/EventSubscriber/RestoreDocuFileWhenParentIsRestored";
-import { DocuFileRestorerByParent } from "../../../../../../app/_core/Documents/Domain/Services/DocuFileRestorerByParent";
-import { FolderRestoredMother } from "../../../Folders/Domain/Events/FolderRestoredMother";
-import { Id } from "../../../../../../app/_core/Shared/Domain/VOs/Id";
-import { SaveDocuFileWhenContentFileUploaded } from "../../../../../../app/_core/Documents/Application/EventSubscriber/SaveDocuFileWhenContentFileUploaded";
 import { DocuFileSaver } from "../../../../../../app/_core/Documents/Domain/Services/DocuFileSaver";
 import { ContentFileUploadedMother } from "../../Domain/Events/ContentFileUploadedMother";
+import { SaveDocuFileWhenContentFileUploaded } from "../../../../../../app/_core/Documents/Application/EventSubscriber/SaveDocuFileWhenContentFileUploaded";
 
 describe('SaveDocuFileWhenContentFileUploaded', () => {
 

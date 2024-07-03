@@ -2,13 +2,14 @@ import { AggregateRoot } from "../../../Shared/Domain/AggregateRoot";
 import { Id } from "../../../Shared/Domain/VOs/Id";
 import { Option } from "../../../Shared/Domain/VOs/Option";
 import { ContentFilePrimitive } from "../Primitives/ContentFilePrimitive";
+import { DocuMimeTypeType } from "../VOs/DocuMimeType";
 
 export class ContentFile extends AggregateRoot {
     
     constructor(
         private _id: Id,
         private _name: string,
-        private _mimeType: string,
+        private _mimeType: DocuMimeTypeType,
         private _sizeInBytes: number,
         private _extension: Option<string>,
         private _content: Blob,
@@ -24,7 +25,7 @@ export class ContentFile extends AggregateRoot {
         return this._name;
     }
 
-    get mimeType(): string {
+    get mimeType(): DocuMimeTypeType {
         return this._mimeType;
     }
 
@@ -53,7 +54,7 @@ export class ContentFile extends AggregateRoot {
         return new ContentFile(
             id,
             fileName,
-            file.type,
+            file.type as DocuMimeTypeType,
             file.size,
             Option.fromValue(fileExtension),
             new Blob([file], { type: file.type }),
@@ -72,6 +73,8 @@ export class ContentFile extends AggregateRoot {
     }
 
     toPrimitives(): ContentFilePrimitive {
+        console.log('mimeType', this._mimeType);
+        console.log('extension', this._extension.getOrNull());
         return {
             id: this._id.value,
             name: this._name,
