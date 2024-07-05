@@ -25,6 +25,7 @@ export class DeleteFolderController implements BaseController, ProtectedControll
         this.deleteFolder = new DeleteFolder(
             new FolderFinder(folderRepository),
             new FolderDeleter(folderRepository, eventBus),
+            eventBus
         )
     }
 

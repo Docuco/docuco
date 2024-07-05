@@ -25,6 +25,7 @@ export class RestoreFolderController implements BaseController, ProtectedControl
         this.restoreFolder = new RestoreFolder(
             new FolderFinder(folderRepository),
             new FolderRestorer(folderRepository, eventBus),
+            eventBus
         )
     }
 
