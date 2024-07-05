@@ -3,7 +3,7 @@ import { BaseEventClass } from "../../../Shared/Domain/Events/BaseEvent";
 import { FolderDeletedPermanently } from "../../Domain/Events/FolderDeletedPermanently";
 import { FolderDeleterPermanentlyByParent } from "../../Domain/Services/FolderDeleterPermanentlyByParent";
 import { FolderFinder } from "../../Domain/Services/FolderFinder";
-import { Folder } from "../../Domain/Entities/Folder";
+import { Id } from "../../../Shared/Domain/VOs/Id";
 
 export class DeletePermanentlyFolderWhenParentIsDeletedPermanently implements EventSubscriber {
 
@@ -20,7 +20,7 @@ export class DeletePermanentlyFolderWhenParentIsDeletedPermanently implements Ev
         const { attributes } = event;
         const folderPrimitive = attributes;
 
-        const folder = Folder.fromPrimitives(folderPrimitive);
+        const folder = await this.folderFinder.run(new Id(folderPrimitive.id));
         await this.folderDeleterPermanentlyByParent.run(folder);
     }
 }
